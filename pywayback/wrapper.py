@@ -10,19 +10,31 @@ class TooManyArchivingRequestsError(Exception):
     Wayback machine doesn't supports archivng any url too many times in a short period of time.
     """
 
-
 class ArchivingNotAllowed(Exception):
     """
     Files like robots.txt are set to deny robot archiving.
     Wayback machine respects these file, will not archive.
     """
 
+class PageNotSavedError(Exception):
+    """
+    Files like robots.txt are set to deny robot archiving.
+    Wayback machine respects these file, will not archive.
+    """
+
+class InvalidUrlError(Exception):
+    """
+    Files like robots.txt are set to deny robot archiving.
+    Wayback machine respects these file, will not archive.
+    """
 
 def save(url,UA="pywayback python module"):
     base_save_url = "https://web.archive.org/save/"
     request_url = base_save_url + url
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
+    if "." not in url:
+        raise InvalidUrlError("'%s' is not a vaild url." % url)
     try:
         response = urlopen(req) #nosec
     except urllib.error.HTTPError as e:
@@ -51,6 +63,10 @@ def near(
     encoding = response.info().get_content_charset('utf8')
     import json
     data = json.loads(response.read().decode(encoding))
+    print(data)
+    if not data["archived_snapshots"]:
+        raise PageNotSavedError("'%s' was not archived." % url)
+    
     archive_url = (data["archived_snapshots"]["closest"]["url"])
     return archive_url
 
