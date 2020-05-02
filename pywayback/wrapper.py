@@ -6,10 +6,9 @@ import urllib.error
 # YYYYMMDDhhmmss
 
 class TooManyArchivingRequestsError(Exception):
+    """An error when a single url is archived multiple times in a short timespam.
+       Wayback machine doesn't supports archivng any url too many times in a short period of time.
     """
-    An error when a single url is archived multiple times in a short timespam..
-    """
-    pass
 
 class ArchivingNotAllowed(Exception):
     pass
