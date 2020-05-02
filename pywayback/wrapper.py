@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
+
 from datetime import datetime
 from urllib.request import Request, urlopen
 import urllib.error
 
-# YYYYMMDDhhmmss
-
 class TooManyArchivingRequestsError(Exception):
-    """An error when a single url is archived multiple times in a short timespam.
-       Wayback machine doesn't supports archivng any url too many times in a short period of time.
+    """Error when a single url reqeusted for archiving too many times in a short timespam.
+    Wayback machine doesn't supports archivng any url too many times in a short period of time.
     """
+
 
 class ArchivingNotAllowed(Exception):
     pass
+
 
 def save(url,UA="pywayback python module"):
     base_save_url = "https://web.archive.org/save/"
