@@ -38,7 +38,11 @@ def save(url,UA="pywayback python module"):
     try:
         response = urlopen(req) #nosec
     except urllib.error.HTTPError as e:
-        raise TooManyArchivingRequestsError(e)
+        if e.code == 502:
+            raise PageNotSavedError(e)
+        elif e.code == 429:
+            raise TooManyArchivingRequestsError(e)
+
     header = response.headers
     if "exclusion.robots.policy" in str(header):
         raise ArchivingNotAllowed("Can not archive %s. Disabled by site owner." % (url))
