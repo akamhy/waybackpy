@@ -44,8 +44,10 @@ def near(
     UA="pywayback python module",
     ):
     timestamp = str(year)+str(month)+str(day)+str(hour)+str(minute)
-    Rurl = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (str(url), str(timestamp))
-    response = urlopen(Rurl) #nosec
+    request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (str(url), str(timestamp))
+    hdr = { 'User-Agent' : '%s' % UA }
+    req = Request(request_url, headers=hdr)
+    response = urlopen(req) #nosec
     encoding = response.info().get_content_charset('utf8')
     import json
     data = json.loads(response.read().decode(encoding))
