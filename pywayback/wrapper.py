@@ -24,15 +24,13 @@ def save(url,UA="pywayback python module"):
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     try:
-        response = urlopen(req)
+        response = urlopen(req) #nosec
     except urllib.error.HTTPError as e:
         raise TooManyArchivingRequestsError(e)
-    # print(response.read())
     header = response.headers
     if "exclusion.robots.policy" in str(header):
         raise ArchivingNotAllowed("Can not archive %s. Disabled by site owner." % (url))
     archive_id = header['Content-Location']
-    print(header)
     archived_url = "https://web.archive.org" + archive_id
     return archived_url
 
