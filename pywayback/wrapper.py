@@ -5,13 +5,17 @@ from urllib.request import Request, urlopen
 import urllib.error
 
 class TooManyArchivingRequestsError(Exception):
-    """Error when a single url reqeusted for archiving too many times in a short timespam.
+    """
+    Error when a single url reqeusted for archiving too many times in a short timespam.
     Wayback machine doesn't supports archivng any url too many times in a short period of time.
     """
 
 
 class ArchivingNotAllowed(Exception):
-    pass
+    """
+    Files like robots.txt are set to deny robot archiving.
+    Wayback machine respects these file, will not archive.
+    """
 
 
 def save(url,UA="pywayback python module"):
