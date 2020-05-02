@@ -41,6 +41,7 @@ def near(
     day=datetime.utcnow().strftime('%d'),
     hour=datetime.utcnow().strftime('%H'),
     minute=datetime.utcnow().strftime('%M'),
+    UA="pywayback python module",
     ):
     timestamp = str(year)+str(month)+str(day)+str(hour)+str(minute)
     Rurl = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (str(url), str(timestamp))
@@ -51,8 +52,8 @@ def near(
     archive_url = (data["archived_snapshots"]["closest"]["url"])
     return archive_url
 
-def oldest(url):
-    return near(url,1995)
+def oldest(url,UA="pywayback python module"):
+    return near(url,year=1995,UA=UA)
 
-def newest(url):
-    return near(url)
+def newest(url,UA="pywayback python module"):
+    return near(url,UA=UA)
