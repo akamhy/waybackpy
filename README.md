@@ -66,3 +66,4 @@ print(archive_near_year)
 ```
 returns : ```http://web.archive.org/web/20100504071154/http://www.facebook.com/```
 
+```waybackpy.near("https://www.facebook.com/", year=2010, month=1, UA ="Any-User-Agent")``` returns: ```http://web.archive.org/web/20101111173430/http://www.facebook.com//```
