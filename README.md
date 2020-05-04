@@ -47,7 +47,7 @@ import waybackpy
 oldest_archive = waybackpy.oldest("https://www.google.com/", UA = "Any-User-Agent")
 print(oldest_archive)
 ```
-This returns the oldest available archive for <https://google.com> (Check it out! It's really fascinating! and follow those blue links.)
+This returns the oldest available archive for <https://google.com>.
 
 <http://web.archive.org/web/19981111184551/http://google.com:80/>
 
