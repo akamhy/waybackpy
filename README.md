@@ -51,3 +51,18 @@ This returns the newest available archive for <https://www.microsoft.com/en-us>,
 ```
 http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/
 ```
+
+### Retiving archive close to a specified year, month, day, hour and minute!. Using near().
+
+waybackpy.newest(url, year=2020, month=01, day=01, hour=01, minute=01, UA=user_agent)
+
+```python
+import waybackpy
+# retriving the the closest archive from a specified year.
+# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
+# supported argumnets are year,month,day,hour and minute
+archive_near_year = waybackpy.near("https://www.facebook.com/", year=2010, UA ="Any-User-Agent")
+print(archive_near_year)
+```
+returns : ```http://web.archive.org/web/20100504071154/http://www.facebook.com/```
+
