@@ -16,7 +16,7 @@ Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 
 ## Usage
 
-### Capturing/Saving an url/website. Using save().
+#### Capturing/Saving an url/website. Using save().
 
 ```diff
 + waybackpy.save(url, UA=user_agent)
@@ -33,7 +33,7 @@ This should print something similar to the following archived URL:
 
 <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
 
-### Receiving the oldest archive for an URL. Using oldest().
+#### Receiving the oldest archive for an URL. Using oldest().
 
 ```diff
 + waybackpy.oldest(url, UA=user_agent)
@@ -51,7 +51,7 @@ This returns the oldest available archive for <https://google.com> (Check it out
 
 <http://web.archive.org/web/19981111184551/http://google.com:80/>
 
-### Receiving the recent most/newest archive for an URL. Using newest().
+#### Receiving the recent most/newest archive for an URL. Using newest().
 
 ```diff
 + waybackpy.newest(url, UA=user_agent)
@@ -68,7 +68,7 @@ This returns the newest available archive for <https://www.microsoft.com/en-us>,
 
 <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
 
-### Receiving archive close to a specified year, month, day, hour, and minute! Using near().
+#### Receiving archive close to a specified year, month, day, hour, and minute! Using near().
 
 ```diff
 + waybackpy.near(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
