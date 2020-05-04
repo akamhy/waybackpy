@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
 from datetime import datetime
+from waybackpy.exceptions import *
 try:
     from urllib.request import Request, urlopen
     from urllib.error import HTTPError
@@ -9,43 +9,6 @@ except ImportError:
 
 
 default_UA = "waybackpy python package"
-
-class TooManyArchivingRequestsError(Exception):
-    """
-    Error when a single url reqeusted for archiving too many times in a short timespam.
-    Wayback machine doesn't supports archivng any url too many times in a short period of time.
-    """
-
-class ArchivingNotAllowed(Exception):
-    """
-    Files like robots.txt are set to deny robot archiving.
-    Wayback machine respects these file, will not archive.
-    """
-
-class PageNotSavedError(Exception):
-    """
-    When unable to save a webpage.
-    """
-
-class ArchiveNotFound(Exception):
-    """
-    When a page was never archived but client asks for old archive.
-    """
-
-class UrlNotFound(Exception):
-    """
-    Raised when 404 UrlNotFound.
-    """
-
-class BadGateWayError(Exception):
-    """
-    Raised when 502 bad gateway.
-    """
-
-class InvalidUrlError(Exception):
-    """
-    Raised when url doesn't follow the standard url format.
-    """
 
 def clean_url(url):
     return str(url).strip().replace(" ","_")
@@ -56,14 +19,14 @@ def save(url,UA=default_UA):
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     if "." not in url:
-        raise InvalidUrlError("'%s' is not a vaild url." % url)
+        raise InvalidUrl("'%s' is not a vaild url." % url)
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
         if e.code == 502:
-            raise BadGateWayError(e)
+            raise BadGateWay(e)
         elif e.code == 429:
-            raise TooManyArchivingRequestsError(e)
+            raise TooManyArchivingRequests(e)
         elif e.code == 404:
             raise UrlNotFound(e)
         else:
