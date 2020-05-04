@@ -20,14 +20,17 @@ class ArchivingNotAllowed(Exception):
 
 class PageNotSavedError(Exception):
     """
-    Files like robots.txt are set to deny robot archiving.
-    Wayback machine respects these file, will not archive.
+    When unable to save a webpage.
+    """
+
+class ArchiveNotFound(Exception):
+    """
+    When a page was never archived but client asks for old archive.
     """
 
 class InvalidUrlError(Exception):
     """
-    Files like robots.txt are set to deny robot archiving.
-    Wayback machine respects these file, will not archive.
+    Raised when url doesn't follow the standard url format.
     """
 
 def clean_url(url):
@@ -73,7 +76,7 @@ def near(
     import json
     data = json.loads(response.read().decode(encoding))
     if not data["archived_snapshots"]:
-        raise PageNotSavedError("'%s' was not archived." % url)
+        raise ArchiveNotFound("'%s' is not yet archived." % url)
     
     archive_url = (data["archived_snapshots"]["closest"]["url"])
     return archive_url
