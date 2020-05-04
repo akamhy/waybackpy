@@ -19,7 +19,7 @@ pip install waybackpy
 ### Capturing/Saving an url/website. Using save().
 
 ```diff
-+ waybackpy.save(url, UA=user_agent)
+ waybackpy.save(url, UA=user_agent)
 ```
 
 ```python
