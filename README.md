@@ -2,6 +2,13 @@
 The waybackpy is a python wrapper for [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)
 's [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine).
 
+## Installation
+Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
+```python
+pip install waybackpy
+```
+
+
 ## Usage
 
 ### Capturing/Saving an url/website. Using save().
