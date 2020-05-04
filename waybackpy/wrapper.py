@@ -30,9 +30,12 @@ class InvalidUrlError(Exception):
     Wayback machine respects these file, will not archive.
     """
 
+def clean_url(url):
+    return str(url).strip().replace(" ","_")
+
 def save(url,UA=default_UA):
     base_save_url = "https://web.archive.org/save/"
-    request_url = base_save_url + url
+    request_url = base_save_url + clean_url(url)
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     if "." not in url:
@@ -62,7 +65,7 @@ def near(
     UA=default_UA,
     ):
     timestamp = str(year)+str(month)+str(day)+str(hour)+str(minute)
-    request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (str(url).strip(), str(timestamp))
+    request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     response = urlopen(req) #nosec
