@@ -18,7 +18,9 @@ pip install waybackpy
 
 ### Capturing/Saving an url/website. Using save().
 
-waybackpy.save(url, UA=user_agent)
+```diff
++ waybackpy.save(url, UA=user_agent)
+```
 
 ```python
 import waybackpy
@@ -34,7 +36,10 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 
 ### Receiving the oldest archive for an URL. Using oldest().
 
-waybackpy.oldest(url, UA=user_agent)
+```diff
++ waybackpy.oldest(url, UA=user_agent)
+```
+
 
 ```python
 import waybackpy
@@ -50,7 +55,9 @@ http://web.archive.org/web/19981111184551/http://google.com:80/
 
 ### Receiving the recent most/newest archive for an URL. Using newest().
 
-waybackpy.newest(url, UA=user_agent)
+```diff
++ waybackpy.newest(url, UA=user_agent)
+```
 
 ```python
 import waybackpy
@@ -66,7 +73,9 @@ http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/
 
 ### Receiving archive close to a specified year, month, day, hour, and minute! Using near().
 
-waybackpy.newest(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
+```diff
++ waybackpy.near(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
+```
 
 ```python
 import waybackpy
