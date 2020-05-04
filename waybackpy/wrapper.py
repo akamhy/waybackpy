@@ -32,6 +32,16 @@ class ArchiveNotFound(Exception):
     When a page was never archived but client asks for old archive.
     """
 
+class UrlNotFound(Exception):
+    """
+    Raised when 404 UrlNotFound.
+    """
+
+class BadGateWayError(Exception):
+    """
+    Raised when 502 bad gateway.
+    """
+
 class InvalidUrlError(Exception):
     """
     Raised when url doesn't follow the standard url format.
@@ -42,7 +52,7 @@ def clean_url(url):
 
 def save(url,UA=default_UA):
     base_save_url = "https://web.archive.org/save/"
-    request_url = base_save_url + clean_url(url)
+    request_url = (base_save_url + clean_url(url))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     if "." not in url:
@@ -51,9 +61,13 @@ def save(url,UA=default_UA):
         response = urlopen(req) #nosec
     except HTTPError as e:
         if e.code == 502:
-            raise PageNotSavedError(e)
+            raise BadGateWayError(e)
         elif e.code == 429:
             raise TooManyArchivingRequestsError(e)
+        elif e.code == 404:
+            raise UrlNotFound(e)
+        else:
+          raise PageNotSaved(e)
 
     header = response.headers
     if "exclusion.robots.policy" in str(header):
