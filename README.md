@@ -54,7 +54,7 @@ http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/
 
 ### Retiving archive close to a specified year, month, day, hour and minute!. Using near().
 
-waybackpy.newest(url, year=2020, month=01, day=01, hour=01, minute=01, UA=user_agent)
+waybackpy.newest(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
 
 ```python
 import waybackpy
