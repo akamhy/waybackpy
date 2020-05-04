@@ -9,9 +9,9 @@ The waybackpy is a python wrapper for [Internet Archive](https://en.wikipedia.or
 
 ## Installation
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
-```python
-pip install waybackpy
-```
+
+**pip install waybackpy**
+
 
 
 ## Usage
@@ -19,7 +19,7 @@ pip install waybackpy
 ### Capturing/Saving an url/website. Using save().
 
 ```diff
- waybackpy.save(url, UA=user_agent)
++ waybackpy.save(url, UA=user_agent)
 ```
 
 ```python
