@@ -15,6 +15,7 @@ import waybackpy
 archived_url = waybackpy.save("https://github.com/akamhy/waybackpy", UA = "Any-User-Agent")
 print(archived_url)
 ```
+This should print something similar to the following archived url:
 ```
 https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```
