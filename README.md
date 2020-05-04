@@ -90,3 +90,8 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 > Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Do not expect just putting the year parameter would return the archive closer to January but the current month you are using the package. If you are using it in July 2018 and let's say you use ```waybackpy.near("https://www.facebook.com/", year=2011, UA ="Any-User-Agent")``` then you would be returned the nearest archive to July 2011 and not January 2011. You need to specify the month "1" for January.
 
 > Do not pad (use zeros in month, year, day, minute and hour arguments).
+
+
+## License
+
+[MIT License](LICENSE)
