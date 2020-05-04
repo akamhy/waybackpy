@@ -26,8 +26,7 @@ class PageNotSavedError(Exception):
 
 class InvalidUrlError(Exception):
     """
-    Files like robots.txt are set to deny robot archiving.
-    Wayback machine respects these file, will not archive.
+    When the inpute url doesn't have '.' in it.
     """
 
 def save(url,UA=default_UA):
