@@ -26,7 +26,8 @@ class PageNotSavedError(Exception):
 
 class InvalidUrlError(Exception):
     """
-    When the inpute url doesn't have '.' in it.
+    Files like robots.txt are set to deny robot archiving.
+    Wayback machine respects these file, will not archive.
     """
 
 def save(url,UA=default_UA):
@@ -68,15 +69,14 @@ def near(
     encoding = response.info().get_content_charset('utf8')
     import json
     data = json.loads(response.read().decode(encoding))
-    print(data)
     if not data["archived_snapshots"]:
         raise PageNotSavedError("'%s' was not archived." % url)
     
     archive_url = (data["archived_snapshots"]["closest"]["url"])
     return archive_url
 
-def oldest(url,UA=default_UA):
-    return near(url,year=1995,UA=UA)
+def oldest(url,UA=default_UA,year=1994):
+    return near(url,year=year,UA=UA)
 
 def newest(url,UA=default_UA):
     return near(url,UA=UA)
