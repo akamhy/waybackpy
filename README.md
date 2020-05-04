@@ -4,7 +4,7 @@ The waybackpy is python wrapper for [Internet Archive](https://en.wikipedia.org/
 
 ## Usage
 
-### Capturing/Saving a url/website. Using save().
+### Capturing/Saving an url/website. Using save().
 
 waybackpy.save(url, UA=user_agent)
 
@@ -20,7 +20,7 @@ This should print something similar to the following archived url:
 https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```
 
-### Retiving the oldest archive for a url. Using oldest().
+### Retiving the oldest archive for an url. Using oldest().
 
 waybackpy.oldest(url, UA=user_agent)
 
@@ -31,7 +31,23 @@ import waybackpy
 oldest_archive = waybackpy.oldest("https://www.google.com/", UA = "Any-User-Agent")
 print(oldest_archive)
 ```
-This returns the oldest available archive for google.com (Check it out! It's really fascinating! and follow those blue links.)
+This returns the oldest available archive for <https://google.com> (Check it out! It's really fascinating! and follow those blue links.)
 ```
 http://web.archive.org/web/19981111184551/http://google.com:80/
+```
+
+### Retiving the recent most/newest archive for an url. Using newest().
+
+waybackpy.newest(url, UA=user_agent)
+
+```python
+import waybackpy
+# retriving the newest archive on wayback machine.
+# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
+newest_archive = waybackpy.newest("https://www.microsoft.com/en-us", UA = "Any-User-Agent")
+print(newest_archive)
+```
+This returns the newest available archive for <https://www.microsoft.com/en-us>, somthing just like this:
+```
+http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/
 ```
