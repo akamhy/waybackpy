@@ -67,3 +67,6 @@ print(archive_near_year)
 returns : ```http://web.archive.org/web/20100504071154/http://www.facebook.com/```
 
 ```waybackpy.near("https://www.facebook.com/", year=2010, month=1, UA ="Any-User-Agent")``` returns: ```http://web.archive.org/web/20101111173430/http://www.facebook.com//```
+
+```waybackpy.near("https://www.oracle.com/index.html", year=2019, month=1, day=5, UA ="Any-User-Agent")``` returns: ```http://web.archive.org/web/20190105054437/https://www.oracle.com/index.html```
+* Please note that if you only specify the year, the current month and day are deafult arguments for month and day respectively. Do not expect just putting the year parameter would return the archive closer to january but the current month you are using the package. If you are using it in July 2018 and lets say you use ```waybackpy.near("https://www.facebook.com/", year=2011, UA ="Any-User-Agent")``` then you would be returned the nearest archive to april 2011 and not january 2011. You need to specify the month "1" for january.
