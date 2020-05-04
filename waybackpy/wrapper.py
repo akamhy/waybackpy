@@ -62,7 +62,7 @@ def near(
     UA=default_UA,
     ):
     timestamp = str(year)+str(month)+str(day)+str(hour)+str(minute)
-    request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (str(url), str(timestamp))
+    request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (str(url).strip(), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     response = urlopen(req) #nosec
