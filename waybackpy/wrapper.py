@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from urllib.request import Request, urlopen
-import urllib.error
+try:
+    from urllib.request import Request, urlopen
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib2 import Request, urlopen, HTTPError
+
 
 default_UA = "waybackpy python package"
 
@@ -45,7 +49,7 @@ def save(url,UA=default_UA):
         raise InvalidUrlError("'%s' is not a vaild url." % url)
     try:
         response = urlopen(req) #nosec
-    except urllib.error.HTTPError as e:
+    except HTTPError as e:
         if e.code == 502:
             raise PageNotSavedError(e)
         elif e.code == 429:
@@ -72,9 +76,8 @@ def near(
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     response = urlopen(req) #nosec
-    encoding = response.info().get_content_charset('utf8')
     import json
-    data = json.loads(response.read().decode(encoding))
+    data = json.loads(response.read().decode('utf8'))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
     
