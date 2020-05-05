@@ -15,7 +15,7 @@ setup(
   author = 'akamhy',
   author_email = 'akash3pro@gmail.com',
   url = 'https://github.com/akamhy/waybackpy',
-  download_url = 'https://github.com/akamhy/waybackpy/archive/v1.1.tar.gz',
+  download_url = 'https://github.com/akamhy/waybackpy/archive/v1.2.tar.gz',
   keywords = ['wayback', 'archive', 'archive website', 'wayback machine', 'Internet Archive'],
   install_requires=[],
   classifiers=[
