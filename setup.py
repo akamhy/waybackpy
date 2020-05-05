@@ -7,7 +7,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
 setup(
     name = 'waybackpy',
     packages = ['waybackpy'],
-    version = 'v1.2',
+    version = 'v1.3',
     description = 'A python wrapper for Internet Archives Wayback Machine',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -15,7 +15,7 @@ setup(
     author = 'akamhy',
     author_email = 'akash3pro@gmail.com',
     url = 'https://github.com/akamhy/waybackpy',
-    download_url = 'https://github.com/akamhy/waybackpy/archive/v1.2.tar.gz',
+    download_url = 'https://github.com/akamhy/waybackpy/archive/v1.3.tar.gz',
     keywords = ['wayback', 'archive', 'archive website', 'wayback machine', 'Internet Archive'],
     install_requires=[],
     python_requires='>=3.6',
