@@ -6,5 +6,7 @@ dist: xenial
 cache: pip
 install:
   - pip install pytest
+before_script:
+    cd tests
 script:
   - python test_1.py
