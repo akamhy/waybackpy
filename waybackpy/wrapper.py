@@ -43,7 +43,7 @@ def save(url,UA=default_UA):
 def get(url,encoding=None,UA=default_UA):
     hdr = { 'User-Agent' : '%s' % UA }
     request_url = clean_url(url)
-    req = Request(request_url, headers=hdr)
+    req = Request(request_url, headers=hdr) #nosec
     resp=urlopen(req) #nosec
     if encoding is None:
         try:
@@ -77,7 +77,7 @@ def near(
     data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
-    
+
     archive_url = (data["archived_snapshots"]["closest"]["url"])
     return archive_url
 
