@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
 class TooManyArchivingRequests(Exception):
-    """
-    Error when a single url reqeusted for archiving too many times in a short timespam.
+    """Error when a single url reqeusted for archiving too many times in a short timespam.
     Wayback machine doesn't supports archivng any url too many times in a short period of time.
     """
 
 class ArchivingNotAllowed(Exception):
-    """
-    Files like robots.txt are set to deny robot archiving.
+    """Files like robots.txt are set to deny robot archiving.
     Wayback machine respects these file, will not archive.
     """
 
