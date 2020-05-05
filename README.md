@@ -91,6 +91,11 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 
 > Do not pad (use zeros in month, year, day, minute and hour arguments).
 
+#### Get the content of webpage using get().
+
+```diff
++ waybackpy.get(url, encoding="UTF-8", UA=user_agent)
+```
 
 ## License
 
