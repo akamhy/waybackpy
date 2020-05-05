@@ -15,20 +15,20 @@ Table of contents
 =================
 <!--ts-->
 
-* [Installation](#installation)
+* [Installation](https://github.com/akamhy/waybackpy#installation)
 
-* [Usage](#usage)
-  * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
-  * [Receiving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
-  * [Receiving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
-  * [Receiving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
-  * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
+* [Usage](https://github.com/akamhy/waybackpy#usage)
+  * [Saving an url using save()](https://github.com/akamhy/waybackpy#capturing-aka-saving-an-url-using-save)
+  * [Receiving the oldest archive for an URL Using oldest()](https://github.com/akamhy/waybackpy#receiving-the-oldest-archive-for-an-url-using-oldest)
+  * [Receiving the recent most/newest archive for an URL using newest()](https://github.com/akamhy/waybackpy#receiving-the-newest-archive-for-an-url-using-newest)
+  * [Receiving archive close to a specified year, month, day, hour, and minute using near()](https://github.com/akamhy/waybackpy#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+  * [Get the content of webpage using get()](https://github.com/akamhy/waybackpy#get-the-content-of-webpage-using-get)
 
 * [Tests](#tests)
 
-* [Dependency](#dependency)
+* [Dependency](https://github.com/akamhy/waybackpy#dependency)
 
-* [License](#license)
+* [License](https://github.com/akamhy/waybackpy#license)
 
 <!--te-->
 
@@ -139,9 +139,9 @@ print(webpage)
 > This should print the source code for <https://example.com/>.
 
 ## Dependency
-* None, just python standard libraries. Both python 2 and 3 are supported :)
+* None, just python standard libraries (json, urllib and datetime). Both python 2 and 3 are supported :)
 
 
 ## License
 
-[MIT License](LICENSE)
+[MIT License](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
