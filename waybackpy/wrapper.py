@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, UrlNotFound, InvalidUrl
+from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, BadGateWay, InvalidUrl
 try:
     from urllib.request import Request, urlopen
     from urllib.error import HTTPError
@@ -44,7 +44,7 @@ def get(url,encoding=None,UA=default_UA):
     hdr = { 'User-Agent' : '%s' % UA }
     request_url = clean_url(url)
     req = Request(request_url, headers=hdr)
-    resp=urlopen(req)
+    resp=urlopen(req) #nosec
     if encoding is None:
         try:
             encoding= resp.headers['content-type'].split('charset=')[-1]
