@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from datetime import datetime
 from waybackpy.exceptions import *
 try:
@@ -39,6 +40,15 @@ def save(url,UA=default_UA):
     archived_url = "https://web.archive.org" + archive_id
     return archived_url
 
+def get(url,encoding=None):
+    req=urlopen(url)
+    if encoding is None:
+        try:
+            encoding= req.headers['content-type'].split('charset=')[-1]
+        except:
+            encoding = "UTF-8"
+    return req.read().decode(encoding)
+
 def wayback_timestamp(year,month,day,hour,minute):
     year = str(year)
     month = str(month).zfill(2)
@@ -61,8 +71,7 @@ def near(
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     response = urlopen(req) #nosec
-    import json
-    data = json.loads(response.read().decode('utf8'))
+    data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
     
