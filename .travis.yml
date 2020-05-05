@@ -1,5 +1,6 @@
 language: python
 python:
+  - "2.7"
   - "3.6"
 os: linux
 dist: xenial
@@ -9,4 +10,4 @@ install:
 before_script:
     cd tests
 script:
-  - python test_1.py
+  - pytest test_1.py
