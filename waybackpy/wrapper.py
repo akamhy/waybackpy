@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-from waybackpy.exceptions import *
+from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, UrlNotFound, InvalidUrl
 try:
     from urllib.request import Request, urlopen
     from urllib.error import HTTPError
