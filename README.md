@@ -96,6 +96,72 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 ```diff
 + waybackpy.get(url, encoding="UTF-8", UA=user_agent)
 ```
+> encoding is automatically detected if not supplied in the call.
+```python
+from waybackpy import get
+# retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
+# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
+# supported argumnets are url, encoding and UA
+webpage = get("https://example.com/", UA="User-Agent")
+print(webpage)
+```
+<details><summary>Output of the above code</summary>
+<p>
+
+###### The source code for <https://example.com/> ! As no encoding was provided, it was auto identified.
+
+```html
+<!doctype html>
+<html>
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+    body {
+        background-color: #f0f0f2;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        
+    }
+    div {
+        width: 600px;
+        margin: 5em auto;
+        padding: 2em;
+        background-color: #fdfdff;
+        border-radius: 0.5em;
+        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);
+    }
+    a:link, a:visited {
+        color: #38488f;
+        text-decoration: none;
+    }
+    @media (max-width: 700px) {
+        div {
+            margin: 0 auto;
+            width: auto;
+        }
+    }
+    </style>    
+</head>
+
+<body>
+<div>
+    <h1>Example Domain</h1>
+    <p>This domain is for use in illustrative examples in documents. You may use this
+    domain in literature without prior coordination or asking for permission.</p>
+    <p><a href="https://www.iana.org/domains/example">More information...</a></p>
+</div>
+</body>
+</html>
+```
+
+</p>
+</details>
+
 
 ## License
 
