@@ -3,23 +3,27 @@
 ![Internet Archive](https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png)
 ![Wayback Machine](https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wayback_Machine_logo_2010.svg/284px-Wayback_Machine_logo_2010.svg.png)
 
-
-The waybackpy is a python wrapper for [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)
-'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine).
+The waybackpy is a python wrapper for [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine).
 
 Table of contents
 =================
 <!--ts-->
-   * [Installation](#installation)
-   * [Usage](#usage)
-      * [Capturing/Saving an url/website. Using save().](#capturingsaving-an-urlwebsite-using-save)
-      * [Receiving the oldest archive for an URL. Using oldest().](#receiving-the-oldest-archive-for-an-url-using-oldest)
-      * [Receiving the recent most/newest archive for an URL. Using newest().](#receiving-the-recent-mostnewest-archive-for-an-url-using-newest)
-      * [Receiving archive close to a specified year, month, day, hour, and minute! Using near().](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
-      * [Get the content of webpage using get().](#get-the-content-of-webpage-using-get)
-   * [Tests](#tests)
-   * [Dependency](#dependency)
-   * [License](#license)
+
+* [Installation](#installation)
+
+* [Usage](#usage)
+  * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
+  * [Receiving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
+  * [Receiving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
+  * [Receiving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+  * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
+
+* [Tests](#tests)
+
+* [Dependency](#dependency)
+
+* [License](#license)
+
 <!--te-->
 
 ## Installation
@@ -31,7 +35,7 @@ Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 
 ## Usage
 
-#### Capturing/Saving an url/website. Using save().
+#### Capturing aka Saving an url Using save()
 
 ```diff
 + waybackpy.save(url, UA=user_agent)
@@ -48,7 +52,7 @@ This should print something similar to the following archived URL:
 
 <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
 
-#### Receiving the oldest archive for an URL. Using oldest().
+#### Receiving the oldest archive for an URL Using oldest()
 
 ```diff
 + waybackpy.oldest(url, UA=user_agent)
@@ -67,7 +71,7 @@ This returns the oldest available archive for <https://google.com>.
 
 <http://web.archive.org/web/19981111184551/http://google.com:80/>
 
-#### Receiving the recent most/newest archive for an URL. Using newest().
+#### Receiving the newest archive for an URL using newest()
 
 ```diff
 + waybackpy.newest(url, UA=user_agent)
@@ -86,7 +90,7 @@ This returns the newest available archive for <https://www.microsoft.com/en-us>,
 
 <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
 
-#### Receiving archive close to a specified year, month, day, hour, and minute! Using near().
+#### Receiving archive close to a specified year, month, day, hour, and minute using near()
 
 ```diff
 + waybackpy.near(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
@@ -111,7 +115,7 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 
 > Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 
-#### Get the content of webpage using get().
+#### Get the content of webpage using get()
 
 ```diff
 + waybackpy.get(url, encoding="UTF-8", UA=user_agent)
