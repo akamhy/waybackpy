@@ -2,7 +2,7 @@ from distutils.core import setup
 import os.path
 
 with open("README.md", "r") as fh:
-  readme = fh.read()
+  long_description = fh.read()
 
 setup(
   name = 'waybackpy',
@@ -10,8 +10,8 @@ setup(
   version = 'v1.2',
   license='MIT',
   description = 'A python wrapper for Internet Archives Wayback Machine',
-  long_description=readme,
-  long_description_content_type='text/markdown',
+  long_description=long_description,
+  long_description_content_type='text/markdown'
   author = 'akamhy',
   author_email = 'akash3pro@gmail.com',
   url = 'https://github.com/akamhy/waybackpy',
