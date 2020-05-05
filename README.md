@@ -8,16 +8,22 @@ The waybackpy is a python wrapper for [Internet Archive](https://en.wikipedia.or
 Table of contents
 =================
 <!--ts-->
+
 * [Installation](#installation)
+
 * [Usage](#usage)
   * [Saving an url using save()](#capturingsaving-an-urlwebsite-using-save)
   * [Receiving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
   * [Receiving the recent most/newest archive for an URL using newest()](#receiving-the-recent-mostnewest-archive-for-an-url-using-newest)
   * [Receiving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
   * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
+
 * [Tests](#tests)
+
 * [Dependency](#dependency)
+
 * [License](#license)
+
 <!--te-->
 
 ## Installation
