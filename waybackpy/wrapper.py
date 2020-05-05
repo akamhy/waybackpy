@@ -40,14 +40,17 @@ def save(url,UA=default_UA):
     archived_url = "https://web.archive.org" + archive_id
     return archived_url
 
-def get(url,encoding=None):
-    req=urlopen(url)
+def get(url,encoding=None,UA=default_UA):
+    hdr = { 'User-Agent' : '%s' % UA }
+    request_url = clean_url(url)
+    req = Request(request_url, headers=hdr)
+    resp=urlopen(req)
     if encoding is None:
         try:
-            encoding= req.headers['content-type'].split('charset=')[-1]
+            encoding= resp.headers['content-type'].split('charset=')[-1]
         except:
             encoding = "UTF-8"
-    return req.read().decode(encoding)
+    return resp.read().decode(encoding)
 
 def wayback_timestamp(year,month,day,hour,minute):
     year = str(year)
