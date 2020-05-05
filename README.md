@@ -1,9 +1,11 @@
 # waybackpy
 [![Build Status](https://travis-ci.org/akamhy/waybackpy.svg?branch=master)](https://travis-ci.org/akamhy/waybackpy)
 [![Downloads](https://img.shields.io/pypi/dm/waybackpy.svg)](https://pypistats.org/packages/waybackpy)
+[![Release](https://img.shields.io/github/v/release/akamhy/waybackpy.svg)](https://github.com/akamhy/waybackpy/releases)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+![pypi](https://img.shields.io/pypi/v/wayback.svg)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
 
 
