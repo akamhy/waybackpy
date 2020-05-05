@@ -138,6 +138,9 @@ print(webpage)
 ```
 > This should print the source code for <https://example.com/>.
 
+## Tests
+* [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
+
 ## Dependency
 * None, just python standard libraries (json, urllib and datetime). Both python 2 and 3 are supported :)
 
