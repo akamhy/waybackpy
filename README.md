@@ -21,7 +21,7 @@ Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 ```diff
 + waybackpy.save(url, UA=user_agent)
 ```
-
+> url is mandotory. UA is not, but higly recomended.
 ```python
 import waybackpy
 # Capturing a new archive on wayback machine.
@@ -38,6 +38,7 @@ This should print something similar to the following archived URL:
 ```diff
 + waybackpy.oldest(url, UA=user_agent)
 ```
+> url is mandotory. UA is not, but higly recomended.
 
 
 ```python
@@ -56,6 +57,8 @@ This returns the oldest available archive for <https://google.com>.
 ```diff
 + waybackpy.newest(url, UA=user_agent)
 ```
+> url is mandotory. UA is not, but higly recomended.
+
 
 ```python
 import waybackpy
@@ -73,6 +76,8 @@ This returns the newest available archive for <https://www.microsoft.com/en-us>,
 ```diff
 + waybackpy.near(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
 ```
+> url is mandotory. year,month,day,hour and minute are optional arguments. UA is not mandotory, but higly recomended.
+
 
 ```python
 import waybackpy
@@ -96,7 +101,8 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 ```diff
 + waybackpy.get(url, encoding="UTF-8", UA=user_agent)
 ```
-> encoding is automatically detected if not supplied in the call.
+> url is mandotory. UA is not, but higly recomended. encoding is detected automatically, don't specify unless necessary.
+
 ```python
 from waybackpy import get
 # retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
