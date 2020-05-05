@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r") as fh:
   long_description = fh.read()
 
-setup(
+setuptools.setup(
   name = 'waybackpy',
   packages = ['waybackpy'],
   version = 'v1.2',
