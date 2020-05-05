@@ -39,8 +39,8 @@ def test_near():
     archive_near_day_month_year = waybackpy.near(url, year=2006, month=11, day=15, UA=user_agent)
     assert "20061115" in archive_near_day_month_year
 
-    archive_near_hour_day_month_year = waybackpy.near(url, year=2009, month=8, day=5, hour=13, UA=user_agent)
-    assert "2009080513" in archive_near_hour_day_month_year
+    archive_near_hour_day_month_year = waybackpy.near("www.python.org", year=2008, month=5, day=9, hour=15, UA=user_agent)
+    assert "2008050915" in archive_near_hour_day_month_year
 
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
