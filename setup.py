@@ -1,8 +1,8 @@
 from distutils.core import setup
 import os.path
 
-with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
-  readme = f.read()
+with open("README.md", "r") as fh:
+  readme = fh.read()
 
 setup(
   name = 'waybackpy',
