@@ -17,8 +17,8 @@ def clean_url(url):
 def save(url,UA=default_UA):
     base_save_url = "https://web.archive.org/save/"
     request_url = (base_save_url + clean_url(url))
-    hdr = { 'User-Agent' : '%s' % UA }
-    req = Request(request_url, headers=hdr)
+    hdr = { 'User-Agent' : '%s' % UA } #nosec
+    req = Request(request_url, headers=hdr) #nosec
     if "." not in url:
         raise InvalidUrl("'%s' is not a vaild url." % url)
     try:
