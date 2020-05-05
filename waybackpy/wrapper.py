@@ -48,7 +48,7 @@ def get(url,encoding=None,UA=default_UA):
     if encoding is None:
         try:
             encoding= resp.headers['content-type'].split('charset=')[-1]
-        except:
+        except AttributeError:
             encoding = "UTF-8"
     return resp.read().decode(encoding)
 
@@ -72,7 +72,7 @@ def near(
     timestamp = wayback_timestamp(year,month,day,hour,minute)
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
-    req = Request(request_url, headers=hdr)
+    req = Request(request_url, headers=hdr) # nosec
     response = urlopen(req) #nosec
     data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
