@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from datetime import datetime
 from waybackpy.exceptions import *
 try:
@@ -39,6 +40,26 @@ def save(url,UA=default_UA):
     archived_url = "https://web.archive.org" + archive_id
     return archived_url
 
+def get(url,encoding=None,UA=default_UA):
+    hdr = { 'User-Agent' : '%s' % UA }
+    request_url = clean_url(url)
+    req = Request(request_url, headers=hdr)
+    resp=urlopen(req)
+    if encoding is None:
+        try:
+            encoding= resp.headers['content-type'].split('charset=')[-1]
+        except:
+            encoding = "UTF-8"
+    return resp.read().decode(encoding)
+
+def wayback_timestamp(year,month,day,hour,minute):
+    year = str(year)
+    month = str(month).zfill(2)
+    day = str(day).zfill(2)
+    hour = str(hour).zfill(2)
+    minute = str(minute).zfill(2)
+    return (year+month+day+hour+minute)
+
 def near(
     url,
     year=datetime.utcnow().strftime('%Y'),
@@ -48,13 +69,12 @@ def near(
     minute=datetime.utcnow().strftime('%M'),
     UA=default_UA,
     ):
-    timestamp = str(year)+str(month)+str(day)+str(hour)+str(minute)
+    timestamp = wayback_timestamp(year,month,day,hour,minute)
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr)
     response = urlopen(req) #nosec
-    import json
-    data = json.loads(response.read().decode('utf8'))
+    data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
     
