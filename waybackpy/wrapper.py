@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from datetime import datetime
-from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, BadGateWay, InvalidUrl
+from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, BadGateWay, InvalidUrl, WaybackUnavailable
 try:
     from urllib.request import Request, urlopen
     from urllib.error import HTTPError
@@ -19,13 +19,14 @@ def save(url,UA=default_UA):
     request_url = (base_save_url + clean_url(url))
     hdr = { 'User-Agent' : '%s' % UA } #nosec
     req = Request(request_url, headers=hdr) #nosec
-    if "." not in url:
-        raise InvalidUrl("'%s' is not a vaild url." % url)
+    url_check(url)
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
         if e.code == 502:
             raise BadGateWay(e)
+        elif e.code == 503:
+            raise WaybackUnavailable(e)
         elif e.code == 429:
             raise TooManyArchivingRequests(e)
         elif e.code == 404:
@@ -41,9 +42,9 @@ def save(url,UA=default_UA):
     return archived_url
 
 def get(url,encoding=None,UA=default_UA):
+    url_check(url)
     hdr = { 'User-Agent' : '%s' % UA }
-    request_url = clean_url(url)
-    req = Request(request_url, headers=hdr) #nosec
+    req = Request(clean_url(url), headers=hdr) #nosec
     resp=urlopen(req) #nosec
     if encoding is None:
         try:
@@ -60,6 +61,10 @@ def wayback_timestamp(year,month,day,hour,minute):
     minute = str(minute).zfill(2)
     return (year+month+day+hour+minute)
 
+def url_check(url):
+    if "." not in url:
+        raise InvalidUrl("'%s' is not a vaild url." % url)
+
 def near(
     url,
     year=datetime.utcnow().strftime('%Y'),
@@ -69,11 +74,20 @@ def near(
     minute=datetime.utcnow().strftime('%M'),
     UA=default_UA,
     ):
+    url_check(url)
     timestamp = wayback_timestamp(year,month,day,hour,minute)
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr) # nosec
-    response = urlopen(req) #nosec
+    try:
+        response = urlopen(req) #nosec
+    except HTTPError as e:
+        if e.code == 502:
+            raise BadGateWay(e)
+        elif e.code == 503:
+            raise WaybackUnavailable(e)
+        elif e.code == 404:
+            raise UrlNotFound(e)
     data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
