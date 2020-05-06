@@ -32,6 +32,11 @@ class BadGateWay(Exception):
     Raised when 502 bad gateway.
     """
 
+class WaybackUnavailable(Exception):
+    """
+    Raised when 503 API Service Temporarily Unavailable.
+    """
+
 class InvalidUrl(Exception):
     """
     Raised when url doesn't follow the standard url format.
