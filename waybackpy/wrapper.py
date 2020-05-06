@@ -4,9 +4,9 @@ from datetime import datetime
 from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, BadGateWay, InvalidUrl, WaybackUnavailable
 try:
     from urllib.request import Request, urlopen
-    from urllib.error import HTTPError
+    from urllib.error import HTTPError, URLError
 except ImportError:
-    from urllib2 import Request, urlopen, HTTPError
+    from urllib2 import Request, urlopen, HTTPError, URLError
 
 
 default_UA = "waybackpy python package"
@@ -45,12 +45,16 @@ def get(url,encoding=None,UA=default_UA):
     url_check(url)
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(clean_url(url), headers=hdr) #nosec
-    resp=urlopen(req) #nosec
+    try:
+        resp=urlopen(req) #nosec
+    except URLError as e:
+        raise UrlNotFound(e)
     if encoding is None:
         try:
             encoding= resp.headers['content-type'].split('charset=')[-1]
         except AttributeError:
             encoding = "UTF-8"
+    encoding = encoding.replace("text/html","UTF-8",1)
     return resp.read().decode(encoding)
 
 def wayback_timestamp(year,month,day,hour,minute):
