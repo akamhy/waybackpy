@@ -97,6 +97,8 @@ def near(
         raise ArchiveNotFound("'%s' is not yet archived." % url)
 
     archive_url = (data["archived_snapshots"]["closest"]["url"])
+    # wayback machine returns http sometimes, idk why? But they support https
+    archive_url = archive_url.replace("http://web.archive.org/web/","https://web.archive.org/web/",1)
     return archive_url
 
 def oldest(url,UA=default_UA,year=1994):
