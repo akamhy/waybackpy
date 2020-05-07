@@ -11,10 +11,22 @@ except ImportError:
 
 default_UA = "waybackpy python package"
 
+def url_check(url):
+    if "." not in url:
+        raise InvalidUrl("'%s' is not a vaild url." % url)
+
 def clean_url(url):
     return str(url).strip().replace(" ","_")
 
-def save(url,UA=default_UA):
+def wayback_timestamp(year, month, day, hour, minute):
+    year = str(year)
+    month = str(month).zfill(2)
+    day = str(day).zfill(2)
+    hour = str(hour).zfill(2)
+    minute = str(minute).zfill(2)
+    return (year+month+day+hour+minute)
+
+def save(url, UA=default_UA):
     base_save_url = "https://web.archive.org/save/"
     request_url = (base_save_url + clean_url(url))
     hdr = { 'User-Agent' : '%s' % UA } #nosec
@@ -41,7 +53,7 @@ def save(url,UA=default_UA):
     archived_url = "https://web.archive.org" + archive_id
     return archived_url
 
-def get(url,encoding=None,UA=default_UA):
+def get(url, encoding=None, UA=default_UA):
     url_check(url)
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(clean_url(url), headers=hdr) #nosec
@@ -56,18 +68,6 @@ def get(url,encoding=None,UA=default_UA):
             encoding = "UTF-8"
     encoding = encoding.replace("text/html","UTF-8",1)
     return resp.read().decode(encoding)
-
-def wayback_timestamp(year,month,day,hour,minute):
-    year = str(year)
-    month = str(month).zfill(2)
-    day = str(day).zfill(2)
-    hour = str(hour).zfill(2)
-    minute = str(minute).zfill(2)
-    return (year+month+day+hour+minute)
-
-def url_check(url):
-    if "." not in url:
-        raise InvalidUrl("'%s' is not a vaild url." % url)
 
 def near(
     url,
@@ -101,8 +101,17 @@ def near(
     archive_url = archive_url.replace("http://web.archive.org/web/","https://web.archive.org/web/",1)
     return archive_url
 
-def oldest(url,UA=default_UA,year=1994):
-    return near(url,year=year,UA=UA)
+def oldest(url, UA=default_UA, year=1994):
+    return near(url, year=year, UA=UA)
 
-def newest(url,UA=default_UA):
-    return near(url,UA=UA)
+def newest(url, UA=default_UA):
+    return near(url, UA=UA)
+
+def total_archives(url, UA=default_UA):
+    url_check(url)
+    hdr = { 'User-Agent' : '%s' % UA }
+    request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json" % clean_url(url)
+    req = Request(request_url, headers=hdr) # nosec
+    with urlopen(req) as response: # nosec
+        data = json.loads(response.read())
+    return (len(data))
