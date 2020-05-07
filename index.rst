@@ -1,3 +1,51 @@
+waybackpy
+=========
+
+|Build Status| |Downloads| |Release| |Codacy Badge| |License: MIT|
+|Maintainability| |CodeFactor| |made-with-python| |pypi| |PyPI - Python
+Version| |Maintenance|
+
+.. |Build Status| image:: https://travis-ci.org/akamhy/waybackpy.svg?branch=master
+   :target: https://travis-ci.org/akamhy/waybackpy
+.. |Downloads| image:: https://img.shields.io/pypi/dm/waybackpy.svg
+   :target: https://pypistats.org/packages/waybackpy
+.. |Release| image:: https://img.shields.io/github/v/release/akamhy/waybackpy.svg
+   :target: https://github.com/akamhy/waybackpy/releases
+.. |Codacy Badge| image:: https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65
+   :target: https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&utm_medium=referral&utm_content=akamhy/waybackpy&utm_campaign=Badge_Grade
+.. |License: MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :target: https://github.com/akamhy/waybackpy/blob/master/LICENSE
+.. |Maintainability| image:: https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability
+   :target: https://codeclimate.com/github/akamhy/waybackpy/maintainability
+.. |CodeFactor| image:: https://www.codefactor.io/repository/github/akamhy/waybackpy/badge
+   :target: https://www.codefactor.io/repository/github/akamhy/waybackpy
+.. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
+   :target: https://www.python.org/
+.. |pypi| image:: https://img.shields.io/pypi/v/wayback.svg
+.. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square
+.. |Maintenance| image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
+   :target: https://github.com/akamhy/waybackpy/graphs/commit-activity
+   
+|Internet Archive| |Wayback Machine|
+
+The waybackpy is a python wrapper for `Internet Archive`_\ ’s `Wayback
+Machine`_.
+
+.. _Internet Archive: https://en.wikipedia.org/wiki/Internet_Archive
+.. _Wayback Machine: https://en.wikipedia.org/wiki/Wayback_Machine
+
+.. |Internet Archive| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png
+.. |Wayback Machine| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wayback_Machine_logo_2010.svg/284px-Wayback_Machine_logo_2010.svg.png
+
+Installation
+------------
+
+Using `pip`_:
+
+**pip install waybackpy**
+
+.. _pip: https://en.wikipedia.org/wiki/Pip_(package_manager)
+
 Usage
 -----
 
@@ -138,3 +186,47 @@ Get the content of webpage using get()
 ..
 
    This should print the source code for https://example.com/.
+
+Count total archives for an URL using total_archives()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: diff
+
+   + waybackpy.total_archives(url, UA=user_agent)
+
+..
+
+   url is mandatory. UA is not, but highly recommended.
+
+.. code:: python
+
+   from waybackpy import total_archives
+   # retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
+   # Default user-agent (UA) is "waybackpy python package", if not specified in the call.
+   # supported argumnets are url and UA
+   count = total_archives("https://en.wikipedia.org/wiki/Python (programming language)", UA="User-Agent")
+   print(count)
+
+..
+
+   This should print an integer (int), which is the number of total
+   archives on archive.org
+
+Tests
+-----
+
+-  `Here`_
+
+Dependency
+----------
+
+-  None, just python standard libraries (json, urllib and datetime).
+   Both python 2 and 3 are supported :)
+
+License
+-------
+
+`MIT License`_
+
+.. _Here: https://github.com/akamhy/waybackpy/tree/master/tests
+.. _MIT License: https://github.com/akamhy/waybackpy/blob/master/LICENSE
