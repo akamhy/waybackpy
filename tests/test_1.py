@@ -6,6 +6,16 @@ import pytest
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
+def test_clean_url():
+    test_url = " https://en.wikipedia.org/wiki/Network security "
+    answer = "https://en.wikipedia.org/wiki/Network_security"
+    test_result = waybackpy.clean_url(test_url)
+    assert answer == test_result
+
+def test_url_check():
+    InvalidUrl = "http://wwwgooglecom/"
+    with pytest.raises(Exception) as e_info:
+        waybackpy.url_check(InvalidUrl)
 
 def test_save():
     # Test for urls that exist and can be archived.
@@ -16,12 +26,12 @@ def test_save():
     # Test for urls that are incorrect.
     with pytest.raises(Exception) as e_info:
         url2 = "ha ha ha ha"
-        archived_url2 = waybackpy.save(url2, UA=user_agent)
+        waybackpy.save(url2, UA=user_agent)
 
     # Test for urls not allowed to archive by robot.txt.
     with pytest.raises(Exception) as e_info:
         url3 = "http://www.archive.is/faq.html"
-        archived_url3 = waybackpy.save(url3, UA=user_agent)
+        waybackpy.save(url3, UA=user_agent)
     
     # Non existent urls, test
     with pytest.raises(Exception) as e_info:
@@ -42,6 +52,10 @@ def test_near():
     archive_near_hour_day_month_year = waybackpy.near("www.python.org", year=2008, month=5, day=9, hour=15, UA=user_agent)
     assert ("2008050915" in archive_near_hour_day_month_year) or ("2008050914" in archive_near_hour_day_month_year) or ("2008050913" in archive_near_hour_day_month_year)
 
+    with pytest.raises(Exception) as e_info:
+        NeverArchivedUrl = "https://ee_3n.wrihkeipef4edia.org/rwti5r_ki/Nertr6w_rork_rse7c_urity"
+        waybackpy.near(NeverArchivedUrl, year=2010, UA=user_agent)
+
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
     archive_oldest = waybackpy.oldest(url, UA=user_agent)
@@ -58,6 +72,10 @@ def test_get():
     assert "Welcome to Google" in oldest_google_page_text
 
 if __name__ == "__main__":
+    test_clean_url()
+    print(".")
+    test_url_check()
+    print(".")
     test_get()
     print(".")
     test_near()
