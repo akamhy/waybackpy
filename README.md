@@ -147,7 +147,7 @@ print(webpage)
 ```
 > This should print the source code for <https://example.com/>.
 
-#### Count total archives for an url. Using total_archives()
+#### Count total archives for an URL using total_archives()
 
 ```diff
 + waybackpy.total_archives(url, UA=user_agent)
