@@ -112,6 +112,11 @@ def total_archives(url, UA=default_UA):
     hdr = { 'User-Agent' : '%s' % UA }
     request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json" % clean_url(url)
     req = Request(request_url, headers=hdr) # nosec
-    with urlopen(req) as response: # nosec
-        data = json.loads(response.read())
-    return (len(data))
+    try:
+        response = urlopen(req) #nosec
+    except HTTPError as e:
+        if e.code == 502:
+            raise BadGateWay(e)
+        elif e.code == 503:
+            raise WaybackUnavailable(e)
+    return (len(json.loads(response.read())))
