@@ -88,15 +88,16 @@ def get(url, encoding=None, UA=default_UA):
 
     return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
-def near(
-    url,
-    year=datetime.utcnow().strftime('%Y'),
-    month=datetime.utcnow().strftime('%m'),
-    day=datetime.utcnow().strftime('%d'),
-    hour=datetime.utcnow().strftime('%H'),
-    minute=datetime.utcnow().strftime('%M'),
-    UA=default_UA,
-    ):
+def near(**kwargs):
+
+    url = kwargs["url"]
+    year=kwargs.get("year", datetime.utcnow().strftime('%Y'))
+    month=kwargs.get("month", datetime.utcnow().strftime('%m'))
+    day=kwargs.get("day", datetime.utcnow().strftime('%d'))
+    hour=kwargs.get("hour", datetime.utcnow().strftime('%H'))
+    minute=kwargs.get("minute", datetime.utcnow().strftime('%M'))
+    UA=kwargs.get("UA", default_UA)
+
     url_check(url)
     timestamp = wayback_timestamp(year=year,month=month,day=day,hour=hour,minute=minute)
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
