@@ -144,6 +144,23 @@ print(webpage)
 ```
 > This should print the source code for <https://example.com/>.
 
+#### Count total archives for an url. Using total_archives()
+
+```diff
++ waybackpy.total_archives(url, UA=user_agent)
+```
+> url is mandatory. UA is not, but highly recommended.
+
+```python
+from waybackpy import total_archives
+# retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
+# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
+# supported argumnets are url and UA
+count = total_archives("https://en.wikipedia.org/wiki/Python (programming language)", UA="User-Agent")
+print(count)
+```
+> This should print an integer (int), which is the number of total archives on archive.org
+
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
 
