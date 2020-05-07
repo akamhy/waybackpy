@@ -27,20 +27,20 @@ def test_save():
     with pytest.raises(Exception) as e_info:
         url4 = "https://githfgdhshajagjstgeths537agajaajgsagudadhuss8762346887adsiugujsdgahub.us"
         archived_url4 = waybackpy.save(url4, UA=user_agent)
-    
+
 def test_near():
     url = "google.com"
     archive_near_year = waybackpy.near(url, year=2010, UA=user_agent)
     assert "2010" in archive_near_year
 
     archive_near_month_year = waybackpy.near(url, year=2015, month=2, UA=user_agent)
-    assert "201502" in archive_near_month_year
-    
+    assert ("201502" in archive_near_month_year) or ("201501" in archive_near_month_year) or ("201503" in archive_near_month_year)
+
     archive_near_day_month_year = waybackpy.near(url, year=2006, month=11, day=15, UA=user_agent)
-    assert "20061115" in archive_near_day_month_year
+    assert ("20061114" in archive_near_day_month_year) or ("20061115" in archive_near_day_month_year) or ("2006116" in archive_near_day_month_year)
 
     archive_near_hour_day_month_year = waybackpy.near("www.python.org", year=2008, month=5, day=9, hour=15, UA=user_agent)
-    assert "2008050915" in archive_near_hour_day_month_year
+    assert ("2008050915" in archive_near_hour_day_month_year) or ("2008050914" in archive_near_hour_day_month_year) or ("2008050913" in archive_near_hour_day_month_year)
 
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
@@ -51,8 +51,20 @@ def test_newest():
     url = "github.com/akamhy/waybackpy"
     archive_newest = waybackpy.newest(url, UA=user_agent)
     assert url in archive_newest
-    
+
 def test_get():
     oldest_google_archive = waybackpy.oldest("google.com", UA=user_agent)
     oldest_google_page_text =  waybackpy.get(oldest_google_archive, UA=user_agent)
     assert "Welcome to Google" in oldest_google_page_text
+
+if __name__ == "__main__":
+    test_get()
+    print(".")
+    test_near()
+    print(".")
+    test_newest()
+    print(".")
+    test_save()
+    print(".")
+    test_oldest()
+    print(".")
