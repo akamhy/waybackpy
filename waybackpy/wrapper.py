@@ -31,25 +31,29 @@ def wayback_timestamp(**kwargs):
       str(kwargs["minute"]).zfill(2)
       )
 
+def handle_HTTPError(e):
+    if e.code == 502:
+        raise BadGateWay(e)
+    elif e.code == 503:
+        raise WaybackUnavailable(e)
+    elif e.code == 429:
+        raise TooManyArchivingRequests(e)
+    elif e.code == 404:
+        raise UrlNotFound(e)
+
 def save(url, UA=default_UA):
-    base_save_url = "https://web.archive.org/save/"
-    request_url = (base_save_url + clean_url(url))
+    url_check(url)
+    request_url = ("https://web.archive.org/save/" + clean_url(url))
+
     hdr = { 'User-Agent' : '%s' % UA } #nosec
     req = Request(request_url, headers=hdr) #nosec
-    url_check(url)
+
+
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
-        if e.code == 502:
-            raise BadGateWay(e)
-        elif e.code == 503:
-            raise WaybackUnavailable(e)
-        elif e.code == 429:
-            raise TooManyArchivingRequests(e)
-        elif e.code == 404:
-            raise UrlNotFound(e)
-        else:
-          raise PageNotSaved(e)
+        if handle_HTTPError(e) is None:
+            raise PageNotSaved(e)
     except URLError:
         try:
             response = urlopen(req) #nosec
@@ -57,16 +61,17 @@ def save(url, UA=default_UA):
             raise UrlNotFound(e)
 
     header = response.headers
+
     if "exclusion.robots.policy" in str(header):
         raise ArchivingNotAllowed("Can not archive %s. Disabled by site owner." % (url))
-    archive_id = header['Content-Location']
-    archived_url = "https://web.archive.org" + archive_id
-    return archived_url
+
+    return "https://web.archive.org" + header['Content-Location']
 
 def get(url, encoding=None, UA=default_UA):
     url_check(url)
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(clean_url(url), headers=hdr) #nosec
+
     try:
         resp=urlopen(req) #nosec
     except URLError:
@@ -74,13 +79,14 @@ def get(url, encoding=None, UA=default_UA):
             resp=urlopen(req) #nosec
         except URLError as e:
             raise UrlNotFound(e)
+
     if encoding is None:
         try:
             encoding= resp.headers['content-type'].split('charset=')[-1]
         except AttributeError:
             encoding = "UTF-8"
-    encoding = encoding.replace("text/html","UTF-8",1)
-    return resp.read().decode(encoding)
+
+    return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
 def near(
     url,
@@ -96,15 +102,12 @@ def near(
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr) # nosec
+
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
-        if e.code == 502:
-            raise BadGateWay(e)
-        elif e.code == 503:
-            raise WaybackUnavailable(e)
-        elif e.code == 404:
-            raise UrlNotFound(e)
+        handle_HTTPError(e)
+
     data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
