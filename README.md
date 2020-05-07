@@ -29,7 +29,7 @@ Table of contents
   * [Receiving the recent most/newest archive for an URL using newest()](https://github.com/akamhy/waybackpy#receiving-the-newest-archive-for-an-url-using-newest)
   * [Receiving archive close to a specified year, month, day, hour, and minute using near()](https://github.com/akamhy/waybackpy#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
   * [Get the content of webpage using get()](https://github.com/akamhy/waybackpy#get-the-content-of-webpage-using-get)
-  * [Count total archives for using total_archives()](https://github.com/akamhy/waybackpy#count-total-archives-for-an-url-using-total_archives)
+  * [Count total archives for an URL using total_archives()](https://github.com/akamhy/waybackpy#count-total-archives-for-an-url-using-total_archives)
 
 
 * [Tests](https://github.com/akamhy/waybackpy#tests)
