@@ -5,7 +5,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
     long_description = f.read()
 
 about = {}
-with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'waybackpy', '__version__.py'), 'r', 'utf-8') as f:
+with open(os.path.join(os.path.dirname(__file__), 'waybackpy', '__version__.py')) as f:
     exec(f.read(), about)
     
 setup(
