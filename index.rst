@@ -21,7 +21,7 @@ Version| |Maintenance|
    :target: https://www.codefactor.io/repository/github/akamhy/waybackpy
 .. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
    :target: https://www.python.org/
-.. |pypi| image:: https://img.shields.io/pypi/v/wayback.svg
+.. |pypi| image:: https://img.shields.io/pypi/v/waybackpy.svg
 .. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square
 .. |Maintenance| image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
    :target: https://github.com/akamhy/waybackpy/graphs/commit-activity
