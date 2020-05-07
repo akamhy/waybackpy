@@ -45,6 +45,11 @@ def save(url, UA=default_UA):
             raise UrlNotFound(e)
         else:
           raise PageNotSaved(e)
+    except URLError:
+        try:
+            response = urlopen(req) #nosec
+        except URLError as e:
+            raise UrlNotFound(e)
 
     header = response.headers
     if "exclusion.robots.policy" in str(header):
@@ -59,8 +64,11 @@ def get(url, encoding=None, UA=default_UA):
     req = Request(clean_url(url), headers=hdr) #nosec
     try:
         resp=urlopen(req) #nosec
-    except URLError as e:
-        raise UrlNotFound(e)
+    except URLError:
+        try:
+            resp=urlopen(req) #nosec
+        except URLError as e:
+            raise UrlNotFound(e)
     if encoding is None:
         try:
             encoding= resp.headers['content-type'].split('charset=')[-1]
