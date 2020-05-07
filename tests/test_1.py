@@ -71,6 +71,14 @@ def test_get():
     oldest_google_page_text =  waybackpy.get(oldest_google_archive, UA=user_agent)
     assert "Welcome to Google" in oldest_google_page_text
 
+def test_total_archives():
+
+    count1 = total_archives("https://en.wikipedia.org/wiki/Python (programming language)", UA=user_agent)
+    assert count1 > 2000
+
+    count2 = total_archives("https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8", UA=user_agent)
+    assert count2 == 0
+
 if __name__ == "__main__":
     test_clean_url()
     print(".")
@@ -85,4 +93,6 @@ if __name__ == "__main__":
     test_save()
     print(".")
     test_oldest()
+    print(".")
+    test_total_archives()
     print(".")
