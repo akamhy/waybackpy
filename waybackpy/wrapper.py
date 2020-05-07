@@ -42,15 +42,17 @@ def handle_HTTPError(e):
         raise UrlNotFound(e)
 
 def save(url, UA=default_UA):
-    base_save_url = "https://web.archive.org/save/"
-    request_url = (base_save_url + clean_url(url))
+    url_check(url)
+    request_url = ("https://web.archive.org/save/" + clean_url(url))
+
     hdr = { 'User-Agent' : '%s' % UA } #nosec
     req = Request(request_url, headers=hdr) #nosec
-    url_check(url)
+
+
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
-        if handle_HTTPError(e) == None:
+        if handle_HTTPError(e) is None:
             raise PageNotSaved(e)
     except URLError:
         try:
@@ -59,16 +61,17 @@ def save(url, UA=default_UA):
             raise UrlNotFound(e)
 
     header = response.headers
+
     if "exclusion.robots.policy" in str(header):
         raise ArchivingNotAllowed("Can not archive %s. Disabled by site owner." % (url))
-    archive_id = header['Content-Location']
-    archived_url = "https://web.archive.org" + archive_id
-    return archived_url
+
+    return "https://web.archive.org" + header['Content-Location']
 
 def get(url, encoding=None, UA=default_UA):
     url_check(url)
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(clean_url(url), headers=hdr) #nosec
+
     try:
         resp=urlopen(req) #nosec
     except URLError:
@@ -76,13 +79,14 @@ def get(url, encoding=None, UA=default_UA):
             resp=urlopen(req) #nosec
         except URLError as e:
             raise UrlNotFound(e)
+
     if encoding is None:
         try:
             encoding= resp.headers['content-type'].split('charset=')[-1]
         except AttributeError:
             encoding = "UTF-8"
-    encoding = encoding.replace("text/html","UTF-8",1)
-    return resp.read().decode(encoding)
+
+    return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
 def near(
     url,
