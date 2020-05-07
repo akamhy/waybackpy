@@ -31,6 +31,16 @@ def wayback_timestamp(**kwargs):
       str(kwargs["minute"]).zfill(2)
       )
 
+def handle_HTTPError(e):
+    if e.code == 502:
+        raise BadGateWay(e)
+    elif e.code == 503:
+        raise WaybackUnavailable(e)
+    elif e.code == 429:
+        raise TooManyArchivingRequests(e)
+    elif e.code == 404:
+        raise UrlNotFound(e)
+
 def save(url, UA=default_UA):
     base_save_url = "https://web.archive.org/save/"
     request_url = (base_save_url + clean_url(url))
@@ -40,16 +50,8 @@ def save(url, UA=default_UA):
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
-        if e.code == 502:
-            raise BadGateWay(e)
-        elif e.code == 503:
-            raise WaybackUnavailable(e)
-        elif e.code == 429:
-            raise TooManyArchivingRequests(e)
-        elif e.code == 404:
-            raise UrlNotFound(e)
-        else:
-          raise PageNotSaved(e)
+        if handle_HTTPError(e) == None:
+            raise PageNotSaved(e)
     except URLError:
         try:
             response = urlopen(req) #nosec
@@ -96,15 +98,12 @@ def near(
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr) # nosec
+
     try:
         response = urlopen(req) #nosec
     except HTTPError as e:
-        if e.code == 502:
-            raise BadGateWay(e)
-        elif e.code == 503:
-            raise WaybackUnavailable(e)
-        elif e.code == 404:
-            raise UrlNotFound(e)
+        handle_HTTPError(e)
+
     data = json.loads(response.read().decode("UTF-8"))
     if not data["archived_snapshots"]:
         raise ArchiveNotFound("'%s' is not yet archived." % url)
