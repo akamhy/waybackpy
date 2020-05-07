@@ -18,13 +18,18 @@ def url_check(url):
 def clean_url(url):
     return str(url).strip().replace(" ","_")
 
-def wayback_timestamp(year, month, day, hour, minute):
-    year = str(year)
-    month = str(month).zfill(2)
-    day = str(day).zfill(2)
-    hour = str(hour).zfill(2)
-    minute = str(minute).zfill(2)
-    return (year+month+day+hour+minute)
+def wayback_timestamp(**kwargs):
+    return (
+      str(kwargs["year"])
+      +
+      str(kwargs["month"]).zfill(2)
+      +
+      str(kwargs["day"]).zfill(2)
+      +
+      str(kwargs["hour"]).zfill(2)
+      +
+      str(kwargs["minute"]).zfill(2)
+      )
 
 def save(url, UA=default_UA):
     base_save_url = "https://web.archive.org/save/"
@@ -87,7 +92,7 @@ def near(
     UA=default_UA,
     ):
     url_check(url)
-    timestamp = wayback_timestamp(year,month,day,hour,minute)
+    timestamp = wayback_timestamp(year=year,month=month,day=day,hour=hour,minute=minute)
     request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (clean_url(url), str(timestamp))
     hdr = { 'User-Agent' : '%s' % UA }
     req = Request(request_url, headers=hdr) # nosec
