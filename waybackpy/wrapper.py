@@ -88,9 +88,13 @@ def get(url, encoding=None, UA=default_UA):
 
     return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
-def near(**kwargs):
+def near(url, **kwargs):
 
-    url = kwargs["url"]
+    try:
+        url = kwargs["url"]
+    except KeyError:
+        url = url
+
     year=kwargs.get("year", datetime.utcnow().strftime('%Y'))
     month=kwargs.get("month", datetime.utcnow().strftime('%m'))
     day=kwargs.get("day", datetime.utcnow().strftime('%d'))
