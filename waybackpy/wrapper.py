@@ -132,7 +132,7 @@ def total_archives(url, UA=default_UA):
     url_check(url)
 
     hdr = { 'User-Agent' : '%s' % UA }
-    request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json" % clean_url(url)
+    request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json&fl=statuscode" % clean_url(url)
     req = Request(request_url, headers=hdr) # nosec
 
     try:
