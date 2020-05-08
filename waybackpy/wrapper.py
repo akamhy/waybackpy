@@ -140,4 +140,4 @@ def total_archives(url, UA=default_UA):
     except HTTPError as e:
         handle_HTTPError(e)
 
-    return (len(json.loads(response.read())))
+    return str(response.read()).count(",") # Most efficient method to count (yet)
