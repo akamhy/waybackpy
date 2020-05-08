@@ -73,8 +73,8 @@ def test_get():
 
 def test_total_archives():
 
-    count1 = waybackpy.total_archives("https://en.wikipedia.org/wiki/Python (programming language)", UA=user_agent)
-    assert count1 > 2000
+    count1 = waybackpy.total_archives(" https://google.com ", UA=user_agent)
+    assert count1 > 500000
 
     count2 = waybackpy.total_archives("https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8", UA=user_agent)
     assert count2 == 0
