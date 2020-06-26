@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
+
+import sys
 import json
 from datetime import datetime
 from waybackpy.exceptions import TooManyArchivingRequests, ArchivingNotAllowed, PageNotSaved, ArchiveNotFound, UrlNotFound, BadGateWay, InvalidUrl, WaybackUnavailable
-try:
+
+version = (3, 0)
+cur_version = sys.version_info
+
+
+if cur_version >= version:  # If the python ver >= 3
     from urllib.request import Request, urlopen
     from urllib.error import HTTPError, URLError
-except ImportError:
+else: # For python2.x
     from urllib2 import Request, urlopen, HTTPError, URLError
 
-
-default_UA = "waybackpy python package"
+default_UA = "waybackpy python package ; ( https://github.com/akamhy/waybackpy )"
 
 def url_check(url):
     if "." not in url:
