@@ -10,6 +10,8 @@
 ![pypi](https://img.shields.io/pypi/v/waybackpy.svg)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
+[![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
+
 
 
 
