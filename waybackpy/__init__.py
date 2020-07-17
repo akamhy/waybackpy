@@ -25,6 +25,6 @@ Full documentation @ <https://akamhy.github.io/waybackpy/>.
 :license: MIT
 """
 
-from .wrapper import save, near, oldest, newest, get, clean_url, url_check, total_archives
+from .wrapper import Url
 from .__version__ import __title__, __description__, __url__, __version__
 from .__version__ import __author__, __author_email__, __license__, __copyright__
