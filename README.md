@@ -26,20 +26,20 @@ Table of contents
 
 * [Installation](https://github.com/akamhy/waybackpy#installation)
 
-* [Usage](https://github.com/akamhy/waybackpy#usage)
-  * [Saving an url using save()](https://github.com/akamhy/waybackpy#capturing-aka-saving-an-url-using-save)
-  * [Receiving the oldest archive for an URL Using oldest()](https://github.com/akamhy/waybackpy#receiving-the-oldest-archive-for-an-url-using-oldest)
-  * [Receiving the recent most/newest archive for an URL using newest()](https://github.com/akamhy/waybackpy#receiving-the-newest-archive-for-an-url-using-newest)
-  * [Receiving archive close to a specified year, month, day, hour, and minute using near()](https://github.com/akamhy/waybackpy#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
-  * [Get the content of webpage using get()](https://github.com/akamhy/waybackpy#get-the-content-of-webpage-using-get)
-  * [Count total archives for an URL using total_archives()](https://github.com/akamhy/waybackpy#count-total-archives-for-an-url-using-total_archives)
+* [Usage](#usage)
+  * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
+  * [Receiving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
+  * [Receiving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
+  * [Receiving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+  * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
+  * [Count total archives for an URL using total_archives()](#count-total-archives-for-an-url-using-total_archives)
 
 
-* [Tests](https://github.com/akamhy/waybackpy#tests)
+* [Tests](#tests)
 
-* [Dependency](https://github.com/akamhy/waybackpy#dependency)
+* [Dependency](#dependency)
 
-* [License](https://github.com/akamhy/waybackpy#license)
+* [License](https://github.co#license)
 
 <!--te-->
 
