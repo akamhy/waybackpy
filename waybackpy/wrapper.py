@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import re
 import sys
-import json, re
+import json
 from datetime import datetime
 from waybackpy.exceptions import WaybackError
 
@@ -56,9 +57,9 @@ class Url():
     def handle_HTTPError(self, e):
         if e.code >= 500:
             raise WaybackError(e) from None
-        elif e.code == 429:
+        if e.code == 429:
             raise WaybackError(e) from None
-        elif e.code == 404:
+        if e.code == 404:
             raise HTTPError(e) from None
 
     def save(self):
