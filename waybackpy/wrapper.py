@@ -56,11 +56,11 @@ class Url():
 
     def handle_HTTPError(self, e):
         if e.code >= 500:
-            raise WaybackError(e) from None
+            raise WaybackError(e)
         if e.code == 429:
-            raise WaybackError(e) from None
+            raise WaybackError(e)
         if e.code == 404:
-            raise HTTPError(e) from None
+            raise HTTPError(e)
 
     def save(self):
         request_url = ("https://web.archive.org/save/" + self.clean_url())
