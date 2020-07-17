@@ -24,7 +24,7 @@ Table of contents
 =================
 <!--ts-->
 
-* [Installation](https://github.com/akamhy/waybackpy#installation)
+* [Installation](#installation)
 
 * [Usage](#usage)
   * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
