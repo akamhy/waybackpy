@@ -5,14 +5,6 @@ waybackpy
 |Maintainability| |CodeFactor| |made-with-python| |pypi| |PyPI - Python
 Version| |Maintenance| |codecov| |image1| |contributions welcome|
 
-|Internet Archive| |Wayback Machine|
-
-The waybackpy is a python wrapper for `Internet Archive`_\ ’s `Wayback
-Machine`_.
-
-.. _Internet Archive: https://en.wikipedia.org/wiki/Internet_Archive
-.. _Wayback Machine: https://en.wikipedia.org/wiki/Wayback_Machine
-
 .. |Build Status| image:: https://img.shields.io/travis/akamhy/waybackpy.svg?label=Travis%20CI&logo=travis&style=flat-square
    :target: https://travis-ci.org/akamhy/waybackpy
 .. |Downloads| image:: https://img.shields.io/pypi/dm/waybackpy.svg
@@ -37,5 +29,4 @@ Machine`_.
    :target: https://codecov.io/gh/akamhy/waybackpy
 .. |image1| image:: https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square
 .. |contributions welcome| image:: https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square
-.. |Internet Archive| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png
-.. |Wayback Machine| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wayback_Machine_logo_2010.svg/284px-Wayback_Machine_logo_2010.svg.png
+
