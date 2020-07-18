@@ -3,6 +3,7 @@ import sys
 sys.path.append("..")
 import waybackpy
 import pytest
+import random
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
@@ -20,7 +21,17 @@ def test_url_check():
 
 def test_save():
     # Test for urls that exist and can be archived.
-    url1="https://github.com/akamhy/waybackpy"
+
+    url_list = [
+        "en.wikipedia.org",
+        "www.wikidata.org",
+        "commons.wikimedia.org",
+        "www.wiktionary.org",
+        "www.w3schools.com",
+        "www.youtube.com"
+    ]
+
+    url1=random.choices(url_list)
     target = waybackpy.Url(url1, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36")
     archived_url1 = target.save()
     assert url1 in archived_url1
