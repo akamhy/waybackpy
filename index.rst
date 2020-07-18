@@ -42,3 +42,45 @@ archived pages easily.
 
 .. |Internet Archive| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png
 .. |Wayback Machine| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wayback_Machine_logo_2010.svg/284px-Wayback_Machine_logo_2010.svg.png
+
+Table of contents
+=================
+
+.. raw:: html
+
+   <!--ts-->
+
+-  `Installation`_
+
+-  `Usage`_
+
+   -  `Saving an url using save()`_
+   -  `Receiving the oldest archive for an URL Using oldest()`_
+   -  `Receiving the recent most/newest archive for an URL using
+      newest()`_
+   -  `Receiving archive close to a specified year, month, day, hour,
+      and minute using near()`_
+   -  `Get the content of webpage using get()`_
+   -  `Count total archives for an URL using total_archives()`_
+
+-  `Tests`_
+
+-  `Dependency`_
+
+-  `License`_
+
+.. raw:: html
+
+   <!--te-->
+
+.. _Installation: #installation
+.. _Usage: #usage
+.. _Saving an url using save(): #capturing-aka-saving-an-url-using-save
+.. _Receiving the oldest archive for an URL Using oldest(): #receiving-the-oldest-archive-for-an-url-using-oldest
+.. _Receiving the recent most/newest archive for an URL using newest(): #receiving-the-newest-archive-for-an-url-using-newest
+.. _Receiving archive close to a specified year, month, day, hour, and minute using near(): #receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near
+.. _Get the content of webpage using get(): #get-the-content-of-webpage-using-get
+.. _Count total archives for an URL using total_archives(): #count-total-archives-for-an-url-using-total_archives
+.. _Tests: #tests
+.. _Dependency: #dependency
+.. _License: #license
