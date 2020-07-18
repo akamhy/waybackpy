@@ -13,7 +13,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
 [![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
 ![](https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square)
-[![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)]
+![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
 
 
 ![Internet Archive](https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png)
@@ -54,126 +54,89 @@ pip install waybackpy
 ## Usage
 
 #### Capturing aka Saving an url Using save()
-
-```diff
-+ waybackpy.save(url, UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended.
 ```python
 import waybackpy
 # Capturing a new archive on Wayback machine.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-archived_url = waybackpy.save("https://github.com/akamhy/waybackpy", UA = "Any-User-Agent")
+target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My-cool-user-agent")
+archived_url = target_url.save()
 print(archived_url)
 ```
-This should print something similar to the following archived URL:
+This should print an URL similar to the following archived URL:
 
-<https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
+> <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
+
 
 #### Receiving the oldest archive for an URL Using oldest()
-
-```diff
-+ waybackpy.oldest(url, UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended.
-
-
 ```python
 import waybackpy
 # retrieving the oldest archive on Wayback machine.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-oldest_archive = waybackpy.oldest("https://www.google.com/", UA = "Any-User-Agent")
+target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
+oldest_archive = target_url.oldest()
 print(oldest_archive)
 ```
-This returns the oldest available archive for <https://google.com>.
+This should print the oldest available archive for <https://google.com>.
 
-<http://web.archive.org/web/19981111184551/http://google.com:80/>
+> <http://web.archive.org/web/19981111184551/http://google.com:80/>
+
 
 #### Receiving the newest archive for an URL using newest()
-
-```diff
-+ waybackpy.newest(url, UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended.
-
-
 ```python
 import waybackpy
-# retrieving the newest archive on Wayback machine.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-newest_archive = waybackpy.newest("https://www.microsoft.com/en-us", UA = "Any-User-Agent")
+# retrieving the newest/latest archive on Wayback machine.
+target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-user-agent")
+newest_archive = target_url.newest()
 print(newest_archive)
 ```
-This returns the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
+This print the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
 
-<http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
+> <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
+
 
 #### Receiving archive close to a specified year, month, day, hour, and minute using near()
-
-```diff
-+ waybackpy.near(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
-```
-> url is mandotory. year,month,day,hour and minute are optional arguments. UA is not mandotory, but higly recomended.
-
-
 ```python
 import waybackpy
 # retriving the the closest archive from a specified year.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
 # supported argumnets are year,month,day,hour and minute
-archive_near_year = waybackpy.near("https://www.facebook.com/", year=2010, UA ="Any-User-Agent")
+target_url = waybackpy.Url(https://www.facebook.com/", "Any-User-Agent")
+archive_near_year = target_url.near(year=2010)
 print(archive_near_year)
 ```
 returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 
-```waybackpy.near("https://www.facebook.com/", year=2010, month=1, UA ="Any-User-Agent")``` returns: <http://web.archive.org/web/20101111173430/http://www.facebook.com//>
-
-```waybackpy.near("https://www.oracle.com/index.html", year=2019, month=1, day=5, UA ="Any-User-Agent")``` returns: <http://web.archive.org/web/20190105054437/https://www.oracle.com/index.html>
-> Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Do not expect just putting the year parameter would return the archive closer to January but the current month you are using the package. If you are using it in July 2018 and let's say you use ```waybackpy.near("https://www.facebook.com/", year=2011, UA ="Any-User-Agent")``` then you would be returned the nearest archive to July 2011 and not January 2011. You need to specify the month "1" for January.
+> Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Just putting the year parameter would not return the archive closer to January but the current month you are using the package. You need to specify the month "1" for January , 2 for february and so on.
 
 > Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 
+
 #### Get the content of webpage using get()
-
-```diff
-+ waybackpy.get(url, encoding="UTF-8", UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended. encoding is detected automatically, don't specify unless necessary.
-
 ```python
-from waybackpy import get
+import waybackpy
 # retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-# supported argumnets are url, encoding and UA
-webpage = get("https://example.com/", UA="User-Agent")
+# supported argumnets encoding and user_agent
+target = waybackpy.Url("google.com", "any-user_agent")
+oldest_url = target.oldest()
+webpage = target.get(oldest_url) # We are getting the source of oldest archive of google.com.
 print(webpage)
 ```
-> This should print the source code for <https://example.com/>.
+> This should print the source code for oldest archive of google.com. If no URL is passed in get() then it should retrive the source code of google.com and not any archive.
 
 #### Count total archives for an URL using total_archives()
-
-```diff
-+ waybackpy.total_archives(url, UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended.
-
 ```python
-from waybackpy import total_archives
-# retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-# supported argumnets are url and UA
-count = total_archives("https://en.wikipedia.org/wiki/Python (programming language)", UA="User-Agent")
+from waybackpy import Url
+# retriving the content of a webpage from any url including but not limited to the archived urls.
+count = Url("https://en.wikipedia.org/wiki/Python (programming language)", "User-Agent").total_archives()
 print(count)
 ```
 > This should print an integer (int), which is the number of total archives on archive.org
 
+
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
 
+
 ## Dependency
-* None, just python standard libraries (json, urllib and datetime). Both python 2 and 3 are supported :)
+* None, just python standard libraries (re, json, urllib and datetime). Both python 2 and 3 are supported :)
 
 
 ## License
-
 [MIT License](https://github.com/akamhy/waybackpy/blob/master/LICENSE)

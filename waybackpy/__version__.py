@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+
 __title__ = "waybackpy"
-__description__ = "A python wrapper for Internet Archive's Wayback Machine API. Archive pages and retrieve archived pages easily."
+__description__ = "A Python library that interfaces with the Internet Archive's Wayback Machine API. Archive pages and retrieve archived pages easily."
 __url__ = "https://akamhy.github.io/waybackpy/"
 __version__ = "2.0.0"
 __author__ = "akamhy"
