@@ -113,3 +113,34 @@ This should print an URL similar to the following archived URL:
    https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 
 .. _pip: https://en.wikipedia.org/wiki/Pip_(package_manager)
+
+Receiving the oldest archive for an URL Using oldest()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   import waybackpy
+   # retrieving the oldest archive on Wayback machine.
+   target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
+   oldest_archive = target_url.oldest()
+   print(oldest_archive)
+
+This should print the oldest available archive for https://google.com.
+
+   http://web.archive.org/web/19981111184551/http://google.com:80/
+
+Receiving the newest archive for an URL using newest()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   import waybackpy
+   # retrieving the newest/latest archive on Wayback machine.
+   target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-user-agent")
+   newest_archive = target_url.newest()
+   print(newest_archive)
+
+This print the newest available archive for
+https://www.microsoft.com/en-us, something just like this:
+
+   http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/
