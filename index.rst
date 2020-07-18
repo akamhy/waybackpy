@@ -84,3 +84,32 @@ Table of contents
 .. _Tests: #tests
 .. _Dependency: #dependency
 .. _License: #license
+
+Installation
+------------
+
+Using `pip`_:
+
+.. code:: bash
+
+   pip install waybackpy
+
+Usage
+-----
+
+Capturing aka Saving an url Using save()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   import waybackpy
+   # Capturing a new archive on Wayback machine.
+   target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My-cool-user-agent")
+   archived_url = target_url.save()
+   print(archived_url)
+
+This should print an URL similar to the following archived URL:
+
+   https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
+
+.. _pip: https://en.wikipedia.org/wiki/Pip_(package_manager)
