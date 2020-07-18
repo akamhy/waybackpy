@@ -76,7 +76,7 @@ target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
 oldest_archive = target_url.oldest()
 print(oldest_archive)
 ```
-This returns the oldest available archive for <https://google.com>.
+This should print the oldest available archive for <https://google.com>.
 
 > <http://web.archive.org/web/19981111184551/http://google.com:80/>
 
@@ -90,35 +90,26 @@ target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-us
 newest_archive = target_url.newest()
 print(newest_archive)
 ```
-This returns the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
+This print the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
 
 > <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
 
 
 #### Receiving archive close to a specified year, month, day, hour, and minute using near()
-
-```diff
-+ waybackpy.near(url, year=2020, month=1, day=1, hour=1, minute=1, UA=user_agent)
-```
-> url is mandotory. year,month,day,hour and minute are optional arguments. UA is not mandotory, but higly recomended.
-
-
 ```python
 import waybackpy
 # retriving the the closest archive from a specified year.
 # Default user-agent (UA) is "waybackpy python package", if not specified in the call.
 # supported argumnets are year,month,day,hour and minute
-archive_near_year = waybackpy.near("https://www.facebook.com/", year=2010, UA ="Any-User-Agent")
+target_url = waybackpy.Url(https://www.facebook.com/", "Any-User-Agent")
+archive_near_year = target_url.near(year=2010)
 print(archive_near_year)
 ```
 returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 
-```waybackpy.near("https://www.facebook.com/", year=2010, month=1, UA ="Any-User-Agent")``` returns: <http://web.archive.org/web/20101111173430/http://www.facebook.com//>
-
-```waybackpy.near("https://www.oracle.com/index.html", year=2019, month=1, day=5, UA ="Any-User-Agent")``` returns: <http://web.archive.org/web/20190105054437/https://www.oracle.com/index.html>
-> Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Do not expect just putting the year parameter would return the archive closer to January but the current month you are using the package. If you are using it in July 2018 and let's say you use ```waybackpy.near("https://www.facebook.com/", year=2011, UA ="Any-User-Agent")``` then you would be returned the nearest archive to July 2011 and not January 2011. You need to specify the month "1" for January.
-
+> Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Just putting the year parameter would not return the archive closer to January but the current month you are using the package. You need to specify the month "1" for January , 2 for february and so on.
 > Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
+
 
 #### Get the content of webpage using get()
 
