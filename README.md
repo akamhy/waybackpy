@@ -57,7 +57,6 @@ pip install waybackpy
 ```python
 import waybackpy
 # Capturing a new archive on Wayback machine.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
 target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My-cool-user-agent")
 archived_url = target_url.save()
 print(archived_url)
@@ -71,7 +70,6 @@ This should print an URL similar to the following archived URL:
 ```python
 import waybackpy
 # retrieving the oldest archive on Wayback machine.
-# Default user_agent is "waybackpy python package".
 target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
 oldest_archive = target_url.oldest()
 print(oldest_archive)
@@ -84,8 +82,7 @@ This should print the oldest available archive for <https://google.com>.
 #### Receiving the newest archive for an URL using newest()
 ```python
 import waybackpy
-# retrieving the newest archive on Wayback machine.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
+# retrieving the newest/latest archive on Wayback machine.
 target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-user-agent")
 newest_archive = target_url.newest()
 print(newest_archive)
@@ -99,7 +96,6 @@ This print the newest available archive for <https://www.microsoft.com/en-us>, s
 ```python
 import waybackpy
 # retriving the the closest archive from a specified year.
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
 # supported argumnets are year,month,day,hour and minute
 target_url = waybackpy.Url(https://www.facebook.com/", "Any-User-Agent")
 archive_near_year = target_url.near(year=2010)
@@ -117,7 +113,7 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 import waybackpy
 # retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
 # supported argumnets encoding and user_agent
-target = waybackpy.Url("google.com", "user_agent")
+target = waybackpy.Url("google.com", "any-user_agent")
 oldest_url = target.oldest()
 webpage = target.get(oldest_url) # We are getting the source of oldest archive of google.com.
 print(webpage)
