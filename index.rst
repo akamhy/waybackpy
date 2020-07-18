@@ -189,3 +189,37 @@ Get the content of webpage using get()
    This should print the source code for oldest archive of google.com.
    If no URL is passed in get() then it should retrive the source code
    of google.com and not any archive.
+
+Count total archives for an URL using total_archives()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   from waybackpy import Url
+   # retriving the content of a webpage from any url including but not limited to the archived urls.
+   count = Url("https://en.wikipedia.org/wiki/Python (programming language)", "User-Agent").total_archives()
+   print(count)
+
+..
+
+   This should print an integer (int), which is the number of total
+   archives on archive.org
+
+Tests
+-----
+
+-  `Here`_
+
+Dependency
+----------
+
+-  None, just python standard libraries (re, json, urllib and datetime).
+   Both python 2 and 3 are supported :)
+
+License
+-------
+
+`MIT License`_
+
+.. _Here: https://github.com/akamhy/waybackpy/tree/master/tests
+.. _MIT License: https://github.com/akamhy/waybackpy/blob/master/LICENSE
