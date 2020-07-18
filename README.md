@@ -108,6 +108,7 @@ print(archive_near_year)
 returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 
 > Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Just putting the year parameter would not return the archive closer to January but the current month you are using the package. You need to specify the month "1" for January , 2 for february and so on.
+
 > Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 
 
