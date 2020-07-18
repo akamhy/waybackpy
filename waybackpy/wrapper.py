@@ -75,7 +75,7 @@ class Url():
             response = urlopen(req, timeout=30) #nosec
         except Exception:
             try:
-                response = urlopen(req, timeout=300) #nosec
+                response = urlopen(req) #nosec
             except Exception as e:
                 raise WaybackError(e)
         header = response.headers
