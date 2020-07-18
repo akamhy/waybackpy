@@ -66,24 +66,20 @@ This should print an URL similar to the following archived URL:
 
 > <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
 
+
 #### Receiving the oldest archive for an URL Using oldest()
-
-```diff
-+ waybackpy.oldest(url, UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended.
-
-
 ```python
 import waybackpy
 # retrieving the oldest archive on Wayback machine.
 # Default user_agent is "waybackpy python package".
-oldest_archive = waybackpy.oldest("https://www.google.com/", UA = "Any-User-Agent")
+target_url = waybackpy.Url("https://www.google.com/", user_agnet="My-cool-user-agent")
+oldest_archive = target_url.oldest()
 print(oldest_archive)
 ```
 This returns the oldest available archive for <https://google.com>.
 
 > <http://web.archive.org/web/19981111184551/http://google.com:80/>
+
 
 #### Receiving the newest archive for an URL using newest()
 
