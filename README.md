@@ -62,7 +62,7 @@ target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My
 archived_url = target_url.save()
 print(archived_url)
 ```
-This should print something similar to the following archived URL:
+This should print an URL similar to the following archived URL:
 
 <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
 
