@@ -40,7 +40,7 @@ Table of contents
 
 * [Dependency](#dependency)
 
-* [License](https://github.co#license)
+* [License](#license)
 
 <!--te-->
 
