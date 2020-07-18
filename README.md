@@ -132,9 +132,7 @@ print(webpage)
 #### Count total archives for an URL using total_archives()
 ```python
 from waybackpy import Url
-# retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-# supported argumnets are url and UA
+# retriving the content of a webpage from any url including but not limited to the archived urls.
 count = Url("https://en.wikipedia.org/wiki/Python (programming language)", "User-Agent").total_archives()
 print(count)
 ```
