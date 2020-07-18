@@ -46,9 +46,9 @@ Table of contents
 
 ## Installation
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
-
-**pip install waybackpy**
-
+```bash
+pip install waybackpy
+```
 
 
 ## Usage
