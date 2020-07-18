@@ -13,7 +13,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
 [![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
 ![](https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square)
-[![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)]
+![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
 
 
 ![Internet Archive](https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png)
@@ -54,16 +54,12 @@ pip install waybackpy
 ## Usage
 
 #### Capturing aka Saving an url Using save()
-
-```diff
-+ waybackpy.save(url, UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended.
 ```python
 import waybackpy
 # Capturing a new archive on Wayback machine.
 # Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-archived_url = waybackpy.save("https://github.com/akamhy/waybackpy", UA = "Any-User-Agent")
+target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My-cool-user-agent")
+archived_url = target_url.save()
 print(archived_url)
 ```
 This should print something similar to the following archived URL:
