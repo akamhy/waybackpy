@@ -30,8 +30,8 @@ def test_save():
         "www.w3schools.com",
         "www.youtube.com"
     ]
-
-    url1=random.choices(url_list)
+    x = random.randint(0, len(url_list)-1) 
+    url1 = url_list[x]
     target = waybackpy.Url(url1, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36")
     archived_url1 = target.save()
     assert url1 in archived_url1
