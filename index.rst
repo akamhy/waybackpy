@@ -144,3 +144,48 @@ This print the newest available archive for
 https://www.microsoft.com/en-us, something just like this:
 
    http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/
+
+Receiving archive close to a specified year, month, day, hour, and minute using near()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   import waybackpy
+   # retriving the the closest archive from a specified year.
+   # supported argumnets are year,month,day,hour and minute
+   target_url = waybackpy.Url(https://www.facebook.com/", "Any-User-Agent")
+   archive_near_year = target_url.near(year=2010)
+   print(archive_near_year)
+
+returns :
+http://web.archive.org/web/20100504071154/http://www.facebook.com/
+
+   Please note that if you only specify the year, the current month and
+   day are default arguments for month and day respectively. Just
+   putting the year parameter would not return the archive closer to
+   January but the current month you are using the package. You need to
+   specify the month “1” for January , 2 for february and so on.
+
+..
+
+   Do not pad (don’t use zeros in the month, year, day, minute, and hour
+   arguments). e.g. For January, set month = 1 and not month = 01.
+
+Get the content of webpage using get()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   import waybackpy
+   # retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
+   # supported argumnets encoding and user_agent
+   target = waybackpy.Url("google.com", "any-user_agent")
+   oldest_url = target.oldest()
+   webpage = target.get(oldest_url) # We are getting the source of oldest archive of google.com.
+   print(webpage)
+
+..
+
+   This should print the source code for oldest archive of google.com.
+   If no URL is passed in get() then it should retrive the source code
+   of google.com and not any archive.
