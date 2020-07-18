@@ -144,7 +144,7 @@ print(count)
 
 
 ## Dependency
-* None, just python standard libraries (json, urllib and datetime). Both python 2 and 3 are supported :)
+* None, just python standard libraries (re, json, urllib and datetime). Both python 2 and 3 are supported :)
 
 
 ## License
