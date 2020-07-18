@@ -72,7 +72,7 @@ This should print an URL similar to the following archived URL:
 import waybackpy
 # retrieving the oldest archive on Wayback machine.
 # Default user_agent is "waybackpy python package".
-target_url = waybackpy.Url("https://www.google.com/", user_agnet="My-cool-user-agent")
+target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
 oldest_archive = target_url.oldest()
 print(oldest_archive)
 ```
@@ -82,19 +82,18 @@ This returns the oldest available archive for <https://google.com>.
 
 
 #### Receiving the newest archive for an URL using newest()
-
-> url is mandatory. UA is not, but highly recommended.
-
 ```python
 import waybackpy
 # retrieving the newest archive on Wayback machine.
 # Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-newest_archive = waybackpy.newest("https://www.microsoft.com/en-us", UA = "Any-User-Agent")
+target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-user-agent")
+newest_archive = target_url.newest()
 print(newest_archive)
 ```
 This returns the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
 
-<http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
+> <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
+
 
 #### Receiving archive close to a specified year, month, day, hour, and minute using near()
 
