@@ -113,21 +113,16 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 
 
 #### Get the content of webpage using get()
-
-```diff
-+ waybackpy.get(url, encoding="UTF-8", UA=user_agent)
-```
-> url is mandatory. UA is not, but highly recommended. encoding is detected automatically, don't specify unless necessary.
-
 ```python
-from waybackpy import get
+import waybackpy
 # retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
-# Default user-agent (UA) is "waybackpy python package", if not specified in the call.
-# supported argumnets are url, encoding and UA
-webpage = get("https://example.com/", UA="User-Agent")
+# supported argumnets encoding and user_agent
+target = waybackpy.Url("google.com", "user_agent")
+oldest_url = target.oldest()
+webpage = target.get(oldest_url) # We are getting the source of oldest archive of google.com.
 print(webpage)
 ```
-> This should print the source code for <https://example.com/>.
+> This should print the source code for oldest archive of google.com. If no URL is passed in get() then it should retrive the source code of google.com and not any archive.
 
 #### Count total archives for an URL using total_archives()
 ```python
