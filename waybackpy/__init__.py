@@ -10,13 +10,15 @@
 # ━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━┗━━┛━
 
 """
-A python wrapper for Internet Archive's Wayback Machine API.
+Waybackpy is a Python library that interfaces with the Internet Archive's Wayback Machine API.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Archive pages and retrieve archived pages easily.
+
 Usage:
    >>> import waybackpy
-   >>> new_archive = waybackpy.save('https://www.python.org')
+   >>> target_url = waybackpy.Url('https://www.python.org', 'Your-apps-cool-user-agent')
+   >>> new_archive = target_url.save()
    >>> print(new_archive)
    https://web.archive.org/web/20200502170312/https://www.python.org/
 
