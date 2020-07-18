@@ -36,22 +36,28 @@ def test_save():
     archived_url1 = target.save()
     assert url1 in archived_url1
 
-    # Test for urls that are incorrect.
-    with pytest.raises(Exception) as e_info:
-        url2 = "ha ha ha ha"
-        waybackpy.Url(url2, user_agent)
+    if sys.version_info > (3, 6):
 
-    # Test for urls not allowed to archive by robot.txt.
-    with pytest.raises(Exception) as e_info:
-        url3 = "http://www.archive.is/faq.html"
-        target = waybackpy.Url(url3, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:25.0) Gecko/20100101 Firefox/25.0")
-        target.save()
+        # Test for urls that are incorrect.
+        with pytest.raises(Exception) as e_info:
+            url2 = "ha ha ha ha"
+            waybackpy.Url(url2, user_agent)
 
-    # Non existent urls, test
-    with pytest.raises(Exception) as e_info:
-        url4 = "https://githfgdhshajagjstgeths537agajaajgsagudadhuss8762346887adsiugujsdgahub.us"
-        target = waybackpy.Url(url3, "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27")
-        target.save()
+        # Test for urls not allowed to archive by robot.txt.
+        with pytest.raises(Exception) as e_info:
+            url3 = "http://www.archive.is/faq.html"
+            target = waybackpy.Url(url3, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:25.0) Gecko/20100101 Firefox/25.0")
+            target.save()
+
+
+        # Non existent urls, test
+        with pytest.raises(Exception) as e_info:
+            url4 = "https://githfgdhshajagjstgeths537agajaajgsagudadhuss8762346887adsiugujsdgahub.us"
+            target = waybackpy.Url(url3, "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 Safari/533.20.27")
+            target.save()
+
+    else:
+        pass
 
 def test_near():
     url = "google.com"
@@ -59,20 +65,23 @@ def test_near():
     archive_near_year = target.near(year=2010)
     assert "2010" in archive_near_year
 
-    archive_near_month_year = target.near( year=2015, month=2)
-    assert ("201502" in archive_near_month_year) or ("201501" in archive_near_month_year) or ("201503" in archive_near_month_year)
-
-    archive_near_day_month_year = target.near(year=2006, month=11, day=15)
-    assert ("20061114" in archive_near_day_month_year) or ("20061115" in archive_near_day_month_year) or ("2006116" in archive_near_day_month_year)
-
-    target = waybackpy.Url("www.python.org", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246")
-    archive_near_hour_day_month_year = target.near(year=2008, month=5, day=9, hour=15)
-    assert ("2008050915" in archive_near_hour_day_month_year) or ("2008050914" in archive_near_hour_day_month_year) or ("2008050913" in archive_near_hour_day_month_year)
-
-    with pytest.raises(Exception) as e_info:
-        NeverArchivedUrl = "https://ee_3n.wrihkeipef4edia.org/rwti5r_ki/Nertr6w_rork_rse7c_urity"
-        target = waybackpy.Url(NeverArchivedUrl, user_agent)
-        target.near(year=2010)
+    if sys.version_info > (3, 6):
+        archive_near_month_year = target.near( year=2015, month=2)
+        assert ("201502" in archive_near_month_year) or ("201501" in archive_near_month_year) or ("201503" in archive_near_month_year)
+    
+        archive_near_day_month_year = target.near(year=2006, month=11, day=15)
+        assert ("20061114" in archive_near_day_month_year) or ("20061115" in archive_near_day_month_year) or ("2006116" in archive_near_day_month_year)
+    
+        target = waybackpy.Url("www.python.org", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246")
+        archive_near_hour_day_month_year = target.near(year=2008, month=5, day=9, hour=15)
+        assert ("2008050915" in archive_near_hour_day_month_year) or ("2008050914" in archive_near_hour_day_month_year) or ("2008050913" in archive_near_hour_day_month_year)
+    
+        with pytest.raises(Exception) as e_info:
+            NeverArchivedUrl = "https://ee_3n.wrihkeipef4edia.org/rwti5r_ki/Nertr6w_rork_rse7c_urity"
+            target = waybackpy.Url(NeverArchivedUrl, user_agent)
+            target.near(year=2010)
+    else:
+        pass
 
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
@@ -89,9 +98,11 @@ def test_get():
     assert "Welcome to Google" in target.get(target.oldest())
 
 def test_total_archives():
-
-    target = waybackpy.Url(" https://google.com ", user_agent)
-    assert target.total_archives() > 500000
+    if sys.version_info > (3, 6):
+        target = waybackpy.Url(" https://google.com ", user_agent)
+        assert target.total_archives() > 500000
+    else:
+        pass
 
     target = waybackpy.Url(" https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8 ", user_agent)
     assert target.total_archives() == 0
