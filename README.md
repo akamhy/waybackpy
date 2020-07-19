@@ -57,7 +57,7 @@ pip install waybackpy
 ```python
 import waybackpy
 # Capturing a new archive on Wayback machine.
-target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agent="My-cool-user-agent")
+target_url = waybackpy.Url(url="https://github.com/akamhy/waybackpy", user_agent="My-cool-user-agent")
 archived_url = target_url.save()
 print(archived_url)
 ```
