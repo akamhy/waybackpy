@@ -143,13 +143,23 @@ print(webpage)
 
 #### Count total archives for an URL using total_archives()
 ```python
-from waybackpy import Url
-# retriving the content of a webpage from any url including but not limited to the archived urls.
-count = Url("https://en.wikipedia.org/wiki/Python (programming language)", "User-Agent").total_archives()
-print(count)
-```
-> This should print an integer (int), which is the number of total archives on archive.org
+import waybackpy
 
+URL = "https://en.wikipedia.org/wiki/Python (programming language)"
+
+UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
+
+archive_count = waybackpy.Url(
+    url=URL,
+    user_agent=UA
+).total_archives()
+
+print(archive_count) # total_archives() returns an int
+```
+```bash
+2440
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/DigitalUnconsciousNumbers#main.py></sub>
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
