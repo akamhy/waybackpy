@@ -89,7 +89,7 @@ print(oldest_archive_url)
 ```bash
 http://web.archive.org/web/19981111184551/http://google.com:80/
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/MixedSuperDimensions#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyOldestExample></sub>
 
 
 
