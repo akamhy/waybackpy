@@ -79,10 +79,16 @@ class Url():
             except Exception as e:
                 raise WaybackError(e)
         header = response.headers
+
         try:
-            arch = re.search(r"rel=\"memento.*?web\.archive\.org(/web/[0-9]{14}/.*?)>", str(header)).group(1)
+            arch = re.search(r"rel=\"memento.*?web\.archive\.org(/web/[0-9]{14}/.*?)>", str(header))
+            if arch:
+                arch = arch.group(1)
+            else:
+                raise WaybackError("Can't create a new archive. No archive url found in reply headers.")
         except KeyError as e:
             raise WaybackError(e)
+
         return "https://web.archive.org" + arch
 
     def get(self, url=None, user_agent=None, encoding=None):
