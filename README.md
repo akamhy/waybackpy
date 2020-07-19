@@ -141,12 +141,12 @@ https://web.archive.org/web/20110519185447/https://github.com/
 ```
 ```python
 github_archive_near_2015_january_26 = github_wayback_obj.near(
-    year=2011, month=1, day=26
+    year=2015, month=1, day=26
 )
 print(github_archive_near_2015_january_26)
 ```
 ```bash
-https://web.archive.org/web/20110126223912/https://github.com/
+https://web.archive.org/web/20150127031159/https://github.com
 ```
 ```python
 github_archive_near_2018_4_july_9_2_am = github_wayback_obj.near(
