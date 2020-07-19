@@ -131,7 +131,7 @@ class Url():
             try:
                  response = urlopen(req) #nosec
             except Exception as e:
-                WaybackError(e)
+                raise WaybackError(e)
 
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
@@ -161,6 +161,6 @@ class Url():
             try:
                 response = urlopen(req) #nosec
             except Exception as e:
-                WaybackError(e)
+                raise WaybackError(e)
 
         return str(response.read()).count(",") # Most efficient method to count number of archives (yet)
