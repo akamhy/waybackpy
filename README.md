@@ -115,18 +115,45 @@ https://web.archive.org/web/20200714013225/https://www.facebook.com/
 
 #### Receiving archive close to a specified year, month, day, hour, and minute using near()
 ```python
-import waybackpy
-# retriving the the closest archive from a specified year.
-# supported argumnets are year,month,day,hour and minute
-target_url = waybackpy.Url(https://www.facebook.com/", "Any-User-Agent")
-archive_near_year = target_url.near(year=2010)
-print(archive_near_year)
+from waybackpy import Url
+
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0"
+github_url = "https://github.com/"
+
+
+github_wayback_obj = Url(github_url, user_agent)
+
+# Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
+
+github_archive_near_2010 = github_wayback_obj.near(year=2010)
+print(github_archive_near_2010)
+
+
+github_archive_near_2011_may = github_wayback_obj.near(year=2011, month=5)
+print(github_archive_near_2011_may)
+
+
+github_archive_near_2015_january_26 = github_wayback_obj.near(
+    year=2011, month=1, day=26
+)
+print(github_archive_near_2015_january_26)
+
+
+github_archive_near_2018_4_july_9_2_am = github_wayback_obj.near(
+    year=2018, month=7, day=4, hour = 9, minute = 2
+)
+print(github_archive_near_2018_4_july_9_2_am)
+
+# The library doesn't supports seconds yet. You are encourged to create a PR ;)
 ```
-returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
+```bash
+https://web.archive.org/web/20100719134402/http://github.com/
+https://web.archive.org/web/20110519185447/https://github.com/
+https://web.archive.org/web/20110126223912/https://github.com/
+https://web.archive.org/web/20180704090245/https://github.com/
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/SparseDeadlySearchservice#main.py></sub>
 
-> Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Just putting the year parameter would not return the archive closer to January but the current month you are using the package. You need to specify the month "1" for January , 2 for february and so on.
-
-> Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 
 
 #### Get the content of webpage using get()
