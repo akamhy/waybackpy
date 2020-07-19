@@ -93,24 +93,29 @@ class Url():
 
     def get(self, url=None, user_agent=None, encoding=None):
         """Returns the source code of the supplied URL. Auto detects the encoding if not supplied."""
+
         if not url:
             url = self.clean_url()
         if not user_agent:
             user_agent = self.user_agent
+
         hdr = { 'User-Agent' : '%s' % user_agent }
         req = Request(url, headers=hdr) #nosec
+
         try:
             resp=urlopen(req) #nosec
-        except URLError:
+        except Exception:
             try:
                 resp=urlopen(req) #nosec
-            except URLError as e:
-                raise HTTPError(e)
+            except Exception as e:
+                raise WaybackError(e)
+
         if not encoding:
             try:
                 encoding= resp.headers['content-type'].split('charset=')[-1]
             except AttributeError:
                 encoding = "UTF-8"
+
         return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
     def near(self, **kwargs):
