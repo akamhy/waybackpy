@@ -57,7 +57,7 @@ pip install waybackpy
 ```python
 import waybackpy
 # Capturing a new archive on Wayback machine.
-target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My-cool-user-agent")
+target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agent="My-cool-user-agent")
 archived_url = target_url.save()
 print(archived_url)
 ```
@@ -83,7 +83,7 @@ This should print the oldest available archive for <https://google.com>.
 ```python
 import waybackpy
 # retrieving the newest/latest archive on Wayback machine.
-target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-user-agent")
+target_url = waybackpy.Url(url="https://www.google.com/", user_agent="My-cool-user-agent")
 newest_archive = target_url.newest()
 print(newest_archive)
 ```
