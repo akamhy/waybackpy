@@ -53,82 +53,170 @@ pip install waybackpy
 
 ## Usage
 
-#### Capturing aka Saving an url Using save()
+#### Capturing aka Saving an url using save()
 ```python
 import waybackpy
-# Capturing a new archive on Wayback machine.
-target_url = waybackpy.Url("https://github.com/akamhy/waybackpy", user_agnet="My-cool-user-agent")
-archived_url = target_url.save()
-print(archived_url)
+
+new_archive_url = waybackpy.Url(
+
+    url = "https://en.wikipedia.org/wiki/Multivariable_calculus",
+    user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+    
+).save()
+
+print(new_archive_url)
 ```
-This should print an URL similar to the following archived URL:
+```bash
+https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/CompassionateRemoteOrigin#main.py></sub>
 
-> <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
 
 
-#### Receiving the oldest archive for an URL Using oldest()
+#### Receiving the oldest archive for an URL using oldest()
 ```python
 import waybackpy
-# retrieving the oldest archive on Wayback machine.
-target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
-oldest_archive = target_url.oldest()
-print(oldest_archive)
-```
-This should print the oldest available archive for <https://google.com>.
 
-> <http://web.archive.org/web/19981111184551/http://google.com:80/>
+oldest_archive_url = waybackpy.Url(
+
+    "https://www.google.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
+    
+).oldest()
+
+print(oldest_archive_url)
+```
+```bash
+http://web.archive.org/web/19981111184551/http://google.com:80/
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/MixedSuperDimensions#main.py></sub>
+
 
 
 #### Receiving the newest archive for an URL using newest()
 ```python
 import waybackpy
-# retrieving the newest/latest archive on Wayback machine.
-target_url = waybackpy.Url(url="https://www.google.com/", user_agnet="My-cool-user-agent")
-newest_archive = target_url.newest()
-print(newest_archive)
-```
-This print the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
 
-> <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
+newest_archive_url = waybackpy.Url(
+
+    "https://www.facebook.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
+    
+).newest()
+
+print(newest_archive_url)
+```
+```bash
+https://web.archive.org/web/20200714013225/https://www.facebook.com/
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/OblongMiniInteger#main.py></sub>
+
 
 
 #### Receiving archive close to a specified year, month, day, hour, and minute using near()
 ```python
-import waybackpy
-# retriving the the closest archive from a specified year.
-# supported argumnets are year,month,day,hour and minute
-target_url = waybackpy.Url(https://www.facebook.com/", "Any-User-Agent")
-archive_near_year = target_url.near(year=2010)
-print(archive_near_year)
+from waybackpy import Url
+
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0"
+github_url = "https://github.com/"
+
+
+github_wayback_obj = Url(github_url, user_agent)
+
+# Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 ```
-returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
+```python
+github_archive_near_2010 = github_wayback_obj.near(year=2010)
+print(github_archive_near_2010)
+```
+```bash
+https://web.archive.org/web/20100719134402/http://github.com/
+```
+```python
+github_archive_near_2011_may = github_wayback_obj.near(year=2011, month=5)
+print(github_archive_near_2011_may)
+```
+```bash
+https://web.archive.org/web/20110519185447/https://github.com/
+```
+```python
+github_archive_near_2015_january_26 = github_wayback_obj.near(
+    year=2015, month=1, day=26
+)
+print(github_archive_near_2015_january_26)
+```
+```bash
+https://web.archive.org/web/20150127031159/https://github.com
+```
+```python
+github_archive_near_2018_4_july_9_2_am = github_wayback_obj.near(
+    year=2018, month=7, day=4, hour = 9, minute = 2
+)
+print(github_archive_near_2018_4_july_9_2_am)
+```
+```bash
+https://web.archive.org/web/20180704090245/https://github.com/
 
-> Please note that if you only specify the year, the current month and day are default arguments for month and day respectively. Just putting the year parameter would not return the archive closer to January but the current month you are using the package. You need to specify the month "1" for January , 2 for february and so on.
+```
 
-> Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
+<sub>The library doesn't supports seconds yet. You are encourged to create a PR ;)</sub>
+
+<sub>Try this out in your browser @ <https://repl.it/repls/SparseDeadlySearchservice#main.py></sub>
+
 
 
 #### Get the content of webpage using get()
 ```python
 import waybackpy
-# retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
-# supported argumnets encoding and user_agent
-target = waybackpy.Url("google.com", "any-user_agent")
-oldest_url = target.oldest()
-webpage = target.get(oldest_url) # We are getting the source of oldest archive of google.com.
-print(webpage)
+
+google_url = "https://www.google.com/"
+
+User_Agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"
+
+waybackpy_url_object = waybackpy.Url(google_url, User_Agent)
+
+
+# If no argument is passed in get(), it gets the source of the Url used to create the object.
+current_google_url_source = waybackpy_url_object.get()
+print(current_google_url_source)
+
+
+# The following chunk of code will force a new archive of google.com and get the source of the archived page.
+# waybackpy_url_object.save() type is string.
+google_newest_archive_source = waybackpy_url_object.get(
+    waybackpy_url_object.save()
+)
+print(google_newest_archive_source)
+
+
+# waybackpy_url_object.oldest() type is str, it's oldest archive of google.com
+google_oldest_archive_source = waybackpy_url_object.get(
+    waybackpy_url_object.oldest()
+)
+print(google_oldest_archive_source)
 ```
-> This should print the source code for oldest archive of google.com. If no URL is passed in get() then it should retrive the source code of google.com and not any archive.
+<sub>Try this out in your browser @ <https://repl.it/repls/PinkHoneydewNonagon#main.py></sub>
+
 
 #### Count total archives for an URL using total_archives()
 ```python
-from waybackpy import Url
-# retriving the content of a webpage from any url including but not limited to the archived urls.
-count = Url("https://en.wikipedia.org/wiki/Python (programming language)", "User-Agent").total_archives()
-print(count)
-```
-> This should print an integer (int), which is the number of total archives on archive.org
+import waybackpy
 
+URL = "https://en.wikipedia.org/wiki/Python (programming language)"
+
+UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
+
+archive_count = waybackpy.Url(
+    url=URL,
+    user_agent=UA
+).total_archives()
+
+print(archive_count) # total_archives() returns an int
+```
+```bash
+2440
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/DigitalUnconsciousNumbers#main.py></sub>
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
