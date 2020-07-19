@@ -56,10 +56,15 @@ pip install waybackpy
 #### Capturing aka Saving an url using save()
 ```python
 import waybackpy
-# Capturing a new archive on Wayback machine.
-target_url = waybackpy.Url(url="https://github.com/akamhy/waybackpy", user_agent="My-cool-user-agent")
-archived_url = target_url.save()
-print(archived_url)
+
+new_archive_url = waybackpy.Url(
+
+    url = "https://en.wikipedia.org/wiki/Multivariable_calculus",
+    user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+    
+).save()
+
+print(new_archive_url)
 ```
 ```bash
 https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
@@ -71,10 +76,15 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 #### Receiving the oldest archive for an URL using oldest()
 ```python
 import waybackpy
-# retrieving the oldest archive on Wayback machine.
-target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
-oldest_archive = target_url.oldest()
-print(oldest_archive)
+
+oldest_archive_url = waybackpy.Url(
+
+    "https://www.google.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
+    
+).oldest()
+
+print(oldest_archive_url)
 ```
 ```bash
 http://web.archive.org/web/19981111184551/http://google.com:80/
@@ -86,10 +96,15 @@ http://web.archive.org/web/19981111184551/http://google.com:80/
 #### Receiving the newest archive for an URL using newest()
 ```python
 import waybackpy
-# retrieving the newest/latest archive on Wayback machine.
-target_url = waybackpy.Url(url="https://www.facebook.com/", user_agent="My-cool-user-agent")
-newest_archive = target_url.newest()
-print(newest_archive)
+
+newest_archive_url = waybackpy.Url(
+
+    "https://www.facebook.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
+    
+).newest()
+
+print(newest_archive_url)
 ```
 ```bash
 https://web.archive.org/web/20200714013225/https://www.facebook.com/
