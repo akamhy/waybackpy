@@ -132,14 +132,35 @@ returns : <http://web.archive.org/web/20100504071154/http://www.facebook.com/>
 #### Get the content of webpage using get()
 ```python
 import waybackpy
-# retriving the webpage from any url including the archived urls. Don't need to import other libraies :)
-# supported argumnets encoding and user_agent
-target = waybackpy.Url("google.com", "any-user_agent")
-oldest_url = target.oldest()
-webpage = target.get(oldest_url) # We are getting the source of oldest archive of google.com.
-print(webpage)
+
+google_url = "https://www.google.com/"
+
+User_Agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36"
+
+waybackpy_url_object = waybackpy.Url(google_url, User_Agent)
+
+
+# If no argument is passed in get(), it gets the source of the Url used to create the object.
+current_google_url_source = waybackpy_url_object.get()
+print(current_google_url_source)
+
+
+# The following chunk of code will force a new archive of google.com and get the source of the archived page.
+# waybackpy_url_object.save() type is string.
+google_newest_archive_source = waybackpy_url_object.get(
+    waybackpy_url_object.save()
+)
+print(google_newest_archive_source)
+
+
+# waybackpy_url_object.oldest() type is str, it's oldest archive of google.com
+google_oldest_archive_source = waybackpy_url_object.get(
+    waybackpy_url_object.oldest()
+)
+print(google_oldest_archive_source)
 ```
-> This should print the source code for oldest archive of google.com. If no URL is passed in get() then it should retrive the source code of google.com and not any archive.
+<sub>Try this out in your browser @ <https://repl.it/repls/PinkHoneydewNonagon#main.py></sub>
+
 
 #### Count total archives for an URL using total_archives()
 ```python
