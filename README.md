@@ -69,7 +69,7 @@ print(new_archive_url)
 ```bash
 https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/CompassionateRemoteOrigin#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
 
 
 
