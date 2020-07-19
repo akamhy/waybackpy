@@ -8,9 +8,9 @@ from waybackpy.exceptions import WaybackError
 
 if sys.version_info >= (3, 0):  # If the python ver >= 3
     from urllib.request import Request, urlopen
-    from urllib.error import HTTPError, URLError
+    from urllib.error import URLError
 else: # For python2.x
-    from urllib2 import Request, urlopen, HTTPError, URLError
+    from urllib2 import Request, urlopen, URLError
 
 default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
@@ -59,13 +59,6 @@ class Url():
           str(kwargs["minute"]).zfill(2)
           )
 
-    def handle_HTTPError(self, e):
-        """Handle some common HTTPErrors."""
-        if e.code == 404:
-            raise HTTPError(e)
-        if e.code >= 400:
-            raise WaybackError(e)
-
     def save(self):
         """Create a new archives for an URL on the Wayback Machine."""
         request_url = ("https://web.archive.org/save/" + self.clean_url())
@@ -79,32 +72,42 @@ class Url():
             except Exception as e:
                 raise WaybackError(e)
         header = response.headers
-        try:
-            arch = re.search(r"rel=\"memento.*?web\.archive\.org(/web/[0-9]{14}/.*?)>", str(header)).group(1)
-        except KeyError as e:
-            raise WaybackError(e)
-        return "https://web.archive.org" + arch
+
+        def archive_url_parser(header):
+            arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
+            if arch:
+                return arch.group(1)
+            raise WaybackError(
+                "No archive url found in the API response. Visit https://github.com/akamhy/waybackpy for latest version of waybackpy.\nHeader:\n%s" % str(header)
+            )
+
+        return "https://" + archive_url_parser(header)
 
     def get(self, url=None, user_agent=None, encoding=None):
         """Returns the source code of the supplied URL. Auto detects the encoding if not supplied."""
+
         if not url:
             url = self.clean_url()
         if not user_agent:
             user_agent = self.user_agent
+
         hdr = { 'User-Agent' : '%s' % user_agent }
         req = Request(url, headers=hdr) #nosec
+
         try:
             resp=urlopen(req) #nosec
-        except URLError:
+        except Exception:
             try:
                 resp=urlopen(req) #nosec
-            except URLError as e:
-                raise HTTPError(e)
+            except Exception as e:
+                raise WaybackError(e)
+
         if not encoding:
             try:
                 encoding= resp.headers['content-type'].split('charset=')[-1]
             except AttributeError:
                 encoding = "UTF-8"
+
         return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
     def near(self, **kwargs):
@@ -121,10 +124,15 @@ class Url():
         request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (self.clean_url(), str(timestamp))
         hdr = { 'User-Agent' : '%s' % self.user_agent }
         req = Request(request_url, headers=hdr) # nosec
+
         try:
             response = urlopen(req) #nosec
-        except Exception as e:
-            self.handle_HTTPError(e)
+        except Exception:
+            try:
+                 response = urlopen(req) #nosec
+            except Exception as e:
+                WaybackError(e)
+
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
             raise WaybackError("'%s' is not yet archived." % url)
@@ -146,8 +154,13 @@ class Url():
         hdr = { 'User-Agent' : '%s' % self.user_agent }
         request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json&fl=statuscode" % self.clean_url()
         req = Request(request_url, headers=hdr) # nosec
+
         try:
             response = urlopen(req) #nosec
-        except Exception as e:
-            self.handle_HTTPError(e)
+        except Exception:
+            try:
+                response = urlopen(req) #nosec
+            except Exception as e:
+                WaybackError(e)
+
         return str(response.read()).count(",") # Most efficient method to count number of archives (yet)
