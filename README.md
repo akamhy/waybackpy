@@ -53,8 +53,7 @@ pip install waybackpy
 
 ## Usage
 
-
-#### Capturing aka Saving an url Using save()
+#### Capturing aka Saving an url using save()
 ```python
 import waybackpy
 # Capturing a new archive on Wayback machine.
@@ -68,7 +67,8 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 <sub>Try this out in your browser @ <https://repl.it/repls/CompassionateRemoteOrigin#main.py></sub>
 
 
-#### Receiving the oldest archive for an URL Using oldest()
+
+#### Receiving the oldest archive for an URL using oldest()
 ```python
 import waybackpy
 # retrieving the oldest archive on Wayback machine.
@@ -76,9 +76,11 @@ target_url = waybackpy.Url("https://www.google.com/", "My-cool-user-agent")
 oldest_archive = target_url.oldest()
 print(oldest_archive)
 ```
-This should print the oldest available archive for <https://google.com>.
+```bash
+http://web.archive.org/web/19981111184551/http://google.com:80/
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/MixedSuperDimensions#main.py></sub>
 
-> <http://web.archive.org/web/19981111184551/http://google.com:80/>
 
 
 #### Receiving the newest archive for an URL using newest()
