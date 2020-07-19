@@ -132,10 +132,15 @@ class Url():
         request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (self.clean_url(), str(timestamp))
         hdr = { 'User-Agent' : '%s' % self.user_agent }
         req = Request(request_url, headers=hdr) # nosec
+
         try:
             response = urlopen(req) #nosec
-        except Exception as e:
-            self.handle_HTTPError(e)
+        except Exception:
+            try:
+                 response = urlopen(req) #nosec
+            except Exception as e:
+                WaybackError(e)
+
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
             raise WaybackError("'%s' is not yet archived." % url)
@@ -157,8 +162,13 @@ class Url():
         hdr = { 'User-Agent' : '%s' % self.user_agent }
         request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json&fl=statuscode" % self.clean_url()
         req = Request(request_url, headers=hdr) # nosec
+
         try:
             response = urlopen(req) #nosec
-        except Exception as e:
-            WaybackError(e)
+        except Exception:
+            try:
+                response = urlopen(req) #nosec
+            except Exception as e:
+                WaybackError(e)
+
         return str(response.read()).count(",") # Most efficient method to count number of archives (yet)
