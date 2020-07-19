@@ -87,13 +87,15 @@ http://web.archive.org/web/19981111184551/http://google.com:80/
 ```python
 import waybackpy
 # retrieving the newest/latest archive on Wayback machine.
-target_url = waybackpy.Url(url="https://www.google.com/", user_agent="My-cool-user-agent")
+target_url = waybackpy.Url(url="https://www.facebook.com/", user_agent="My-cool-user-agent")
 newest_archive = target_url.newest()
 print(newest_archive)
 ```
-This print the newest available archive for <https://www.microsoft.com/en-us>, something just like this:
+```bash
+https://web.archive.org/web/20200714013225/https://www.facebook.com/
+```
+<sub>Try this out in your browser @ <https://repl.it/repls/OblongMiniInteger#main.py></sub>
 
-> <http://web.archive.org/web/20200429033402/https://www.microsoft.com/en-us/>
 
 
 #### Receiving archive close to a specified year, month, day, hour, and minute using near()
