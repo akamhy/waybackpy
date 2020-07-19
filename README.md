@@ -69,7 +69,7 @@ print(new_archive_url)
 ```bash
 https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/CompassionateRemoteOrigin#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
 
 
 
@@ -89,7 +89,7 @@ print(oldest_archive_url)
 ```bash
 http://web.archive.org/web/19981111184551/http://google.com:80/
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/MixedSuperDimensions#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyOldestExample></sub>
 
 
 
@@ -109,7 +109,7 @@ print(newest_archive_url)
 ```bash
 https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/OblongMiniInteger#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
 
 
 
@@ -161,7 +161,7 @@ https://web.archive.org/web/20180704090245/https://github.com/
 
 <sub>The library doesn't supports seconds yet. You are encourged to create a PR ;)</sub>
 
-<sub>Try this out in your browser @ <https://repl.it/repls/SparseDeadlySearchservice#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
 
 
@@ -195,7 +195,7 @@ google_oldest_archive_source = waybackpy_url_object.get(
 )
 print(google_oldest_archive_source)
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/PinkHoneydewNonagon#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyGetExample#main.py></sub>
 
 
 #### Count total archives for an URL using total_archives()
@@ -216,7 +216,7 @@ print(archive_count) # total_archives() returns an int
 ```bash
 2440
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/DigitalUnconsciousNumbers#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
