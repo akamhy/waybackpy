@@ -72,7 +72,7 @@ class Url():
             except Exception as e:
                 raise WaybackError(e)
         header = response.headers
-        
+
         def archive_url_parser(header):
             arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
             if arch:
