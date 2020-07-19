@@ -160,5 +160,5 @@ class Url():
         try:
             response = urlopen(req) #nosec
         except Exception as e:
-            self.handle_HTTPError(e)
+            WaybackError(e)
         return str(response.read()).count(",") # Most efficient method to count number of archives (yet)
