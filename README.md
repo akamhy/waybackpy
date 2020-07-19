@@ -158,9 +158,9 @@ print(github_archive_near_2018_4_july_9_2_am)
 https://web.archive.org/web/20180704090245/https://github.com/
 
 ```
-```python
-# The library doesn't supports seconds yet. You are encourged to create a PR ;)
-```
+
+<sub>The library doesn't supports seconds yet. You are encourged to create a PR ;)</sub>
+
 <sub>Try this out in your browser @ <https://repl.it/repls/SparseDeadlySearchservice#main.py></sub>
 
 
