@@ -216,7 +216,7 @@ print(archive_count) # total_archives() returns an int
 ```bash
 2440
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/DigitalUnconsciousNumbers#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
