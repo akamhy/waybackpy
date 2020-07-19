@@ -77,7 +77,9 @@ class Url():
             arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
             if arch:
                 return arch.group(1)
-            raise WaybackError("No archive url found in the reply headers. Visit https://github.com/akamhy/waybackpy for latest version of waybackpy.")
+            raise WaybackError(
+                "No archive url found in the API response. Visit https://github.com/akamhy/waybackpy for latest version of waybackpy.\nHeader:\n%s" % str(header)
+            )
 
         return "https://" + archive_url_parser(header)
 
