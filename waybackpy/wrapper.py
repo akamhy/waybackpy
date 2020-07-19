@@ -8,9 +8,9 @@ from waybackpy.exceptions import WaybackError
 
 if sys.version_info >= (3, 0):  # If the python ver >= 3
     from urllib.request import Request, urlopen
-    from urllib.error import HTTPError, URLError
+    from urllib.error import URLError
 else: # For python2.x
-    from urllib2 import Request, urlopen, HTTPError, URLError
+    from urllib2 import Request, urlopen, URLError
 
 default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
@@ -58,13 +58,6 @@ class Url():
           +
           str(kwargs["minute"]).zfill(2)
           )
-
-    def handle_HTTPError(self, e):
-        """Handle some common HTTPErrors."""
-        if e.code == 404:
-            raise HTTPError(e)
-        if e.code >= 400:
-            raise WaybackError(e)
 
     def save(self):
         """Create a new archives for an URL on the Wayback Machine."""
