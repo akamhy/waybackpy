@@ -195,7 +195,7 @@ google_oldest_archive_source = waybackpy_url_object.get(
 )
 print(google_oldest_archive_source)
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/PinkHoneydewNonagon#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyGetExample#main.py></sub>
 
 
 #### Count total archives for an URL using total_archives()
