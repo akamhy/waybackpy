@@ -109,7 +109,7 @@ print(newest_archive_url)
 ```bash
 https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```
-<sub>Try this out in your browser @ <https://repl.it/repls/OblongMiniInteger#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
 
 
 
