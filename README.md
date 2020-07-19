@@ -161,7 +161,7 @@ https://web.archive.org/web/20180704090245/https://github.com/
 
 <sub>The library doesn't supports seconds yet. You are encourged to create a PR ;)</sub>
 
-<sub>Try this out in your browser @ <https://repl.it/repls/SparseDeadlySearchservice#main.py></sub>
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
 
 
