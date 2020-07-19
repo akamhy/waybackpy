@@ -61,8 +61,9 @@ target_url = waybackpy.Url(url="https://github.com/akamhy/waybackpy", user_agent
 archived_url = target_url.save()
 print(archived_url)
 ```
-This should print an URL similar to the following archived URL:
+<sub>Try this out in your browser @ <https://repl.it/repls/CompassionateRemoteOrigin#main.py></sub>
 
+This should print an URL similar to the following archived URL:
 > <https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy>
 
 
