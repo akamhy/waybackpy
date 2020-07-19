@@ -124,33 +124,42 @@ github_url = "https://github.com/"
 github_wayback_obj = Url(github_url, user_agent)
 
 # Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
-
+```
+```python
 github_archive_near_2010 = github_wayback_obj.near(year=2010)
 print(github_archive_near_2010)
-
-
+```
+```bash
+https://web.archive.org/web/20100719134402/http://github.com/
+```
+```python
 github_archive_near_2011_may = github_wayback_obj.near(year=2011, month=5)
 print(github_archive_near_2011_may)
-
-
+```
+```bash
+https://web.archive.org/web/20110519185447/https://github.com/
+```
+```python
 github_archive_near_2015_january_26 = github_wayback_obj.near(
     year=2011, month=1, day=26
 )
 print(github_archive_near_2015_january_26)
-
-
+```
+```bash
+https://web.archive.org/web/20110126223912/https://github.com/
+```
+```python
 github_archive_near_2018_4_july_9_2_am = github_wayback_obj.near(
     year=2018, month=7, day=4, hour = 9, minute = 2
 )
 print(github_archive_near_2018_4_july_9_2_am)
-
-# The library doesn't supports seconds yet. You are encourged to create a PR ;)
 ```
 ```bash
-https://web.archive.org/web/20100719134402/http://github.com/
-https://web.archive.org/web/20110519185447/https://github.com/
-https://web.archive.org/web/20110126223912/https://github.com/
 https://web.archive.org/web/20180704090245/https://github.com/
+
+```
+```python
+# The library doesn't supports seconds yet. You are encourged to create a PR ;)
 ```
 <sub>Try this out in your browser @ <https://repl.it/repls/SparseDeadlySearchservice#main.py></sub>
 
