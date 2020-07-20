@@ -16,4 +16,4 @@ script:
   - cd tests
   - pytest --cov=./
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION >= 3.8 ]]; then python -m codecov; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.8 ]]; then python -m codecov; fi
