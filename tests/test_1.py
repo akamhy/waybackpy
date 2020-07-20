@@ -128,24 +128,3 @@ def test_total_archives():
     time.sleep(5)
     target = waybackpy.Url(" https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8 ", user_agent)
     assert target.total_archives() == 0
-
-if __name__ == "__main__":
-    test_clean_url()
-    print(".") #1
-    test_url_check()
-    print(".") #1
-    test_get()
-    print(".") #3
-    test_near()
-    print(".") #4
-    test_newest()
-    print(".") #5
-    test_save()
-    print(".") #6
-    test_oldest()
-    print(".") #7
-    test_total_archives()
-    print(".") #8
-    test_wayback_timestamp()
-    print(".") #9
-    print("OK")
