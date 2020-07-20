@@ -128,7 +128,7 @@ class Url():
         response = self.get_response(req)
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
-            raise WaybackError("'%s' is not yet archived." % url)
+            raise WaybackError("'%s' is not yet archived. Use wayback.Url(url, user_agent).save() to create a new archive." % self.clean_url())
         archive_url = (data["archived_snapshots"]["closest"]["url"])
         # wayback machine returns http sometimes, idk why? But they support https
         archive_url = archive_url.replace("http://web.archive.org/web/","https://web.archive.org/web/",1)
