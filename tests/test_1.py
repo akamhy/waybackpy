@@ -103,6 +103,10 @@ def test_get():
     target = waybackpy.Url("google.com", user_agent)
     assert "Welcome to Google" in target.get(target.oldest())
 
+def test_wayback_timestamp():
+    ts = waybackpy.Url("https://www.google.com","UA").wayback_timestamp(year=2020,month=1,day=2,hour=3,minute=4)
+    assert "202001020304" in ts
+
 def test_total_archives():
     time.sleep(10)
     if sys.version_info > (3, 6):
@@ -131,4 +135,6 @@ if __name__ == "__main__":
     print(".") #7
     test_total_archives()
     print(".") #8
+    test_wayback_timestamp()
+    print(".") #9
     print("OK")
