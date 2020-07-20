@@ -10,8 +10,8 @@ before_install:
   - python --version
   - pip install -U pip
   - pip install -U pytest
-  - pip install codecov
+  - pip install pytest pytest-cov
 script:
-  - python -m pytest
+  - pytest --cov=./
 after_success:
   - python -m codecov
