@@ -75,17 +75,14 @@ class Url():
 
         def archive_url_parser(header):
             """Parse out the archive from header."""
-            
             #Regex1
             arch = re.search(r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>", str(header))
             if arch:
                 return arch.group(1)
-            
             #Regex2
             arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
             if arch:
                 return arch.group(1)
-
             raise WaybackError(
                 "No archive url found in the API response. Visit https://github.com/akamhy/waybackpy for latest version of waybackpy.\nHeader:\n%s" % str(header)
             )
