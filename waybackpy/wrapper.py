@@ -102,6 +102,7 @@ class Url():
         return response.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
     def get_response(self, req):
+        """Get response for the supplied request."""
         try:
             response = urlopen(req) #nosec
         except Exception:
@@ -109,7 +110,6 @@ class Url():
                  response = urlopen(req) #nosec
             except Exception as e:
                 raise WaybackError(e)
-
 
     def near(self, **kwargs):
         """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
