@@ -116,7 +116,7 @@ def test_get_response():
     hdr = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0'}
     req = Request("https://www.google.com", headers=hdr) # nosec
     response = waybackpy.Url("https://www.google.com","UA").get_response(req)
-    assert str(type(response)) == "<class 'http.client.HTTPResponse'>"
+    assert response.status == 200
 
 def test_total_archives():
     time.sleep(10)
