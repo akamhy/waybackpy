@@ -8,7 +8,11 @@ dist: xenial
 cache: pip
 install:
   - pip install pytest
+  - pip install coverage
 before_script:
     cd tests
 script:
   - pytest test_1.py
+  - coverage run -m pytest --cov=./
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
