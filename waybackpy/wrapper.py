@@ -64,14 +64,7 @@ class Url():
         request_url = ("https://web.archive.org/save/" + self.clean_url())
         hdr = { 'User-Agent' : '%s' % self.user_agent } #nosec
         req = Request(request_url, headers=hdr) #nosec
-        try:
-            response = urlopen(req) #nosec
-        except Exception:
-            try:
-                response = urlopen(req) #nosec
-            except Exception as e:
-                raise WaybackError(e)
-        header = response.headers
+        header = self.get_response(req).headers
 
         def archive_url_parser(header):
             """Parse out the archive from header."""
