@@ -12,6 +12,7 @@ before_install:
   - pip install -U pytest
   - pip install pytest pytest-cov
 script:
+  - cd tests
   - pytest --cov=./
 after_success:
   - python -m codecov
