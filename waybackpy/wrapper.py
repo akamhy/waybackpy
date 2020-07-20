@@ -65,7 +65,7 @@ class Url():
         hdr = { 'User-Agent' : '%s' % self.user_agent } #nosec
         req = Request(request_url, headers=hdr) #nosec
         try:
-            response = urlopen(req, timeout=30) #nosec
+            response = urlopen(req) #nosec
         except Exception:
             try:
                 response = urlopen(req) #nosec
@@ -93,22 +93,23 @@ class Url():
 
         hdr = { 'User-Agent' : '%s' % user_agent }
         req = Request(url, headers=hdr) #nosec
+        response = self.get_response(req)
+        if not encoding:
+            try:
+                encoding= response.headers['content-type'].split('charset=')[-1]
+            except AttributeError:
+                encoding = "UTF-8"
+        return response.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
+    def get_response(self, req):
         try:
-            resp=urlopen(req) #nosec
+            response = urlopen(req) #nosec
         except Exception:
             try:
-                resp=urlopen(req) #nosec
+                 response = urlopen(req) #nosec
             except Exception as e:
                 raise WaybackError(e)
 
-        if not encoding:
-            try:
-                encoding= resp.headers['content-type'].split('charset=')[-1]
-            except AttributeError:
-                encoding = "UTF-8"
-
-        return resp.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
     def near(self, **kwargs):
         """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
@@ -124,15 +125,7 @@ class Url():
         request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (self.clean_url(), str(timestamp))
         hdr = { 'User-Agent' : '%s' % self.user_agent }
         req = Request(request_url, headers=hdr) # nosec
-
-        try:
-            response = urlopen(req) #nosec
-        except Exception:
-            try:
-                 response = urlopen(req) #nosec
-            except Exception as e:
-                raise WaybackError(e)
-
+        response = self.get_response(req)
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
             raise WaybackError("'%s' is not yet archived." % url)
@@ -154,13 +147,5 @@ class Url():
         hdr = { 'User-Agent' : '%s' % self.user_agent }
         request_url = "https://web.archive.org/cdx/search/cdx?url=%s&output=json&fl=statuscode" % self.clean_url()
         req = Request(request_url, headers=hdr) # nosec
-
-        try:
-            response = urlopen(req) #nosec
-        except Exception:
-            try:
-                response = urlopen(req) #nosec
-            except Exception as e:
-                raise WaybackError(e)
-
+        response = self.get_response(req)
         return str(response.read()).count(",") # Most efficient method to count number of archives (yet)
