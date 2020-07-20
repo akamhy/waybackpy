@@ -5,6 +5,11 @@ import waybackpy
 import pytest
 import random
 import time
+if sys.version_info >= (3, 0):  # If the python ver >= 3
+    from urllib.request import Request, urlopen
+    from urllib.error import URLError
+else: # For python2.x
+    from urllib2 import Request, urlopen, URLError
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
@@ -103,6 +108,16 @@ def test_get():
     target = waybackpy.Url("google.com", user_agent)
     assert "Welcome to Google" in target.get(target.oldest())
 
+def test_wayback_timestamp():
+    ts = waybackpy.Url("https://www.google.com","UA").wayback_timestamp(year=2020,month=1,day=2,hour=3,minute=4)
+    assert "202001020304" in str(ts)
+
+def test_get_response():
+    hdr = { 'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0'}
+    req = Request("https://www.google.com", headers=hdr) # nosec
+    response = waybackpy.Url("https://www.google.com","UA").get_response(req)
+    assert str(type(response)) == "<class 'http.client.HTTPResponse'>"
+
 def test_total_archives():
     time.sleep(10)
     if sys.version_info > (3, 6):
@@ -131,4 +146,6 @@ if __name__ == "__main__":
     print(".") #7
     test_total_archives()
     print(".") #8
+    test_wayback_timestamp()
+    print(".") #9
     print("OK")
