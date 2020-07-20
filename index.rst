@@ -1,11 +1,23 @@
 waybackpy
 =========
 
-|Build Status| |Downloads| |Release| |Codacy Badge| |License: MIT|
-|Maintainability| |CodeFactor| |made-with-python| |pypi| |PyPI - Python
-Version| |Maintenance| |codecov| |image12| |contributions welcome|
+| |Build Status|
+| |Downloads|
+| |Release|
+| |Codacy Badge|
+| |License: MIT|
+| |Maintainability|
+| |CodeFactor|
+| |made-with-python|
+| |pypi|
+| |PyPI - Python Version|
+| |Maintenance|
+| |codecov|
+| |image12|
+| |contributions welcome|
 
-|Internet Archive| |Wayback Machine|
+| |Internet Archive|
+| |Wayback Machine|
 
 Waybackpy is a Python library that interfaces with the `Internet
 Archive <https://en.wikipedia.org/wiki/Internet_Archive>`__'s `Wayback
@@ -79,7 +91,7 @@ Capturing aka Saving an url using save()
     https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 
 Try this out in your browser @
-https://repl.it/repls/CompassionateRemoteOrigin#main.py\ 
+https://repl.it/@akamhy/WaybackPySaveExample\ 
 
 Receiving the oldest archive for an URL using oldest()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -102,7 +114,7 @@ Receiving the oldest archive for an URL using oldest()
     http://web.archive.org/web/19981111184551/http://google.com:80/
 
 Try this out in your browser @
-https://repl.it/repls/MixedSuperDimensions#main.py\ 
+https://repl.it/@akamhy/WaybackPyOldestExample\ 
 
 Receiving the newest archive for an URL using newest()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -125,7 +137,7 @@ Receiving the newest archive for an URL using newest()
     https://web.archive.org/web/20200714013225/https://www.facebook.com/
 
 Try this out in your browser @
-https://repl.it/repls/OblongMiniInteger#main.py\ 
+https://repl.it/@akamhy/WaybackPyNewestExample\ 
 
 Receiving archive close to a specified year, month, day, hour, and minute using near()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -186,7 +198,7 @@ The library doesn't supports seconds yet. You are encourged to create a
 PR ;)
 
 Try this out in your browser @
-https://repl.it/repls/SparseDeadlySearchservice#main.py\ 
+https://repl.it/@akamhy/WaybackPyNearExample\ 
 
 Get the content of webpage using get()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -222,7 +234,7 @@ Get the content of webpage using get()
     print(google_oldest_archive_source)
 
 Try this out in your browser @
-https://repl.it/repls/PinkHoneydewNonagon#main.py\ 
+https://repl.it/@akamhy/WaybackPyGetExample#main.py\ 
 
 Count total archives for an URL using total\_archives()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -247,7 +259,7 @@ Count total archives for an URL using total\_archives()
     2440
 
 Try this out in your browser @
-https://repl.it/repls/DigitalUnconsciousNumbers#main.py\ 
+https://repl.it/@akamhy/WaybackPyTotalArchivesExample\ 
 
 Tests
 -----
