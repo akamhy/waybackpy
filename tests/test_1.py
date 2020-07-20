@@ -14,7 +14,6 @@ else: # For python2.x
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
 def test_clean_url():
-    time.sleep(10)
     test_url = " https://en.wikipedia.org/wiki/Network security "
     answer = "https://en.wikipedia.org/wiki/Network_security"
     target = waybackpy.Url(test_url, user_agent)
@@ -22,7 +21,6 @@ def test_clean_url():
     assert answer == test_result
 
 def test_url_check():
-    time.sleep(10)
     broken_url = "http://wwwgooglecom/"
     with pytest.raises(Exception) as e_info:
         waybackpy.Url(broken_url, user_agent)
@@ -92,19 +90,16 @@ def test_near():
         pass
 
 def test_oldest():
-    time.sleep(10)
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
     assert "20200504141153" in target.oldest()
 
 def test_newest():
-    time.sleep(10)
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
     assert url in target.newest()
 
 def test_get():
-    time.sleep(10)
     target = waybackpy.Url("google.com", user_agent)
     assert "Welcome to Google" in target.get(target.oldest())
 
@@ -119,12 +114,10 @@ def test_get_response():
     assert response.code == 200
 
 def test_total_archives():
-    time.sleep(10)
     if sys.version_info > (3, 6):
         target = waybackpy.Url(" https://google.com ", user_agent)
         assert target.total_archives() > 500000
     else:
         pass
-    time.sleep(5)
     target = waybackpy.Url(" https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8 ", user_agent)
     assert target.total_archives() == 0
