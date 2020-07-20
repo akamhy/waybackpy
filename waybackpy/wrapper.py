@@ -110,6 +110,7 @@ class Url():
                  response = urlopen(req) #nosec
             except Exception as e:
                 raise WaybackError(e)
+        return response
 
     def near(self, **kwargs):
         """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
