@@ -42,6 +42,11 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
         ],
+    entry_points={
+        'console_scripts': [
+            'waybackpy = waybackpy.wrapper:command_line'
+        ]
+    },
     project_urls={
         'Documentation': 'https://waybackpy.readthedocs.io',
         'Source': 'https://github.com/akamhy/waybackpy',
