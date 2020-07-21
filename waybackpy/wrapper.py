@@ -107,20 +107,21 @@ class Url:
                 raise WaybackError(e)
         return response
 
-    def near(self, **kwargs):
+    def near(self, year=None, month=None, day=None, hour=None, minute=None):
         """Return the closest Wayback Machine archive to the time supplied.
 
         Supported params are year, month, day, hour and minute.
         Any non-supplied parameters default to the current time.
         """
-        year = kwargs.get("year", datetime.utcnow().strftime("%Y"))
-        month = kwargs.get("month", datetime.utcnow().strftime("%m"))
-        day = kwargs.get("day", datetime.utcnow().strftime("%d"))
-        hour = kwargs.get("hour", datetime.utcnow().strftime("%H"))
-        minute = kwargs.get("minute", datetime.utcnow().strftime("%M"))
+        now = datetime.utcnow().timetuple()
         timestamp = _wayback_timestamp(
-            year=year, month=month, day=day, hour=hour, minute=minute
+            year=year if year else now.tm_year,
+            month=month if month else now.tm_mon,
+            day=day if day else now.tm_mday,
+            hour=hour if hour else now.tm_hour,
+            minute=minute if minute else now.tm_min,
         )
+
         request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (
             self._clean_url(),
             timestamp,
