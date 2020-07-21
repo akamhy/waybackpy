@@ -2,6 +2,9 @@
 import argparse
 from waybackpy.wrapper import Url
 
+if sys.version_info < (3, 0): # If the python ver 2.xxx
+    from __future__ import print_function
+
 def command_line():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--url", help="URL on which Wayback machine operations would occur.")
