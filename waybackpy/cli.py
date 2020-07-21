@@ -25,62 +25,62 @@ def command_line():
     if not args.url:
         print("please specify an URL using \"--url https://mywebiste.com\". Use --help for help.")
         return
+
+    # create the object with or without the user_agent
+    if args.user_agent:
+        obj = Url(args.url, args.user_agent)
     else:
-        # create the object with or without the user_agent
-        if args.user_agent:
-            obj = Url(args.url, args.user_agent)
+        obj = Url(args.url)
+
+    if args.save:
+        print(obj.save())
+
+    elif args.oldest:
+        print(obj.oldest())
+
+    elif args.latest:
+        print(obj.newest())
+
+    elif args.total:
+        print(obj.total_archives())
+
+    elif args.near:
+        _near_args = {}
+        if args.year:
+            _near_args["year"] = args.year
+        if args.year:
+            _near_args["month"] = args.month
+        if args.year:
+            _near_args["day"] = args.day
+        if args.year:
+            _near_args["hour"] = args.hour
+        if args.year:
+            _near_args["minute"] = args.minute
+        n_args = {x: y for x, y in _near_args.items() if y is not None}
+        print(obj.near(**n_args))
+
+    elif args.get:
+        if args.get.lower() == "url":
+            print(obj.get())
+
+        elif args.get.lower() == "oldest":
+            print(obj.get(obj.oldest()))
+
+        elif args.get.lower() == "latest" or args.get.lower() == "newest":
+            print(obj.get(obj.newest()))
+
+        elif args.get.lower() == "save":
+            print(obj.get(obj.save()))
+
         else:
-            obj = Url(args.url)
-
-        if args.save:
-            print(obj.save())
-
-        elif args.oldest:
-            print(obj.oldest())
-
-        elif args.latest:
-            print(obj.newest())
-
-        elif args.total:
-            print(obj.total_archives())
-
-        elif args.near:
-            _near_args = {}
-            if args.year:
-                _near_args["year"] = args.year
-            if args.year:
-                _near_args["month"] = args.month
-            if args.year:
-                _near_args["day"] = args.day
-            if args.year:
-                _near_args["hour"] = args.hour
-            if args.year:
-                _near_args["minute"] = args.minute
-            n_args = {x: y for x, y in _near_args.items() if y is not None}
-            print(obj.near(**n_args))
-
-        elif args.get:
-            if args.get.lower() == "url":
-                print(obj.get())
-
-            elif args.get.lower() == "oldest":
-                print(obj.get(obj.oldest()))
-
-            elif args.get.lower() == "latest" or args.get.lower() == "newest":
-                print(obj.get(obj.newest()))
-
-            elif args.get.lower() == "save":
-                print(obj.get(obj.save()))
-
-            else:
-                print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
-                \n1) url - get the source code of the url specified using --url/-u.\
-                \n2) oldest - get the source code of the oldest archive for the supplied url.\
-                \n3) latest - get the source code of the latest archive for the supplied url.\
-                \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
-        else:
-            print("Please specify any operation as an argument. Use 'waybackpy --help' for help using wayback.\
-            \nLatest docs and version available at https://github.com/akamhy/waybackpy ")
+            print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
+            \n1) url - get the source code of the url specified using --url/-u.\
+            \n2) oldest - get the source code of the oldest archive for the supplied url.\
+            \n3) latest - get the source code of the latest archive for the supplied url.\
+            \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
+    else:
+        print("Please specify any operation as an argument. Use 'waybackpy --help' for help using wayback.\
+        \nLatest docs and version available at https://github.com/akamhy/waybackpy ")
 
 
 if __name__ == "__main__":
