@@ -44,7 +44,7 @@ setup(
         ],
     entry_points={
         'console_scripts': [
-            'waybackpy = waybackpy.wrapper:command_line'
+            'waybackpy = waybackpy.cli:command_line'
         ]
     },
     project_urls={
