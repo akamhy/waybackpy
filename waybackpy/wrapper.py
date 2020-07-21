@@ -5,6 +5,7 @@ import sys
 import json
 from datetime import datetime
 from waybackpy.exceptions import WaybackError
+from waybackpy.__version__ import __version__
 
 if sys.version_info >= (3, 0):  # If the python ver >= 3
     from urllib.request import Request, urlopen
@@ -24,21 +25,18 @@ class Url:
         self.url_check()  # checks url validity on init.
 
     def __repr__(self):
-        """Representation of the object."""
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
 
     def __str__(self):
-        """String representation of the object."""
         return "%s" % self.clean_url()
 
     def __len__(self):
-        """Length of the URL."""
         return len(self.clean_url())
 
     def url_check(self):
         """Check for common URL problems."""
         if "." not in self.url:
-            raise URLError("'%s' is not a vaild url." % self.url)
+            raise URLError("'%s' is not a vaild URL." % self.url)
         return True
 
     def clean_url(self):
@@ -46,7 +44,7 @@ class Url:
         return str(self.url).strip().replace(" ", "_")
 
     def wayback_timestamp(self, **kwargs):
-        """Return the formatted the timestamp."""
+        """Return a formatted timestamp."""
         return (
             str(kwargs["year"])
             + str(kwargs["month"]).zfill(2)
@@ -56,7 +54,7 @@ class Url:
         )
 
     def save(self):
-        """Create a new archives for an URL on the Wayback Machine."""
+        """Create a new Wayback Machine archive for this URL."""
         request_url = "https://web.archive.org/save/" + self.clean_url()
         hdr = {"User-Agent": "%s" % self.user_agent}  # nosec
         req = Request(request_url, headers=hdr)  # nosec
@@ -75,14 +73,18 @@ class Url:
             if arch:
                 return arch.group(1)
             raise WaybackError(
-                "No archive url found in the API response. Visit https://github.com/akamhy/waybackpy for latest version of waybackpy.\nHeader:\n%s"
-                % str(header)
+                "No archive URL found in the API response. "
+                "This version of waybackpy (%s) is likely out of date. Visit "
+                "https://github.com/akamhy/waybackpy for the latest version "
+                "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
             )
 
         return "https://" + archive_url_parser(header)
 
     def get(self, url=None, user_agent=None, encoding=None):
-        """Returns the source code of the supplied URL. Auto detects the encoding if not supplied."""
+        """Return the source code of the supplied URL.
+        If encoding is not supplied, it is auto-detected from the response.
+        """
 
         if not url:
             url = self.clean_url()
@@ -111,9 +113,10 @@ class Url:
         return response
 
     def near(self, **kwargs):
-        """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
-            Supported params are year, month, day, hour and minute.
-            The non supplied parameters are default to the runtime time.
+        """Return the closest Wayback Machine archive to the time supplied.
+
+        Supported params are year, month, day, hour and minute.
+        Any non-supplied parameters default to the current time.
         """
         year = kwargs.get("year", datetime.utcnow().strftime("%Y"))
         month = kwargs.get("month", datetime.utcnow().strftime("%m"))
@@ -133,8 +136,8 @@ class Url:
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
             raise WaybackError(
-                "'%s' is not yet archived. Use wayback.Url(url, user_agent).save() to create a new archive."
-                % self.clean_url()
+                "'%s' is not yet archived. Use wayback.Url(url, user_agent).save() "
+                "to create a new archive." % self.clean_url()
             )
         archive_url = data["archived_snapshots"]["closest"]["url"]
         # wayback machine returns http sometimes, idk why? But they support https
@@ -144,15 +147,19 @@ class Url:
         return archive_url
 
     def oldest(self, year=1994):
-        """Returns the oldest archive from Wayback Machine for an URL."""
+        """Return the oldest Wayback Machine archive for this URL."""
         return self.near(year=year)
 
     def newest(self):
-        """Returns the newest archive on Wayback Machine for an URL, sometimes you may not get the newest archive because wayback machine DB lag."""
+        """Return the newest Wayback Machine archive available for this URL.
+
+        Due to Wayback Machine database lag, this may not always be the
+        most recent archive.
+        """
         return self.near()
 
     def total_archives(self):
-        """Returns the total number of archives on Wayback Machine for an URL."""
+        """Returns the total number of Wayback Machine archives for this URL."""
         hdr = {"User-Agent": "%s" % self.user_agent}
         request_url = (
             "https://web.archive.org/cdx/search/cdx?url=%s&output=json&fl=statuscode"
@@ -160,6 +167,5 @@ class Url:
         )
         req = Request(request_url, headers=hdr)  # nosec
         response = self.get_response(req)
-        return str(response.read()).count(
-            ","
-        )  # Most efficient method to count number of archives (yet)
+        # Most efficient method to count number of archives (yet)
+        return str(response.read()).count(",")
