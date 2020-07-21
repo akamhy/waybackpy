@@ -36,11 +36,9 @@ def _archive_url_parser(header):
     )
 
 
-def _wayback_timestamp(**kwargs):
+def _wayback_timestamp(dt):
     """Return a formatted timestamp."""
-    return "".join(
-        str(kwargs[key]).zfill(2) for key in ["year", "month", "day", "hour", "minute"]
-    )
+    return dt.strftime("%Y%m%d%h%m")
 
 
 class Url:
@@ -113,14 +111,14 @@ class Url:
         Supported params are year, month, day, hour and minute.
         Any non-supplied parameters default to the current time.
         """
-        now = datetime.utcnow().timetuple()
-        timestamp = _wayback_timestamp(
-            year=year if year else now.tm_year,
-            month=month if month else now.tm_mon,
-            day=day if day else now.tm_mday,
-            hour=hour if hour else now.tm_hour,
-            minute=minute if minute else now.tm_min,
-        )
+        kwargs = {
+            key: val
+            for key, val in dict(
+                year=year, month=month, day=day, hour=hour, minute=minute
+            )
+            if val is not None
+        }
+        timestamp = _wayback_timestamp(datetime.utcnow().replace(**kwargs))
 
         request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (
             self._clean_url(),
