@@ -108,7 +108,9 @@ class Url():
             try:
                  response = urlopen(req) #nosec
             except Exception as e:
-                raise WaybackError("Error while retrieving %s" % req.full_url) from e
+                exc = WaybackError("Error while retrieving %s" % req.full_url)
+                exc.__cause__ = e
+                raise exc
         return response
 
     def near(self, **kwargs):
