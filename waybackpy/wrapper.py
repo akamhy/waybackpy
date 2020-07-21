@@ -16,6 +16,26 @@ else:  # For python2.x
 default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
 
+def archive_url_parser(header):
+    """Parse out the archive from header."""
+    # Regex1
+    arch = re.search(
+        r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>", str(header)
+    )
+    if arch:
+        return arch.group(1)
+    # Regex2
+    arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
+    if arch:
+        return arch.group(1)
+    raise WaybackError(
+        "No archive URL found in the API response. "
+        "This version of waybackpy (%s) is likely out of date. Visit "
+        "https://github.com/akamhy/waybackpy for the latest version "
+        "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
+    )
+
+
 class Url:
     """waybackpy Url object"""
 
@@ -59,26 +79,6 @@ class Url:
         hdr = {"User-Agent": "%s" % self.user_agent}  # nosec
         req = Request(request_url, headers=hdr)  # nosec
         header = self.get_response(req).headers
-
-        def archive_url_parser(header):
-            """Parse out the archive from header."""
-            # Regex1
-            arch = re.search(
-                r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>", str(header)
-            )
-            if arch:
-                return arch.group(1)
-            # Regex2
-            arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
-            if arch:
-                return arch.group(1)
-            raise WaybackError(
-                "No archive URL found in the API response. "
-                "This version of waybackpy (%s) is likely out of date. Visit "
-                "https://github.com/akamhy/waybackpy for the latest version "
-                "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
-            )
-
         return "https://" + archive_url_parser(header)
 
     def get(self, url=None, user_agent=None, encoding=None):
