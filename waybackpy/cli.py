@@ -2,7 +2,6 @@
 import argparse
 from from waybackpy.wrapper import Url
 
-
 def command_line():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--url", help="URL on which Wayback machine operations would occur.")
@@ -11,7 +10,7 @@ def command_line():
     parser.add_argument("-o", "--oldest", action='store_true', help="Oldest archive for the specified URL.")
     parser.add_argument("-l", "--latest", action='store_true', help="Latest/Newest archive for the specified URL.")
     parser.add_argument("-t", "--total", action='store_true', help="Total number of archives for the specified URL.")
-    parser.add_argument("-g", "--get", help="Get the source code of the supplied durl.")
+    parser.add_argument("-g", "--get", help="Get the source code of the supplied url. Use '--get help' for extended usage.")
 
     parser.add_argument("-n", "--near", action='store_true', help="Latest/Newest archive for the specified URL.")
     parser.add_argument("-y", "--year", type=int, help="Year in integer. For use with --near.")
@@ -66,12 +65,23 @@ def command_line():
             elif args.get.lower() == "oldest":
                 print(obj.get(obj.oldest()))
 
-            elif args.get.lower() == "newest":
+            elif args.get.lower() == "latest" or args.get.lower() == "newest":
                 print(obj.get(obj.newest()))
 
             elif args.get.lower() == "save":
                 print(obj.get(obj.save()))
 
+            else:
+                print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
+                \n1) url - get the source code of the url specified using --url/-u.\
+                \n2) oldest - get the source code of the oldest archive for the supplied url.\
+                \n3) latest - get the source code of the latest archive for the supplied url.\
+                \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
+        else:
+            print("Please specify any operation as an argument. Use 'waybackpy --help' for help using wayback.\
+            \nLatest docs and version available at https://github.com/akamhy/waybackpy ")
+
 
 if __name__ == "__main__":
     command_line()
+
