@@ -11,4 +11,4 @@ Versions currently being supported with security updates. Please update if you a
 | 1.x.x   | :x:                |
 
 ## Reporting a Vulnerability
-- Email me at akash3pro@gmail.com
+  - Email me at akash3pro@gmail.com
