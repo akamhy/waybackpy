@@ -77,7 +77,7 @@ class Url:
         header = self._get_response(req).headers
         return "https://" + _archive_url_parser(header)
 
-    def _get(self, url=None, user_agent=None, encoding=None):
+    def _get(self, url="", user_agent="", encoding=""):
         """Return the source code of the supplied URL.
         If encoding is not supplied, it is auto-detected from the response.
         """
