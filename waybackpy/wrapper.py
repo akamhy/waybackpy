@@ -108,7 +108,9 @@ class Url():
             try:
                  response = urlopen(req) #nosec
             except Exception as e:
-                raise WaybackError(e)
+                waybackraise = WaybackError(e)
+                waybackraise.__cause__ = None #Suppress the urllib2/3 Exception
+                raise waybackraise
         return response
 
     def near(self, **kwargs):
