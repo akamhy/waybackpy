@@ -64,7 +64,6 @@ class Url:
         """Check for common URL problems."""
         if "." not in self.url:
             raise URLError("'%s' is not a vaild URL." % self.url)
-        return True
 
     def _clean_url(self):
         """Fix the URL, if possible."""
