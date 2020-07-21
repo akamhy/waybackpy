@@ -149,3 +149,9 @@ class Url():
         req = Request(request_url, headers=hdr) # nosec
         response = self.get_response(req)
         return str(response.read()).count(",") # Most efficient method to count number of archives (yet)
+
+def command_line():
+    pass
+
+if __name__ == "__main__":
+    command_line()
