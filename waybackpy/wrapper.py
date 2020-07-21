@@ -38,12 +38,8 @@ def _archive_url_parser(header):
 
 def _wayback_timestamp(**kwargs):
     """Return a formatted timestamp."""
-    return (
-        str(kwargs["year"])
-        + str(kwargs["month"]).zfill(2)
-        + str(kwargs["day"]).zfill(2)
-        + str(kwargs["hour"]).zfill(2)
-        + str(kwargs["minute"]).zfill(2)
+    return "".join(
+        str(kwargs[key]).zfill(2) for key in ["year", "month", "day", "hour", "minute"]
     )
 
 
@@ -128,7 +124,7 @@ class Url:
         )
         request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (
             self._clean_url(),
-            str(timestamp),
+            timestamp,
         )
         hdr = {"User-Agent": "%s" % self.user_agent}
         req = Request(request_url, headers=hdr)  # nosec
