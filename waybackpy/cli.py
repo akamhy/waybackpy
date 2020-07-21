@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
-from from waybackpy.wrapper import Url
+from waybackpy.wrapper import Url
 
 def command_line():
     parser = argparse.ArgumentParser()
