@@ -75,7 +75,7 @@ def main():
         return
 
     if not args.url:
-        print("Specify an URL. Use --help for help.")
+        print("Specify an URL. See --help")
         return
 
     # create the object with or without the user_agent
@@ -97,9 +97,7 @@ def main():
     elif args.get:
         _get(obj, args)
     else:
-        print("Usage: waybackpy [OPTIONS] --url [URL...] --user_agent [USER AGENT].\
-        \nwaybackpy: error: You must provide one URL. See --help\
-        \nLatest docs and version available at https://github.com/akamhy/waybackpy")
+        print("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help")
 
 
 if __name__ == "__main__":
