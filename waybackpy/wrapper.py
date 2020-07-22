@@ -122,9 +122,9 @@ class Url:
         return response
 
     def near(self, year=None, month=None, day=None, hour=None, minute=None):
-        """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
+        """ Return the closest Wayback Machine archive to the time supplied.
             Supported params are year, month, day, hour and minute.
-            The non supplied parameters are default to the runtime time.
+            Any non-supplied parameters default to the current time.
 
         """
         now = datetime.utcnow().timetuple()
