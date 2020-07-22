@@ -243,6 +243,12 @@ https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNewest></sub>
 
+#### Total number of archives
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent" --total
+853
+```
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashTotal></sub>
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
