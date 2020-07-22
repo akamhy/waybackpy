@@ -108,11 +108,24 @@ class Url:
                 encoding = "UTF-8"
         return response.read().decode(encoding.replace("text/html", "UTF-8", 1))
 
-    def near(self, year=None, month=None, day=None, hour=None, minute=None):
-        """Return the closest Wayback Machine archive to the time supplied.
+    def get_response(self, req):
+        """Get response for the supplied request."""
+        try:
+            response = urlopen(req) #nosec
+        except Exception:
+            try:
+                 response = urlopen(req) #nosec
+            except Exception as e:
+                exc = WaybackError("Error while retrieving %s" % req.full_url)
+                exc.__cause__ = e
+                raise exc
+        return response
 
-        Supported params are year, month, day, hour and minute.
-        Any non-supplied parameters default to the current time.
+    def near(self, **kwargs):
+        """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
+            Supported params are year, month, day, hour and minute.
+            The non supplied parameters are default to the runtime time.
+
         """
         now = datetime.utcnow().timetuple()
         timestamp = _wayback_timestamp(
