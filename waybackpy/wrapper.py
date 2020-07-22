@@ -121,7 +121,7 @@ class Url:
                 raise exc
         return response
 
-    def near(self, **kwargs):
+    def near(self, year=None, month=None, day=None, hour=None, minute=None):
         """ Returns the archived from Wayback Machine for an URL closest to the time supplied.
             Supported params are year, month, day, hour and minute.
             The non supplied parameters are default to the runtime time.
