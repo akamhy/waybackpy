@@ -146,7 +146,7 @@ def test_newest():
 
 def test_get():
     target = waybackpy.Url("google.com", user_agent)
-    assert "Welcome to Google" in target._get(target.oldest())
+    assert "Welcome to Google" in target.get(target.oldest())
 
 
 
