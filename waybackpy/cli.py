@@ -2,6 +2,7 @@
 from __future__ import print_function
 import argparse
 from waybackpy.wrapper import Url
+from waybackpy.__version__ import __version__
 
 def _save(obj):
     print(obj.save())
@@ -46,7 +47,7 @@ def _get(obj, args):
         print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
         \n1) url - get the source code of the url specified using --url/-u.\
         \n2) oldest - get the source code of the oldest archive for the supplied url.\
-        \n3) latest - get the source code of the latest archive for the supplied url.\
+        \n3) newest - get the source code of the newest archive for the supplied url.\
         \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
 
 def main():
@@ -55,9 +56,9 @@ def main():
     parser.add_argument("-ua", "--user_agent", help="User agent, default user_agent is \"waybackpy python package - https://github.com/akamhy/waybackpy\".")
     parser.add_argument("-s", "--save", action='store_true', help="Save the URL on the Wayback machine.")
     parser.add_argument("-o", "--oldest", action='store_true', help="Oldest archive for the specified URL.")
-    parser.add_argument("-l", "--latest", action='store_true', help="Latest/Newest archive for the specified URL.")
+    parser.add_argument("-n", "--newest", action='store_true', help="Newest archive for the specified URL.")
     parser.add_argument("-t", "--total", action='store_true', help="Total number of archives for the specified URL.")
-    parser.add_argument("-g", "--get", help="Get the source code of the supplied url. Use '--get help' for extended usage.")
+    parser.add_argument("-g", "--get", help="Prints the source code of the supplied url. Use '--get help' for extended usage.")
 
     parser.add_argument("-n", "--near", action='store_true', help="Latest/Newest archive for the specified URL.")
     parser.add_argument("-y", "--year", type=int, help="Year in integer. For use with --near.")
@@ -65,6 +66,7 @@ def main():
     parser.add_argument("-d", "--day", type=int, help="Day in integer. For use with --near.")
     parser.add_argument("-H", "--hour", type=int, help="Hour in integer. For use with --near.")
     parser.add_argument("-m", "--minute", type=int, help="Minute in integer. For use with --near.")
+    parser.add_argument("-v", "--version", action='store_true', help="Prints the waybackpy version.")
 
     args = parser.parse_args()
 
@@ -84,7 +86,7 @@ def main():
         _save(obj)
     elif args.oldest:
         _oldest(obj)
-    elif args.latest:
+    elif args.newest:
         _newest(obj)
     elif args.total:
         _total_archives(obj)
@@ -92,9 +94,12 @@ def main():
         _near(obj, args)
     elif args.get:
         _get(obj, args)
+    elif args.version:
+        print(__version__)
     else:
-        print("Please specify any operation as an argument. Use 'waybackpy --help' for help using wayback.\
-        \nLatest docs and version available at https://github.com/akamhy/waybackpy ")
+        print("Usage: youtube-dl [OPTIONS] URL [URL...].\
+        \nwaybackpy: error: You must provide at least one URL. See --help\
+        \nLatest docs and version available at https://github.com/akamhy/waybackpy")
 
 
 if __name__ == "__main__":
