@@ -31,16 +31,16 @@ def _near(obj, args):
 
 def _get(obj, args):
     if args.get.lower() == "url":
-        print(obj._get())
+        print(obj.get())
 
     elif args.get.lower() == "oldest":
-        print(obj._get(obj.oldest()))
+        print(obj.get(obj.oldest()))
 
     elif args.get.lower() == "latest" or args.get.lower() == "newest":
-        print(obj._get(obj.newest()))
+        print(obj.get(obj.newest()))
 
     elif args.get.lower() == "save":
-        print(obj._get(obj.save()))
+        print(obj.get(obj.save()))
 
     else:
         print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
