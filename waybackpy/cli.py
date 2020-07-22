@@ -75,7 +75,7 @@ def main():
         return
 
     if not args.url:
-        print("Specify an URL using \"--url https://mywebiste.com\". Use --help for help.")
+        print("Specify an URL. Use --help for help.")
         return
 
     # create the object with or without the user_agent
