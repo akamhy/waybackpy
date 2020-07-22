@@ -40,7 +40,7 @@ def test_save():
         "commons.wikimedia.org",
         "www.wiktionary.org",
         "www.w3schools.com",
-        "www.youtube.com",
+        "twitter.com",
     ]
     x = random.randint(0, len(url_list) - 1)
     url1 = url_list[x]
