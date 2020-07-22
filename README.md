@@ -250,6 +250,13 @@ $ waybackpy --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashTotal></sub>
 
+#### Archive near to time specified
+```bash
+$ waybackpy --url facebook.com --user_agent "my-unique-user-agent" --near --year 2012 --month 5 --day 12
+https://web.archive.org/web/20120512142515/https://www.facebook.com/
+```
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNear></sub>
+
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
 
