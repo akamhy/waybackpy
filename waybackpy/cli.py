@@ -3,7 +3,53 @@ from __future__ import print_function
 import argparse
 from waybackpy.wrapper import Url
 
-def command_line():
+def _save(obj):
+    print(obj.save())
+
+def _oldest(obj):
+    print(obj.oldest())
+
+def _newest(obj):
+    print(obj.newest())
+
+def _total_archives(obj):
+    print(obj.total_archives())
+
+def _near(obj, args):
+    _near_args = {}
+    if args.year:
+        _near_args["year"] = args.year
+    if args.month:
+        _near_args["month"] = args.month
+    if args.day:
+        _near_args["day"] = args.day
+    if args.hour:
+        _near_args["hour"] = args.hour
+    if args.minute:
+        _near_args["minute"] = args.minute
+    print(obj.near(**_near_args))
+
+def _get(obj, args):
+    if args.get.lower() == "url":
+        print(obj._get())
+
+    elif args.get.lower() == "oldest":
+        print(obj._get(obj.oldest()))
+
+    elif args.get.lower() == "latest" or args.get.lower() == "newest":
+        print(obj._get(obj.newest()))
+
+    elif args.get.lower() == "save":
+        print(obj._get(obj.save()))
+
+    else:
+        print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
+        \n1) url - get the source code of the url specified using --url/-u.\
+        \n2) oldest - get the source code of the oldest archive for the supplied url.\
+        \n3) latest - get the source code of the latest archive for the supplied url.\
+        \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--url", help="URL on which Wayback machine operations would occur.")
     parser.add_argument("-ua", "--user_agent", help="User agent, default user_agent is \"waybackpy python package - https://github.com/akamhy/waybackpy\".")
@@ -32,57 +78,24 @@ def command_line():
     else:
         obj = Url(args.url)
 
+    print(repr(obj))
+
     if args.save:
-        print(obj.save())
-
+        _save(obj)
     elif args.oldest:
-        print(obj.oldest())
-
+        _oldest(obj)
     elif args.latest:
-        print(obj.newest())
-
+        _newest(obj)
     elif args.total:
-        print(obj.total_archives())
-
+        _total_archives(obj)
     elif args.near:
-        _near_args = {}
-        if args.year:
-            _near_args["year"] = args.year
-        if args.year:
-            _near_args["month"] = args.month
-        if args.year:
-            _near_args["day"] = args.day
-        if args.year:
-            _near_args["hour"] = args.hour
-        if args.year:
-            _near_args["minute"] = args.minute
-        n_args = {x: y for x, y in _near_args.items() if y is not None}
-        print(obj.near(**n_args))
-
+        _near(obj, args)
     elif args.get:
-        if args.get.lower() == "url":
-            print(obj.get())
-
-        elif args.get.lower() == "oldest":
-            print(obj.get(obj.oldest()))
-
-        elif args.get.lower() == "latest" or args.get.lower() == "newest":
-            print(obj.get(obj.newest()))
-
-        elif args.get.lower() == "save":
-            print(obj.get(obj.save()))
-
-        else:
-            print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
-            \n1) url - get the source code of the url specified using --url/-u.\
-            \n2) oldest - get the source code of the oldest archive for the supplied url.\
-            \n3) latest - get the source code of the latest archive for the supplied url.\
-            \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
+        _get(obj, args)
     else:
         print("Please specify any operation as an argument. Use 'waybackpy --help' for help using wayback.\
         \nLatest docs and version available at https://github.com/akamhy/waybackpy ")
 
 
 if __name__ == "__main__":
-    command_line()
-
+    main()
