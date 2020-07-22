@@ -224,10 +224,24 @@ print(archive_count) # total_archives() returns an int
 
 #### Save
 ```bash
-waybackpy --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent" --save
+$ waybackpy --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent" --save
+https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashSave></sub>
 
+#### Oldest archive
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --oldest
+https://web.archive.org/web/20040803000845/http://en.wikipedia.org:80/wiki/SpaceX
+```
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashOldest></sub>
+
+#### Newest archive
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/YouTube" --user_agent "my-unique-user-agent" --newest
+https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
+```
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNewest></sub>
 
 
 ## Tests
