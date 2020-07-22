@@ -40,7 +40,7 @@ Table of contents
     * [Oldest archive](#oldest-archive)
     * [Newest archive](#newest-archive)
     * [Total archives](#total-number-of-archives)
-    * [Archive near a time](#archive-near-to-time-specified)
+    * [Archive near a time](#archive-near-time)
 
 * [Tests](#tests)
 
@@ -256,7 +256,7 @@ $ waybackpy --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashTotal></sub>
 
-#### Archive near to time specified
+#### Archive near time
 ```bash
 $ waybackpy --url facebook.com --user_agent "my-unique-user-agent" --near --year 2012 --month 5 --day 12
 https://web.archive.org/web/20120512142515/https://www.facebook.com/
