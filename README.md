@@ -53,6 +53,8 @@ pip install waybackpy
 
 ## Usage
 
+### As a python package
+
 #### Capturing aka Saving an url using save()
 ```python
 import waybackpy
@@ -217,6 +219,16 @@ print(archive_count) # total_archives() returns an int
 2440
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
+
+### With the CLI
+
+#### Save
+```bash
+waybackpy --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent" --save
+```
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashSave></sub>
+
+
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
