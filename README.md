@@ -41,6 +41,7 @@ Table of contents
     * [Newest archive](#newest-archive)
     * [Total archives](#total-number-of-archives)
     * [Archive near a time](#archive-near-time)
+    * [Get the source code](#get-the-source-code)
 
 * [Tests](#tests)
 
@@ -262,6 +263,15 @@ $ waybackpy --url facebook.com --user_agent "my-unique-user-agent" --near --year
 https://web.archive.org/web/20120512142515/https://www.facebook.com/
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNear></sub>
+
+#### Get the source code
+```bash
+$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
+$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
+$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
+$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
+```
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
 
 ## Tests
 * [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
