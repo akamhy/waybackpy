@@ -20,7 +20,7 @@ def test_clean_url():
     test_url = " https://en.wikipedia.org/wiki/Network security "
     answer = "https://en.wikipedia.org/wiki/Network_security"
     target = waybackpy.Url(test_url, user_agent)
-    test_result = target.clean_url()
+    test_result = target._clean_url()
     assert answer == test_result
 
 
@@ -150,7 +150,7 @@ def test_get():
 
 
 def test_wayback_timestamp():
-    ts = waybackpy.Url("https://www.google.com", "UA").wayback_timestamp(
+    ts = waybackpy._wayback_timestamp(
         year=2020, month=1, day=2, hour=3, minute=4
     )
     assert "202001020304" in str(ts)
@@ -162,7 +162,7 @@ def test_get_response():
         "Gecko/20100101 Firefox/78.0"
     }
     req = Request("https://www.google.com", headers=hdr)  # nosec
-    response = waybackpy.Url("https://www.google.com", "UA").get_response(req)
+    response = waybackpy.Url("https://www.google.com", "UA")._get_response(req)
     assert response.code == 200
 
 
