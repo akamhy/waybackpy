@@ -162,7 +162,7 @@ def test_get_response():
         "Gecko/20100101 Firefox/78.0"
     }
     req = Request("https://www.google.com", headers=hdr)  # nosec
-    response = waybackpy.Url("https://www.google.com", "UA")._get_response(req)
+    response = waybackpy._get_response(req)
     assert response.code == 200
 
 

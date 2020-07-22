@@ -43,6 +43,18 @@ def _wayback_timestamp(**kwargs):
     )
 
 
+def _get_response(req):
+    """Get response for the supplied request."""
+    try:
+        response = urlopen(req)  # nosec
+    except Exception:
+        try:
+            response = urlopen(req)  # nosec
+        except Exception as e:
+            raise WaybackError(e)
+    return response
+
+
 class Url:
     """waybackpy Url object"""
 
@@ -74,7 +86,7 @@ class Url:
         request_url = "https://web.archive.org/save/" + self._clean_url()
         hdr = {"User-Agent": "%s" % self.user_agent}  # nosec
         req = Request(request_url, headers=hdr)  # nosec
-        header = self._get_response(req).headers
+        header = _get_response(req).headers
         return "https://" + _archive_url_parser(header)
 
     def _get(self, url="", user_agent="", encoding=""):
@@ -88,24 +100,13 @@ class Url:
 
         hdr = {"User-Agent": "%s" % user_agent}
         req = Request(url, headers=hdr)  # nosec
-        response = self._get_response(req)
+        response = _get_response(req)
         if not encoding:
             try:
                 encoding = response.headers["content-type"].split("charset=")[-1]
             except AttributeError:
                 encoding = "UTF-8"
         return response.read().decode(encoding.replace("text/html", "UTF-8", 1))
-
-    def _get_response(self, req):
-        """Get response for the supplied request."""
-        try:
-            response = urlopen(req)  # nosec
-        except Exception:
-            try:
-                response = urlopen(req)  # nosec
-            except Exception as e:
-                raise WaybackError(e)
-        return response
 
     def near(self, year=None, month=None, day=None, hour=None, minute=None):
         """Return the closest Wayback Machine archive to the time supplied.
@@ -128,7 +129,7 @@ class Url:
         )
         hdr = {"User-Agent": "%s" % self.user_agent}
         req = Request(request_url, headers=hdr)  # nosec
-        response = self._get_response(req)
+        response = _get_response(req)
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
             raise WaybackError(
@@ -162,6 +163,6 @@ class Url:
             % self._clean_url()
         )
         req = Request(request_url, headers=hdr)  # nosec
-        response = self._get_response(req)
+        response = _get_response(req)
         # Most efficient method to count number of archives (yet)
         return str(response.read()).count(",")
