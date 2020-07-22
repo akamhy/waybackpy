@@ -98,7 +98,7 @@ def main():
         _get(obj, args)
     else:
         print("Usage: waybackpy [OPTIONS] --url [URL...] --user_agent [USER AGENT].\
-        \nwaybackpy: error: You must provide at least one URL. See --help\
+        \nwaybackpy: error: You must provide one URL. See --help\
         \nLatest docs and version available at https://github.com/akamhy/waybackpy")
 
 
