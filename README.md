@@ -56,7 +56,10 @@ Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 ```bash
 pip install waybackpy
 ```
-
+or direct from this repository using git.
+```bash
+pip install git+https://github.com/akamhy/waybackpy.git
+```
 
 ## Usage
 
