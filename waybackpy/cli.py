@@ -44,7 +44,7 @@ def _get(obj, args):
         print(obj.get(obj.save()))
 
     else:
-        print("Please use get as \"--get 'source'\", 'source' can be one of the followings: \
+        print("Use get as \"--get 'source'\", 'source' can be one of the followings: \
         \n1) url - get the source code of the url specified using --url/-u.\
         \n2) oldest - get the source code of the oldest archive for the supplied url.\
         \n3) newest - get the source code of the newest archive for the supplied url.\
@@ -59,19 +59,19 @@ def main():
     parser.add_argument("-n", "--newest", action='store_true', help="Newest archive for the specified URL.")
     parser.add_argument("-t", "--total", action='store_true', help="Total number of archives for the specified URL.")
     parser.add_argument("-g", "--get", help="Prints the source code of the supplied url. Use '--get help' for extended usage.")
-
-    parser.add_argument("-n", "--near", action='store_true', help="Latest/Newest archive for the specified URL.")
-    parser.add_argument("-y", "--year", type=int, help="Year in integer. For use with --near.")
-    parser.add_argument("-M", "--month", type=int, help="Month in integer. For use with --near.")
-    parser.add_argument("-d", "--day", type=int, help="Day in integer. For use with --near.")
-    parser.add_argument("-H", "--hour", type=int, help="Hour in integer. For use with --near.")
-    parser.add_argument("-m", "--minute", type=int, help="Minute in integer. For use with --near.")
     parser.add_argument("-v", "--version", action='store_true', help="Prints the waybackpy version.")
+
+    parser.add_argument("-N", "--near", action='store_true', help="Latest/Newest archive for the specified URL.")
+    parser.add_argument("-Y", "--year", type=int, help="Year in integer. For use with --near.")
+    parser.add_argument("-M", "--month", type=int, help="Month in integer. For use with --near.")
+    parser.add_argument("-D", "--day", type=int, help="Day in integer. For use with --near.")
+    parser.add_argument("-H", "--hour", type=int, help="Hour in integer. For use with --near.")
+    parser.add_argument("-MIN", "--minute", type=int, help="Minute in integer. For use with --near.")
 
     args = parser.parse_args()
 
     if not args.url:
-        print("please specify an URL using \"--url https://mywebiste.com\". Use --help for help.")
+        print("Specify an URL using \"--url https://mywebiste.com\". Use --help for help.")
         return
 
     # create the object with or without the user_agent
