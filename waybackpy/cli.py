@@ -70,7 +70,7 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.url:
+    if not args.url and not args.version:
         print("Specify an URL using \"--url https://mywebiste.com\". Use --help for help.")
         return
 
@@ -97,7 +97,7 @@ def main():
     elif args.version:
         print(__version__)
     else:
-        print("Usage: youtube-dl [OPTIONS] URL [URL...].\
+        print("Usage: waybackpy [OPTIONS] --url [URL...] --user_agent [USER AGENT].\
         \nwaybackpy: error: You must provide at least one URL. See --help\
         \nLatest docs and version available at https://github.com/akamhy/waybackpy")
 
