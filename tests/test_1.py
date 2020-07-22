@@ -5,7 +5,7 @@ import random
 import time
 
 sys.path.append("..")
-import waybackpy  # noqa: E402
+import waybackpy.wrapper as waybackpy  # noqa: E402
 
 if sys.version_info >= (3, 0):  # If the python ver >= 3
     from urllib.request import Request, urlopen
@@ -146,7 +146,7 @@ def test_newest():
 
 def test_get():
     target = waybackpy.Url("google.com", user_agent)
-    assert "Welcome to Google" in target.get(target.oldest())
+    assert "Welcome to Google" in target._get(target.oldest())
 
 
 def test_wayback_timestamp():
