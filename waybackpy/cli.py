@@ -84,8 +84,6 @@ def main():
     else:
         obj = Url(args.url)
 
-    print(repr(obj))
-
     if args.save:
         _save(obj)
     elif args.oldest:
