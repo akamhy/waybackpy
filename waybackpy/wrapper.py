@@ -51,9 +51,11 @@ def _get_response(req):
         try:
             response = urlopen(req)  # nosec
         except Exception as e:
-            raise WaybackError(e)
+            exc = WaybackError("Error while retrieving %s" % req.full_ur
+            )
+            exc.__cause__ = e
+            raise exc
     return response
-
 
 class Url:
     """waybackpy Url object"""
@@ -107,19 +109,6 @@ class Url:
             except AttributeError:
                 encoding = "UTF-8"
         return response.read().decode(encoding.replace("text/html", "UTF-8", 1))
-
-    def get_response(self, req):
-        """Get response for the supplied request."""
-        try:
-            response = urlopen(req) #nosec
-        except Exception:
-            try:
-                 response = urlopen(req) #nosec
-            except Exception as e:
-                exc = WaybackError("Error while retrieving %s" % req.full_url)
-                exc.__cause__ = e
-                raise exc
-        return response
 
     def near(self, year=None, month=None, day=None, hour=None, minute=None):
         """ Return the closest Wayback Machine archive to the time supplied.
