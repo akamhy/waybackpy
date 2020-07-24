@@ -35,17 +35,16 @@ def _get(obj, args):
     if args.get.lower() == "url":
         return (obj.get())
 
-    elif args.get.lower() == "oldest":
+    if args.get.lower() == "oldest":
         return (obj.get(obj.oldest()))
 
-    elif args.get.lower() == "latest" or args.get.lower() == "newest":
+    if args.get.lower() == "latest" or args.get.lower() == "newest":
         return (obj.get(obj.newest()))
 
-    elif args.get.lower() == "save":
+    if args.get.lower() == "save":
         return (obj.get(obj.save()))
 
-    else:
-        return ("Use get as \"--get 'source'\", 'source' can be one of the followings: \
+    return ("Use get as \"--get 'source'\", 'source' can be one of the followings: \
         \n1) url - get the source code of the url specified using --url/-u.\
         \n2) oldest - get the source code of the oldest archive for the supplied url.\
         \n3) newest - get the source code of the newest archive for the supplied url.\
@@ -65,18 +64,17 @@ def args_handler(args):
 
     if args.save:
         return _save(obj)
-    elif args.oldest:
+    if args.oldest:
         return _oldest(obj)
-    elif args.newest:
+    if args.newest:
         return _newest(obj)
-    elif args.total:
+    if args.total:
         return _total_archives(obj)
-    elif args.near:
+    if args.near:
         return _near(obj, args)
-    elif args.get:
+    if args.get:
         return _get(obj, args)
-    else:
-        return ("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help for help using waybackpy.")
+    return ("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help for help using waybackpy.")
 
 def parse_args(argv):
     parser = argparse.ArgumentParser()
