@@ -41,7 +41,7 @@ def test_total_archives():
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=True, version=False,
     oldest=False, save=False, newest=False, near=False, get=None)
     reply = cli.args_handler(args)
-    assert type(reply) is int
+    assert isinstance(reply, int)
 
 def test_near():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
