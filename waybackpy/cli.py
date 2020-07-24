@@ -94,7 +94,9 @@ def parse_args(argv):
     parser.add_argument("-MIN", "--minute", type=int, help="Minute in integer. For use with --near.")
     return parser.parse_args(argv[1:])
 
-def main(argv):
+def main(argv=None):
+    if args is None:
+        args = sys.argv
     args = parse_args(argv)
     output = args_handler(args)
     print(output)
