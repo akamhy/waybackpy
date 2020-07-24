@@ -26,7 +26,7 @@ def test_clean_url():
 def test_dunders():
     url = "https://en.wikipedia.org/wiki/Network_security"
     user_agent = "UA"
-    target = waybackpy.Url(test_url, user_agent)
+    target = waybackpy.Url(url, user_agent)
     assert "waybackpy.Url(url=%s, user_agent=%s)" % (url, user_agent) == repr(target)
     assert len(target) == len(url)
     assert str(target) == url
@@ -35,7 +35,7 @@ def test_archive_url_parser():
     request_url = "https://amazon.com"
     hdr = {"User-Agent": user_agent}  # nosec
     req = Request(request_url, headers=hdr)  # nosec
-    header = _get_response(req).headers
+    header = waybackpy._get_response(req).headers
     with pytest.raises(Exception):
         waybackpy._archive_url_parser(header)
 
