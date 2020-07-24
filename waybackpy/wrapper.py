@@ -51,8 +51,7 @@ def _get_response(req):
         try:
             response = urlopen(req)  # nosec
         except Exception as e:
-            exc = WaybackError("Error while retrieving %s" % req.full_ur
-            )
+            exc = WaybackError("Error while retrieving %s" % req.full_url)
             exc.__cause__ = e
             raise exc
     return response
