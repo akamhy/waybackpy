@@ -95,8 +95,8 @@ def parse_args(argv):
     return parser.parse_args(argv[1:])
 
 def main(argv=None):
-    if args is None:
-        args = sys.argv
+    if argv is None:
+        argv = sys.argv
     args = parse_args(argv)
     output = args_handler(args)
     print(output)
