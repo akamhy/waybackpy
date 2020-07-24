@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+import sys
 import argparse
 from waybackpy.wrapper import Url
 from waybackpy.__version__ import __version__
@@ -55,8 +56,7 @@ def args_handler(args):
         return (__version__)
 
     if not args.url:
-        return ("Specify an URL. See --help")
-
+        return ("Specify an URL. See --help for help using waybackpy.")
 
     if args.user_agent:
         obj = Url(args.url, args.user_agent)
@@ -76,9 +76,9 @@ def args_handler(args):
     elif args.get:
         return _get(obj, args)
     else:
-        return ("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help")
+        return ("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help for help using waybackpy.")
 
-def main():
+def parse_args(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--url", help="URL on which Wayback machine operations would occur.")
     parser.add_argument("-ua", "--user_agent", help="User agent, default user_agent is \"waybackpy python package - https://github.com/akamhy/waybackpy\".")
@@ -88,19 +88,18 @@ def main():
     parser.add_argument("-t", "--total", action='store_true', help="Total number of archives for the specified URL.")
     parser.add_argument("-g", "--get", help="Prints the source code of the supplied url. Use '--get help' for extended usage.")
     parser.add_argument("-v", "--version", action='store_true', help="Prints the waybackpy version.")
-
     parser.add_argument("-N", "--near", action='store_true', help="Latest/Newest archive for the specified URL.")
     parser.add_argument("-Y", "--year", type=int, help="Year in integer. For use with --near.")
     parser.add_argument("-M", "--month", type=int, help="Month in integer. For use with --near.")
     parser.add_argument("-D", "--day", type=int, help="Day in integer. For use with --near.")
     parser.add_argument("-H", "--hour", type=int, help="Hour in integer. For use with --near.")
     parser.add_argument("-MIN", "--minute", type=int, help="Minute in integer. For use with --near.")
+    return parser.parse_args(argv[1:])
 
-    args = parser.parse_args()
-
-    print(args_handler(args))
-
-
+def main(argv):
+    args = parse_args(argv)
+    output = args_handler(args)
+    print(output)
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv))
