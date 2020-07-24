@@ -5,16 +5,16 @@ from waybackpy.wrapper import Url
 from waybackpy.__version__ import __version__
 
 def _save(obj):
-    print(obj.save())
+    return (obj.save())
 
 def _oldest(obj):
-    print(obj.oldest())
+    return (obj.oldest())
 
 def _newest(obj):
-    print(obj.newest())
+    return (obj.newest())
 
 def _total_archives(obj):
-    print(obj.total_archives())
+    return (obj.total_archives())
 
 def _near(obj, args):
     _near_args = {}
@@ -28,27 +28,55 @@ def _near(obj, args):
         _near_args["hour"] = args.hour
     if args.minute:
         _near_args["minute"] = args.minute
-    print(obj.near(**_near_args))
+    return (obj.near(**_near_args))
 
 def _get(obj, args):
     if args.get.lower() == "url":
-        print(obj.get())
+        return (obj.get())
 
     elif args.get.lower() == "oldest":
-        print(obj.get(obj.oldest()))
+        return (obj.get(obj.oldest()))
 
     elif args.get.lower() == "latest" or args.get.lower() == "newest":
-        print(obj.get(obj.newest()))
+        return (obj.get(obj.newest()))
 
     elif args.get.lower() == "save":
-        print(obj.get(obj.save()))
+        return (obj.get(obj.save()))
 
     else:
-        print("Use get as \"--get 'source'\", 'source' can be one of the followings: \
+        return ("Use get as \"--get 'source'\", 'source' can be one of the followings: \
         \n1) url - get the source code of the url specified using --url/-u.\
         \n2) oldest - get the source code of the oldest archive for the supplied url.\
         \n3) newest - get the source code of the newest archive for the supplied url.\
         \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
+
+def args_handler(args):
+    if args.version:
+        return (__version__)
+
+    if not args.url:
+        return ("Specify an URL. See --help")
+
+
+    if args.user_agent:
+        obj = Url(args.url, args.user_agent)
+    else:
+        obj = Url(args.url)
+
+    if args.save:
+        return _save(obj)
+    elif args.oldest:
+        return _oldest(obj)
+    elif args.newest:
+        return _newest(obj)
+    elif args.total:
+        return _total_archives(obj)
+    elif args.near:
+        return _near(obj, args)
+    elif args.get:
+        return _get(obj, args)
+    else:
+        return ("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -70,34 +98,8 @@ def main():
 
     args = parser.parse_args()
 
-    if args.version:
-        print(__version__)
-        return
+    print(args_handler(args))
 
-    if not args.url:
-        print("Specify an URL. See --help")
-        return
-
-    # create the object with or without the user_agent
-    if args.user_agent:
-        obj = Url(args.url, args.user_agent)
-    else:
-        obj = Url(args.url)
-
-    if args.save:
-        _save(obj)
-    elif args.oldest:
-        _oldest(obj)
-    elif args.newest:
-        _newest(obj)
-    elif args.total:
-        _total_archives(obj)
-    elif args.near:
-        _near(obj, args)
-    elif args.get:
-        _get(obj, args)
-    else:
-        print("Usage: waybackpy --url [URL] --user_agent [USER AGENT] [OPTIONS]. See --help")
 
 
 if __name__ == "__main__":
