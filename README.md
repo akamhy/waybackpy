@@ -230,7 +230,7 @@ print(archive_count) # total_archives() returns an int
 ```
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
 
-### With the CLI
+### With the Command-line interface
 
 #### Save
 ```bash
