@@ -28,14 +28,14 @@ Table of contents
 * [Installation](#installation)
 
 * [Usage](#usage)
-  * [As a python package](#as-a-python-package)
+  * [As a Python package](#as-a-python-package)
     * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
     * [Receiving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
     * [Receiving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
     * [Receiving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL using total_archives()](#count-total-archives-for-an-url-using-total_archives)
-  * [With CLI](#with-the-cli)
+  * [With Command-line interface](#with-the-command-line-interface)
     * [Save](#save)
     * [Oldest archive](#oldest-archive)
     * [Newest archive](#newest-archive)
@@ -63,7 +63,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ## Usage
 
-### As a python package
+### As a Python package
 
 #### Capturing aka Saving an url using save()
 ```python
