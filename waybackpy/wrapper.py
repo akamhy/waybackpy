@@ -140,7 +140,7 @@ class Url:
         data = json.loads(response.read().decode("UTF-8"))
         if not data["archived_snapshots"]:
             raise WaybackError(
-                "'%s' is not yet archived. Use wayback.Url(url, user_agent).save() "
+                "Can not find archive for '%s' try later or use wayback.Url(url, user_agent).save() "
                 "to create a new archive." % self._clean_url()
             )
         archive_url = data["archived_snapshots"]["closest"]["url"]
