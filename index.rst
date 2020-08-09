@@ -1,9 +1,9 @@
 waybackpy
 =========
 
-|Build Status| |Downloads| |Release| |Codacy Badge| |License: MIT|
-|Maintainability| |CodeFactor| |made-with-python| |pypi| |PyPI - Python
-Version| |Maintenance| |codecov| |image12| |contributions welcome|
+|contributions welcome| |Build Status| |codecov| |Downloads| |Release|
+|Codacy Badge| |Maintainability| |CodeFactor| |made-with-python| |pypi|
+|PyPI - Python Version| |Maintenance| |Repo size| |License: MIT|
 
 |Internet Archive| |Wayback Machine|
 
@@ -22,7 +22,7 @@ Table of contents
 -  `Installation <#installation>`__
 
 -  `Usage <#usage>`__
--  `As a python package <#as-a-python-package>`__
+-  `As a Python package <#as-a-python-package>`__
 
    -  `Saving an url using
       save() <#capturing-aka-saving-an-url-using-save>`__
@@ -38,7 +38,7 @@ Table of contents
    -  `Count total archives for an URL using
       total\_archives() <#count-total-archives-for-an-url-using-total_archives>`__
 
--  `With CLI <#with-the-cli>`__
+-  `With Command-line interface <#with-the-command-line-interface>`__
 
    -  `Save <#save>`__
    -  `Oldest archive <#oldest-archive>`__
@@ -75,7 +75,7 @@ or direct from this repository using git.
 Usage
 -----
 
-As a python package
+As a Python package
 ~~~~~~~~~~~~~~~~~~~
 
 Capturing aka Saving an url using save()
@@ -269,8 +269,8 @@ Count total archives for an URL using total\_archives()
 Try this out in your browser @
 https://repl.it/@akamhy/WaybackPyTotalArchivesExample\ 
 
-With the CLI
-~~~~~~~~~~~~
+With the Command-line interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Save
 ^^^^
@@ -348,8 +348,8 @@ Tests
 Dependency
 ----------
 
--  None, just python standard libraries (re, json, urllib, argparse and datetime).
-   Both python 2 and 3 are supported :)
+-  None, just python standard libraries (re, json, urllib, argparse and
+   datetime). Both python 2 and 3 are supported :)
 
 License
 -------
@@ -357,16 +357,17 @@ License
 `MIT
 License <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
 
+.. |contributions welcome| image:: https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square
 .. |Build Status| image:: https://img.shields.io/travis/akamhy/waybackpy.svg?label=Travis%20CI&logo=travis&style=flat-square
    :target: https://travis-ci.org/akamhy/waybackpy
-.. |Downloads| image:: https://img.shields.io/pypi/dm/waybackpy.svg
-   :target: https://pypistats.org/packages/waybackpy
+.. |codecov| image:: https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/akamhy/waybackpy
+.. |Downloads| image:: https://pepy.tech/badge/waybackpy/month
+   :target: https://pepy.tech/project/waybackpy/month
 .. |Release| image:: https://img.shields.io/github/v/release/akamhy/waybackpy.svg
    :target: https://github.com/akamhy/waybackpy/releases
 .. |Codacy Badge| image:: https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65
    :target: https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&utm_medium=referral&utm_content=akamhy/waybackpy&utm_campaign=Badge_Grade
-.. |License: MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
-   :target: https://github.com/akamhy/waybackpy/blob/master/LICENSE
 .. |Maintainability| image:: https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability
    :target: https://codeclimate.com/github/akamhy/waybackpy/maintainability
 .. |CodeFactor| image:: https://www.codefactor.io/repository/github/akamhy/waybackpy/badge
@@ -374,12 +375,12 @@ License <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
 .. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
    :target: https://www.python.org/
 .. |pypi| image:: https://img.shields.io/pypi/v/waybackpy.svg
+   :target: https://pypi.org/project/waybackpy/
 .. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square
 .. |Maintenance| image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
    :target: https://github.com/akamhy/waybackpy/graphs/commit-activity
-.. |codecov| image:: https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/akamhy/waybackpy
-.. |image12| image:: https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square
-.. |contributions welcome| image:: https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square
+.. |Repo size| image:: https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square
+.. |License: MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+   :target: https://github.com/akamhy/waybackpy/blob/master/LICENSE
 .. |Internet Archive| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png
 .. |Wayback Machine| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wayback_Machine_logo_2010.svg/284px-Wayback_Machine_logo_2010.svg.png
