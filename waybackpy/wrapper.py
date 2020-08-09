@@ -20,11 +20,17 @@ def _archive_url_parser(header):
     """Parse out the archive from header."""
     # Regex1
     arch = re.search(
+        r"Content-Location: (/web/[0-9]{14}/.*)", str(header)
+    )
+    if arch:
+        return "web.archive.org" + arch.group(1)
+    # Regex2
+    arch = re.search(
         r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>", str(header)
     )
     if arch:
         return arch.group(1)
-    # Regex2
+    # Regex3
     arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
     if arch:
         return arch.group(1)
