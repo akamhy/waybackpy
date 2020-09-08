@@ -17,7 +17,7 @@
 
 ![Wayback Machine](https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png)
 
-Waybackpy is a Python library that interfaces with the [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive pages and retrieve archived pages easily.
+Waybackpy is a Python library that interfaces with the [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
 
 Table of contents
 =================
@@ -28,9 +28,9 @@ Table of contents
 * [Usage](#usage)
   * [As a Python package](#as-a-python-package)
     * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
-    * [Receiving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
-    * [Receiving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
-    * [Receiving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+    * [Retrieving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
+    * [Retrieving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
+    * [Retrieving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL using total_archives()](#count-total-archives-for-an-url-using-total_archives)
   * [With Command-line interface](#with-the-command-line-interface)
@@ -83,7 +83,7 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 
 
 
-#### Receiving the oldest archive for an URL using oldest()
+#### Retrieving the oldest archive for an URL using oldest()
 ```python
 import waybackpy
 
@@ -103,7 +103,7 @@ http://web.archive.org/web/19981111184551/http://google.com:80/
 
 
 
-#### Receiving the newest archive for an URL using newest()
+#### Retrieving the newest archive for an URL using newest()
 ```python
 import waybackpy
 
@@ -123,7 +123,7 @@ https://web.archive.org/web/20200714013225/https://www.facebook.com/
 
 
 
-#### Receiving archive close to a specified year, month, day, hour, and minute using near()
+#### Retrieving archive close to a specified year, month, day, hour, and minute using near()
 ```python
 from waybackpy import Url
 
