@@ -100,12 +100,12 @@ def args_handler(args):
         return _oldest(obj)
     if args.newest:
         return _newest(obj)
+    if args.known_urls:
+        return _known_urls(obj, args)
     if args.total:
         return _total_archives(obj)
     if args.near:
         return _near(obj, args)
-    if args.known_urls:
-        return _known_urls(obj, args)
     if args.get:
         return _get(obj, args)
     return ("You only specified the URL. But you also need to specify the operation.\nSee 'waybackpy --help' for help using this tool.")
