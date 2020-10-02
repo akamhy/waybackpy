@@ -33,7 +33,7 @@ Table of contents
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
-    * [List of URLs that Wayback Machine knows and has archived for a domain name](#list-of-urls-that-wayback-machine-knows-and-has-archived-for-a-domain-name)
+    * [List of URLs that Wayback Machine knows and has archived for a domain name](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
 
   * [As a Command-line tool](#with-the-command-line-interface)
     * [Save](#save)
