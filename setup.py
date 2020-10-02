@@ -19,7 +19,7 @@ setup(
     author = about['__author__'],
     author_email = about['__author_email__'],
     url = about['__url__'],
-    download_url = 'https://github.com/akamhy/waybackpy/archive/2.1.8.tar.gz',
+    download_url = 'https://github.com/akamhy/waybackpy/archive/2.1.9.tar.gz',
     keywords = ['wayback', 'archive', 'archive website', 'wayback machine', 'Internet Archive'],
     install_requires=[],
     python_requires= ">=2.7",
