@@ -50,11 +50,15 @@ Table of contents
 <!--te-->
 
 ## Installation
+
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
+
 ```bash
 pip install waybackpy
 ```
+
 or direct from this repository using git.
+
 ```bash
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
@@ -64,6 +68,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 ### As a Python package
 
 #### Capturing aka Saving an url using save()
+
 ```python
 import waybackpy
 
@@ -71,19 +76,20 @@ new_archive_url = waybackpy.Url(
 
     url = "https://en.wikipedia.org/wiki/Multivariable_calculus",
     user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
-    
+
 ).save()
 
 print(new_archive_url)
 ```
+
 ```bash
 https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
 
-
-
 #### Retrieving the oldest archive for an URL using oldest()
+
 ```python
 import waybackpy
 
@@ -91,19 +97,19 @@ oldest_archive_url = waybackpy.Url(
 
     "https://www.google.com/",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-    
 ).oldest()
 
 print(oldest_archive_url)
 ```
+
 ```bash
 http://web.archive.org/web/19981111184551/http://google.com:80/
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyOldestExample></sub>
 
-
-
 #### Retrieving the newest archive for an URL using newest()
+
 ```python
 import waybackpy
 
@@ -111,19 +117,20 @@ newest_archive_url = waybackpy.Url(
 
     "https://www.facebook.com/",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
-    
+
 ).newest()
 
 print(newest_archive_url)
 ```
+
 ```bash
 https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
 
-
-
 #### Retrieving archive close to a specified year, month, day, hour, and minute using near()
+
 ```python
 from waybackpy import Url
 
@@ -135,35 +142,43 @@ github_wayback_obj = Url(github_url, user_agent)
 
 # Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 ```
+
 ```python
 github_archive_near_2010 = github_wayback_obj.near(year=2010)
 print(github_archive_near_2010)
 ```
+
 ```bash
 https://web.archive.org/web/20100719134402/http://github.com/
 ```
+
 ```python
 github_archive_near_2011_may = github_wayback_obj.near(year=2011, month=5)
 print(github_archive_near_2011_may)
 ```
+
 ```bash
 https://web.archive.org/web/20110519185447/https://github.com/
 ```
+
 ```python
 github_archive_near_2015_january_26 = github_wayback_obj.near(
     year=2015, month=1, day=26
 )
 print(github_archive_near_2015_january_26)
 ```
+
 ```bash
 https://web.archive.org/web/20150127031159/https://github.com
 ```
+
 ```python
 github_archive_near_2018_4_july_9_2_am = github_wayback_obj.near(
     year=2018, month=7, day=4, hour = 9, minute = 2
 )
 print(github_archive_near_2018_4_july_9_2_am)
 ```
+
 ```bash
 https://web.archive.org/web/20180704090245/https://github.com/
 
@@ -173,9 +188,8 @@ https://web.archive.org/web/20180704090245/https://github.com/
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
-
-
 #### Get the content of webpage using get()
+
 ```python
 import waybackpy
 
@@ -205,10 +219,11 @@ google_oldest_archive_source = waybackpy_url_object.get(
 )
 print(google_oldest_archive_source)
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyGetExample#main.py></sub>
 
-
 #### Count total archives for an URL using total_archives()
+
 ```python
 import waybackpy
 
@@ -223,63 +238,79 @@ archive_count = waybackpy.Url(
 
 print(archive_count) # total_archives() returns an int
 ```
+
 ```bash
 2440
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
 
 ### With the Command-line interface
 
 #### Save
+
 ```bash
 $ waybackpy --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent" --save
 https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashSave></sub>
 
 #### Oldest archive
+
 ```bash
 $ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --oldest
 https://web.archive.org/web/20040803000845/http://en.wikipedia.org:80/wiki/SpaceX
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashOldest></sub>
 
 #### Newest archive
+
 ```bash
 $ waybackpy --url "https://en.wikipedia.org/wiki/YouTube" --user_agent "my-unique-user-agent" --newest
 https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNewest></sub>
 
 #### Total number of archives
+
 ```bash
 $ waybackpy --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent" --total
 853
+
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashTotal></sub>
 
 #### Archive near time
+
 ```bash
 $ waybackpy --url facebook.com --user_agent "my-unique-user-agent" --near --year 2012 --month 5 --day 12
 https://web.archive.org/web/20120512142515/https://www.facebook.com/
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNear></sub>
 
 #### Get the source code
+
 ```bash
-$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
-$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
-$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
-$ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
 ```
+
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
 
 ## Tests
-* [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
 
+[Here](https://github.com/akamhy/waybackpy/tree/master/tests)
 
 ## Dependency
-* None, just python standard libraries (re, json, urllib, argparse and datetime). Both python 2 and 3 are supported :)
+
+None, just python standard libraries (re, json, urllib, argparse and datetime). Both python 2 and 3 are supported :)
 
 ## Packaging
 
@@ -290,7 +321,6 @@ $ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Sa
 3. Sign & upload the package ``twine upload -s dist/*``.
 
 ## License
+
 Released under the MIT License. See
 [license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
-
-
