@@ -100,8 +100,10 @@ class Url:
         """Return the source code of the supplied URL.
         If encoding is not supplied, it is auto-detected from the response.
         """
+        
         if not url:
             url = self._clean_url()
+
         if not user_agent:
             user_agent = self.user_agent
 
@@ -173,3 +175,50 @@ class Url:
         response = _get_response(req)
         # Most efficient method to count number of archives (yet)
         return str(response.read()).count(",")
+
+    def known_urls(self, alive=False, subdomain=False):
+        """Returns list of URLs known to exist for given domain name
+        because these URLs were crawled by WayBack Machine bots.
+
+        Useful for pen-testers and others.
+
+        Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
+        https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
+        """
+
+        url_list = []
+
+        if subdomain:
+            request_url = (
+            "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey" 
+            % self._clean_url()
+            )
+
+        else:
+            request_url = (
+            "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey" 
+            % self._clean_url()
+            )
+
+        hdr = {"User-Agent": "%s" % self.user_agent}
+        req = Request(request_url, headers=hdr)  # nosec
+        response = _get_response(req)
+
+        data = json.loads(response.read().decode("UTF-8"))
+        url_list = [y[0] for y in data if y[0] != "original"]
+
+        #Remove all deadURLs from url_list if alive=True
+        if alive:
+            tmp_url_list = []
+            for url in url_list:
+
+                try:
+                    urlopen(url)
+                except:
+                    continue
+
+                tmp_url_list.append(url)
+
+            url_list = tmp_url_list
+        
+        return url_list
