@@ -5,12 +5,14 @@ waybackpy
 |Codacy Badge| |Maintainability| |CodeFactor| |made-with-python| |pypi|
 |PyPI - Python Version| |Maintenance| |Repo size| |License: MIT|
 
-|Internet Archive| |Wayback Machine|
+.. figure:: https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png
+   :alt: Wayback Machine
 
-Waybackpy is a Python library that interfaces with the `Internet
+   Wayback Machine
+Waybackpy is a Python library that interfaces with `Internet
 Archive <https://en.wikipedia.org/wiki/Internet_Archive>`__'s `Wayback
 Machine <https://en.wikipedia.org/wiki/Wayback_Machine>`__ API. Archive
-pages and retrieve archived pages easily.
+webpages and retrieve archived webpages easily.
 
 Table of contents
 =================
@@ -24,21 +26,23 @@ Table of contents
 -  `Usage <#usage>`__
 -  `As a Python package <#as-a-python-package>`__
 
-   -  `Saving an url using
-      save() <#capturing-aka-saving-an-url-using-save>`__
-   -  `Receiving the oldest archive for an URL Using
-      oldest() <#receiving-the-oldest-archive-for-an-url-using-oldest>`__
-   -  `Receiving the recent most/newest archive for an URL using
-      newest() <#receiving-the-newest-archive-for-an-url-using-newest>`__
-   -  `Receiving archive close to a specified year, month, day, hour,
-      and minute using
-      near() <#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near>`__
-   -  `Get the content of webpage using
-      get() <#get-the-content-of-webpage-using-get>`__
-   -  `Count total archives for an URL using
-      total\_archives() <#count-total-archives-for-an-url-using-total_archives>`__
+   -  `Saving an url <#capturing-aka-saving-an-url-using-save>`__
+   -  `Retrieving the oldest
+      archive <#retrieving-the-oldest-archive-for-an-url-using-oldest>`__
+   -  `Retrieving the recent most/newest
+      archive <#retrieving-the-newest-archive-for-an-url-using-newest>`__
+   -  `Retrieving archive close to a specified year, month, day, hour,
+      and
+      minute <#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near>`__
+   -  `Get the content of
+      webpage <#get-the-content-of-webpage-using-get>`__
+   -  `Count total archives for an
+      URL <#count-total-archives-for-an-url-using-total_archives>`__
+   -  `List of URLs that Wayback Machine knows and has archived for a
+      domain
+      name <#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near>`__
 
--  `With Command-line interface <#with-the-command-line-interface>`__
+-  `As a Command-line tool <#with-the-command-line-interface>`__
 
    -  `Save <#save>`__
    -  `Oldest archive <#oldest-archive>`__
@@ -46,10 +50,14 @@ Table of contents
    -  `Total archives <#total-number-of-archives>`__
    -  `Archive near a time <#archive-near-time>`__
    -  `Get the source code <#get-the-source-code>`__
+   -  `Fetch all the URLs that the Wayback Machine knows for a
+      domain <#fetch-all-the-urls-that-the-wayback-machine-knows-for-a-domain>`__
 
 -  `Tests <#tests>`__
 
 -  `Dependency <#dependency>`__
+
+-  `Packaging <#packaging>`__
 
 -  `License <#license>`__
 
@@ -89,7 +97,7 @@ Capturing aka Saving an url using save()
 
         url = "https://en.wikipedia.org/wiki/Multivariable_calculus",
         user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
-        
+
     ).save()
 
     print(new_archive_url)
@@ -101,8 +109,8 @@ Capturing aka Saving an url using save()
 Try this out in your browser @
 https://repl.it/@akamhy/WaybackPySaveExample\ 
 
-Receiving the oldest archive for an URL using oldest()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Retrieving the oldest archive for an URL using oldest()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -112,7 +120,6 @@ Receiving the oldest archive for an URL using oldest()
 
         "https://www.google.com/",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-        
     ).oldest()
 
     print(oldest_archive_url)
@@ -124,8 +131,8 @@ Receiving the oldest archive for an URL using oldest()
 Try this out in your browser @
 https://repl.it/@akamhy/WaybackPyOldestExample\ 
 
-Receiving the newest archive for an URL using newest()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Retrieving the newest archive for an URL using newest()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -135,7 +142,7 @@ Receiving the newest archive for an URL using newest()
 
         "https://www.facebook.com/",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
-        
+
     ).newest()
 
     print(newest_archive_url)
@@ -147,8 +154,8 @@ Receiving the newest archive for an URL using newest()
 Try this out in your browser @
 https://repl.it/@akamhy/WaybackPyNewestExample\ 
 
-Receiving archive close to a specified year, month, day, hour, and minute using near()
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Retrieving archive close to a specified year, month, day, hour, and minute using near()
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -269,6 +276,35 @@ Count total archives for an URL using total\_archives()
 Try this out in your browser @
 https://repl.it/@akamhy/WaybackPyTotalArchivesExample\ 
 
+List of URLs that Wayback Machine knows and has archived for a domain name
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) If alive=True is set, waybackpy will check all URLs to identify the
+   alive URLs. Don't use with popular websites like google or it would
+   take too long.
+2) To include URLs from subdomain set sundomain=True
+
+.. code:: python
+
+    import waybackpy
+
+    URL = "akamhy.github.io"
+    UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
+
+    known_urls = waybackpy.Url(url=URL, user_agent=UA).known_urls(alive=True, subdomain=False) # alive and subdomain are optional.
+
+    print(known_urls) # known_urls() returns list of URLs
+
+.. code:: bash
+
+    ['http://akamhy.github.io',
+    'https://akamhy.github.io/waybackpy/',
+    'https://akamhy.github.io/waybackpy/assets/css/style.css?v=a418a4e4641a1dbaad8f3bfbf293fad21a75ff11',
+    'https://akamhy.github.io/waybackpy/assets/css/style.css?v=f881705d00bf47b5bf0c58808efe29eecba2226c']
+
+Try this out in your browser @
+https://repl.it/@akamhy/WaybackPyKnownURLsToWayBackMachineExample#main.py\ 
+
 With the Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -332,30 +368,73 @@ Get the source code
 
 .. code:: bash
 
-    $ waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
-    $ waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
-    $ waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
-    $ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
+    waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
+    waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
+    waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
+    waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
 
 Try this out in your browser @
 https://repl.it/@akamhy/WaybackPyBashGet\ 
 
+Fetch all the URLs that the Wayback Machine knows for a domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) You can add the '--alive' flag to only fetch alive links.
+2) You can add the '--subdomain' flag to add subdomains.
+3) '--alive' and '--subdomain' flags can be used simultaneously.
+4) All links will be saved in a file, and the file will be created in
+   the current working directory.
+
+.. code:: bash
+
+    pip install waybackpy
+
+    # Ignore the above installation line.
+
+    waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls 
+    # Prints all known URLs under akamhy.github.io
+
+
+    waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --alive 
+    # Prints all known URLs under akamhy.github.io which are still working and not dead links.
+
+
+    waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain 
+    # Prints all known URLs under akamhy.github.io inclusing subdomain
+
+
+    waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive 
+    # Prints all known URLs under akamhy.github.io including subdomain which are not dead links and still alive.
+
+Try this out in your browser @
+https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh\ 
+
 Tests
 -----
 
--  `Here <https://github.com/akamhy/waybackpy/tree/master/tests>`__
+`Here <https://github.com/akamhy/waybackpy/tree/master/tests>`__
 
 Dependency
 ----------
 
--  None, just python standard libraries (re, json, urllib, argparse and
-   datetime). Both python 2 and 3 are supported :)
+None, just python standard libraries (re, json, urllib, argparse and
+datetime). Both python 2 and 3 are supported :)
+
+Packaging
+---------
+
+1. Increment version.
+
+2. Build package ``python setup.py sdist bdist_wheel``.
+
+3. Sign & upload the package ``twine upload -s dist/*``.
 
 License
 -------
 
-`MIT
-License <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
+Released under the MIT License. See
+`license <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
+for details.
 
 .. |contributions welcome| image:: https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square
 .. |Build Status| image:: https://img.shields.io/travis/akamhy/waybackpy.svg?label=Travis%20CI&logo=travis&style=flat-square
@@ -382,5 +461,3 @@ License <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
 .. |Repo size| image:: https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square
 .. |License: MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://github.com/akamhy/waybackpy/blob/master/LICENSE
-.. |Internet Archive| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Internet_Archive_logo_and_wordmark.svg/84px-Internet_Archive_logo_and_wordmark.svg.png
-.. |Wayback Machine| image:: https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wayback_Machine_logo_2010.svg/284px-Wayback_Machine_logo_2010.svg.png
