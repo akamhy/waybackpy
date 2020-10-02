@@ -86,7 +86,7 @@ def test_get():
 def test_args_handler():
     args = argparse.Namespace(version=True)
     reply = cli.args_handler(args)
-    assert __version__ == reply
+    assert ("waybackpy version %s" % (__version__)) == reply
 
     args = argparse.Namespace(url=None, version=False)
     reply = cli.args_handler(args)
