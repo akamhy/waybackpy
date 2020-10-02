@@ -19,34 +19,34 @@ if sys.version_info > (3, 7):
 if codecov_python:
     def test_save():
         args = argparse.Namespace(user_agent=None, url="https://pypi.org/user/akamhy/", total=False, version=False,
-        oldest=False, save=True, newest=False, near=False, get=None)
+        oldest=False, save=True, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get=None)
         reply = cli.args_handler(args)
         assert "pypi.org/user/akamhy" in reply
 
 def test_oldest():
     args = argparse.Namespace(user_agent=None, url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=True, save=False, newest=False, near=False, get=None)
+    oldest=True, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get=None)
     reply = cli.args_handler(args)
     assert "pypi.org/user/akamhy" in reply
 
 def test_newest():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=False, save=False, newest=True, near=False, get=None)
+    oldest=False, save=False, newest=True, near=False, alive=False, subdomain=False, known_urls=False, get=None)
     reply = cli.args_handler(args)
     assert "pypi.org/user/akamhy" in reply
 
 def test_total_archives():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=True, version=False,
-    oldest=False, save=False, newest=False, near=False, get=None)
+    oldest=False, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get=None)
     reply = cli.args_handler(args)
     assert isinstance(reply, int)
 
 def test_near():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=False, save=False, newest=False, near=True, get=None, year=2020, month=7, day=15, hour=1, minute=1)
+    oldest=False, save=False, newest=False, near=True, alive=False, subdomain=False, known_urls=False, get=None, year=2020, month=7, day=15, hour=1, minute=1)
     reply = cli.args_handler(args)
     assert "202007" in reply
 
@@ -54,32 +54,32 @@ def test_near():
 def test_get():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=False, save=False, newest=False, near=False, get="url")
+    oldest=False, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="url")
     reply = cli.args_handler(args)
     assert "waybackpy" in reply
 
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=False, save=False, newest=False, near=False, get="oldest")
+    oldest=False, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="oldest")
     reply = cli.args_handler(args)
     assert "waybackpy" in reply
 
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=False, save=False, newest=False, near=False, get="newest")
+    oldest=False, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="newest")
     reply = cli.args_handler(args)
     assert "waybackpy" in reply
 
     if codecov_python:
         args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
         (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-        oldest=False, save=False, newest=False, near=False, get="save")
+        oldest=False, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="save")
         reply = cli.args_handler(args)
         assert "waybackpy" in reply
 
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-    oldest=False, save=False, newest=False, near=False, get="BullShit")
+    oldest=False, save=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="BullShit")
     reply = cli.args_handler(args)
     assert "get the source code of the" in reply
 

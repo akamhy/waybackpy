@@ -74,9 +74,10 @@ def test_save():
             url2 = "ha ha ha ha"
             waybackpy.Url(url2, user_agent)
         time.sleep(5)
+        url3 = "http://www.archive.is/faq.html"
         # Test for urls not allowed to archive by robot.txt. Doesn't works anymore. Find alternatives.
 #         with pytest.raises(Exception):
-#             url3 = "http://www.archive.is/faq.html"
+#             
 #             target = waybackpy.Url(
 #                 url3,
 #                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:25.0) "
@@ -86,10 +87,6 @@ def test_save():
 #         time.sleep(5)
         # Non existent urls, test
         with pytest.raises(Exception):
-            url4 = (
-                "https://githfgdhshajagjstgeths537agajaajgsagudadhuss87623"
-                "46887adsiugujsdgahub.us"
-            )
             target = waybackpy.Url(
                 url3,
                 "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) "
