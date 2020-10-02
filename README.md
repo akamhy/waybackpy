@@ -281,6 +281,16 @@ $ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Sa
 ## Dependency
 * None, just python standard libraries (re, json, urllib, argparse and datetime). Both python 2 and 3 are supported :)
 
+## Packaging
+
+1. Increment version.
+
+2. Build package ``python setup.py sdist bdist_wheel``.
+
+3. Sign & upload the package ``twine upload -s dist/*``.
 
 ## License
-[MIT License](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
+Released under the MIT License. See
+[license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
+
+
