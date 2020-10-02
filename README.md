@@ -32,7 +32,7 @@ Table of contents
     * [Retrieving the recent most/newest archive](#receiving-the-newest-archive-for-an-url-using-newest)
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
-    * [Count total archives for an URL using total_archives()](#count-total-archives-for-an-url-using-total_archives)
+    * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
   * [As a Command-line tool](#with-the-command-line-interface)
     * [Save](#save)
     * [Oldest archive](#oldest-archive)
