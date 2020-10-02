@@ -28,7 +28,7 @@ Table of contents
 * [Usage](#usage)
   * [As a Python package](#as-a-python-package)
     * [Saving an url](#capturing-aka-saving-an-url-using-save)
-    * [Retrieving the oldest archive](#receiving-the-oldest-archive-for-an-url-using-oldest)
+    * [Retrieving the oldest archive](#retrieving-the-oldest-archive-for-an-url-using-oldest)
     * [Retrieving the recent most/newest archive](#receiving-the-newest-archive-for-an-url-using-newest)
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage](#get-the-content-of-webpage-using-get)
