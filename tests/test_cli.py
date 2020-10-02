@@ -90,7 +90,7 @@ def test_args_handler():
 
     args = argparse.Namespace(url=None, version=False)
     reply = cli.args_handler(args)
-    assert ("waybackpy %s \nSee 'waybackpy --help" % (__version__)) == reply
+    assert ("waybackpy %s" % (__version__)) in reply
 
 def test_main():
     # This also tests the parse_args method in cli.py
