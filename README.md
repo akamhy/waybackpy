@@ -304,6 +304,36 @@ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
 
+####  Fetch all the URLs that the Wayback Machine knows for a domain
+1) You can add the '--alive' flag to only fetch alive links.
+2) You can add the '--subdomain' flag to add subdomains.
+3) '--alive' and '--subdomain' flags can be used simultaneously.
+4) All links will be saved in a file, and the file will be created in the current working directory.
+
+```bash
+pip install waybackpy
+
+# Ignore the above installation line.
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls 
+# Prints all known URLs under akamhy.github.io
+
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --alive 
+# Prints all known URLs under akamhy.github.io which are still working and not dead links.
+
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain 
+# Prints all known URLs under akamhy.github.io inclusing subdomain
+
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive 
+# Prints all known URLs under akamhy.github.io including subdomain which are not dead links and still alive.
+
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh></sub>
+
 ## Tests
 
 [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
