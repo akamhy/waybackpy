@@ -40,15 +40,16 @@ Table of contents
       URL <#count-total-archives-for-an-url-using-total_archives>`__
    -  `List of URLs that Wayback Machine knows and has archived for a
       domain
-      name <#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near>`__
+      name <#list-of-urls-that-wayback-machine-knows-and-has-archived-for-a-domain-name>`__
 
--  `As a Command-line tool <#with-the-command-line-interface>`__
+-  `With the Command-line
+   interface <#with-the-command-line-interface>`__
 
    -  `Save <#save>`__
    -  `Oldest archive <#oldest-archive>`__
    -  `Newest archive <#newest-archive>`__
    -  `Total archives <#total-number-of-archives>`__
-   -  `Archive near a time <#archive-near-time>`__
+   -  `Archive near specified time <#archive-near-time>`__
    -  `Get the source code <#get-the-source-code>`__
    -  `Fetch all the URLs that the Wayback Machine knows for a
       domain <#fetch-all-the-urls-that-the-wayback-machine-knows-for-a-domain>`__
