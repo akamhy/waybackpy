@@ -27,23 +27,28 @@ Table of contents
 
 * [Usage](#usage)
   * [As a Python package](#as-a-python-package)
-    * [Saving an url using save()](#capturing-aka-saving-an-url-using-save)
-    * [Retrieving the oldest archive for an URL Using oldest()](#receiving-the-oldest-archive-for-an-url-using-oldest)
-    * [Retrieving the recent most/newest archive for an URL using newest()](#receiving-the-newest-archive-for-an-url-using-newest)
-    * [Retrieving archive close to a specified year, month, day, hour, and minute using near()](#receiving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
-    * [Get the content of webpage using get()](#get-the-content-of-webpage-using-get)
-    * [Count total archives for an URL using total_archives()](#count-total-archives-for-an-url-using-total_archives)
-  * [With Command-line interface](#with-the-command-line-interface)
+    * [Saving an url](#capturing-aka-saving-an-url-using-save)
+    * [Retrieving the oldest archive](#retrieving-the-oldest-archive-for-an-url-using-oldest)
+    * [Retrieving the recent most/newest archive](#retrieving-the-newest-archive-for-an-url-using-newest)
+    * [Retrieving archive close to a specified year, month, day, hour, and minute](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+    * [Get the content of webpage](#get-the-content-of-webpage-using-get)
+    * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
+    * [List of URLs that Wayback Machine knows and has archived for a domain name](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+
+  * [As a Command-line tool](#with-the-command-line-interface)
     * [Save](#save)
     * [Oldest archive](#oldest-archive)
     * [Newest archive](#newest-archive)
     * [Total archives](#total-number-of-archives)
     * [Archive near a time](#archive-near-time)
     * [Get the source code](#get-the-source-code)
+    * [Fetch all the URLs that the Wayback Machine knows for a domain](#fetch-all-the-urls-that-the-wayback-machine-knows-for-a-domain)
 
 * [Tests](#tests)
 
 * [Dependency](#dependency)
+
+* [Packaging](#packaging)
 
 * [License](#license)
 
@@ -245,6 +250,31 @@ print(archive_count) # total_archives() returns an int
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
 
+####  List of URLs that Wayback Machine knows and has archived for a domain name
+
+1) If alive=True is set, waybackpy will check all URLs to identify the alive URLs. Don't use with popular websites like google or it would take too long.
+2) To include URLs from subdomain set sundomain=True
+
+```python
+import waybackpy
+
+URL = "akamhy.github.io"
+UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
+
+known_urls = waybackpy.Url(url=URL, user_agent=UA).known_urls(alive=True, subdomain=False) # alive and subdomain are optional.
+
+print(known_urls) # known_urls() returns list of URLs
+```
+
+```bash
+['http://akamhy.github.io',
+'https://akamhy.github.io/waybackpy/',
+'https://akamhy.github.io/waybackpy/assets/css/style.css?v=a418a4e4641a1dbaad8f3bfbf293fad21a75ff11',
+'https://akamhy.github.io/waybackpy/assets/css/style.css?v=f881705d00bf47b5bf0c58808efe29eecba2226c']
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyKnownURLsToWayBackMachineExample#main.py></sub>
+
 ### With the Command-line interface
 
 #### Save
@@ -303,6 +333,36 @@ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
+
+####  Fetch all the URLs that the Wayback Machine knows for a domain
+1) You can add the '--alive' flag to only fetch alive links.
+2) You can add the '--subdomain' flag to add subdomains.
+3) '--alive' and '--subdomain' flags can be used simultaneously.
+4) All links will be saved in a file, and the file will be created in the current working directory.
+
+```bash
+pip install waybackpy
+
+# Ignore the above installation line.
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls 
+# Prints all known URLs under akamhy.github.io
+
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --alive 
+# Prints all known URLs under akamhy.github.io which are still working and not dead links.
+
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain 
+# Prints all known URLs under akamhy.github.io inclusing subdomain
+
+
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive 
+# Prints all known URLs under akamhy.github.io including subdomain which are not dead links and still alive.
+
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh></sub>
 
 ## Tests
 
