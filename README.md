@@ -33,14 +33,14 @@ Table of contents
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
-    * [List of URLs that Wayback Machine knows and has archived for a domain name](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
+    * [List of URLs that Wayback Machine knows and has archived for a domain name](#list-of-urls-that-wayback-machine-knows-and-has-archived-for-a-domain-name)
 
-  * [As a Command-line tool](#with-the-command-line-interface)
+  * [With the Command-line interface](#with-the-command-line-interface)
     * [Save](#save)
     * [Oldest archive](#oldest-archive)
     * [Newest archive](#newest-archive)
     * [Total archives](#total-number-of-archives)
-    * [Archive near a time](#archive-near-time)
+    * [Archive near specified time](#archive-near-time)
     * [Get the source code](#get-the-source-code)
     * [Fetch all the URLs that the Wayback Machine knows for a domain](#fetch-all-the-urls-that-the-wayback-machine-knows-for-a-domain)
 
