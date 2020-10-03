@@ -43,13 +43,19 @@ def test_total_archives():
     reply = cli.args_handler(args)
     assert isinstance(reply, int)
 
+def test_known_urls():
+    args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
+    (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://akamhy.github.io", total=False, version=False,
+    oldest=False, save=False, newest=False, near=False, alive=True, subdomain=True, known_urls=True, get=None)
+    reply = cli.args_handler(args)
+    assert "github" in reply
+
 def test_near():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
     oldest=False, save=False, newest=False, near=True, alive=False, subdomain=False, known_urls=False, get=None, year=2020, month=7, day=15, hour=1, minute=1)
     reply = cli.args_handler(args)
     assert "202007" in reply
-
 
 def test_get():
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \

@@ -188,3 +188,11 @@ def test_total_archives():
         " https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8 ", user_agent
     )
     assert target.total_archives() == 0
+
+def test_known_urls():
+
+    target = waybackpy.Url("akamhy.github.io", user_agent)
+    assert len(target.known_urls(alive=True, subdomain=True)) > 2
+
+    target = waybackpy.Url("akamhy.github.io", user_agent)
+    assert len(target.known_urls()) > 3
