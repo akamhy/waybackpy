@@ -100,7 +100,7 @@ class Url:
         """Return the source code of the supplied URL.
         If encoding is not supplied, it is auto-detected from the response.
         """
-        
+
         if not url:
             url = self._clean_url()
 
@@ -190,13 +190,13 @@ class Url:
 
         if subdomain:
             request_url = (
-            "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey" 
+            "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey"
             % self._clean_url()
             )
 
         else:
             request_url = (
-            "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey" 
+            "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey"
             % self._clean_url()
             )
 
@@ -213,7 +213,7 @@ class Url:
             for url in url_list:
 
                 try:
-                    urlopen(url)
+                    urlopen(url) # nosec
                 except:
                     continue
 

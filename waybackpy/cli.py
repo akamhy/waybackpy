@@ -48,7 +48,8 @@ def _known_urls(obj, args):
         if m:
             domain = m.group(1)
         else:
-            domain = "waybackpy-known"
+            domain = "domain-unknown"
+
         dir_path = os.path.abspath(os.getcwd())
         file_name = dir_path + "/%s-%d-urls.txt" % (domain, total_urls)
         text = "\n".join(url_list) + "\n"
@@ -118,7 +119,7 @@ def parse_args(argv):
 
     userAgentArg = parser.add_argument_group('User Agent')
     userAgentArg.add_argument("--user_agent", "-ua", help="User agent, default user_agent is \"waybackpy python package - https://github.com/akamhy/waybackpy\"")
-    
+
     saveArg = parser.add_argument_group("Create new archive/save URL")
     saveArg.add_argument("--save", "-s", action='store_true', help="Save the URL on the Wayback machine")
     
