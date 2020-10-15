@@ -3,7 +3,6 @@
 import re
 import sys
 import json
-import warnings
 from datetime import datetime
 from waybackpy.exceptions import WaybackError
 from waybackpy.__version__ import __version__
