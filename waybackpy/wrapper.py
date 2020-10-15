@@ -80,7 +80,7 @@ class Url:
         return "%s" % self.archive_url
 
     def __len__(self):
-        if self.timestamp is None:
+        if type(self.timestamp) is None:
             return None
         else
             diff = datetime.utcnow() - self.timestamp
