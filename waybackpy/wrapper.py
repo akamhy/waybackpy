@@ -69,20 +69,67 @@ class Url:
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
-
+        self.JSON = self._JSON() # JSON of most recent archive
+        self.archive_url = self._archive_url() # URL of archive
+        self.timestamp = self._archive_timestamp() # timestamp for last archive
+        
     def __repr__(self):
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
 
     def __str__(self):
-        return "%s" % self._clean_url()
+        return "%s" % self.archive_url
 
     def __len__(self):
-        return len(self._clean_url())
+        diff = datetime.utcnow() - self.timestamp
+        return diff.days
 
     def _url_check(self):
         """Check for common URL problems."""
         if "." not in self.url:
             raise URLError("'%s' is not a vaild URL." % self.url)
+    
+    def _JSON(self):
+        request_url = "https://archive.org/wayback/available?url=%s" % (
+            self._clean_url(),
+        )
+
+        hdr = {"User-Agent": "%s" % self.user_agent}
+        req = Request(request_url, headers=hdr)  # nosec
+        response = _get_response(req)
+        data_string = response.read().decode("UTF-8")
+        data = json.loads(data_string)
+        
+        return data
+            
+    def _archive_url(self):
+        """Get URL of archive."""
+        data = self.JSON
+        
+        if not data["archived_snapshots"]:
+            archive_url = None
+        else:
+            archive_url = data["archived_snapshots"]["closest"]["url"]
+            archive_url = archive_url.replace(
+                "http://web.archive.org/web/",
+                "https://web.archive.org/web/",
+                1
+            )
+        
+        return archive_url
+        
+    def _archive_timestamp(self):
+        """Get timestamp of last archive."""
+        data = self.JSON
+        
+        if not data["archived_snapshots"]:
+            time = None
+        else:
+            time = datetime.strptime(data["archived_snapshots"]
+                                     ["closest"]
+                                     ["timestamp"],
+                                     '%Y%m%d%H%M%S')
+        
+        return time
 
     def _clean_url(self):
         """Fix the URL, if possible."""
@@ -94,7 +141,9 @@ class Url:
         hdr = {"User-Agent": "%s" % self.user_agent}  # nosec
         req = Request(request_url, headers=hdr)  # nosec
         header = _get_response(req).headers
-        return "https://" + _archive_url_parser(header)
+        self.archive_url = "https://" + _archive_url_parser(header)
+        self.timestamp = datetime.utcnow()
+        return self
 
     def get(self, url="", user_agent="", encoding=""):
         """Return the source code of the supplied URL.
@@ -146,11 +195,18 @@ class Url:
                 "to create a new archive." % self._clean_url()
             )
         archive_url = data["archived_snapshots"]["closest"]["url"]
-        # wayback machine returns http sometimes, idk why? But they support https
         archive_url = archive_url.replace(
             "http://web.archive.org/web/", "https://web.archive.org/web/", 1
         )
-        return archive_url
+        
+        self.archive_url = archive_url
+        self.timestamp = datetime.strptime(data["archived_snapshots"]
+                                 ["closest"]
+                                 ["timestamp"], 
+                                 '%Y%m%d%H%M%S')
+         
+        return self
+        
 
     def oldest(self, year=1994):
         """Return the oldest Wayback Machine archive for this URL."""
