@@ -80,9 +80,12 @@ class Url:
         return "%s" % self.archive_url
 
     def __len__(self):
-        diff = datetime.utcnow() - self.timestamp
-        return diff.days
-
+        if self.timestamp != None:
+            diff = datetime.utcnow() - self.timestamp
+            return diff.days
+        else
+            return None
+    
     def _url_check(self):
         """Check for common URL problems."""
         if "." not in self.url:
