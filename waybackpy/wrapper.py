@@ -91,7 +91,6 @@ class Url:
             diff = datetime.utcnow() - self.timestamp
             return diff.days
             
-    
     def _url_check(self):
         """Check for common URL problems."""
         if "." not in self.url:
@@ -132,6 +131,7 @@ class Url:
         
         if not data["archived_snapshots"]:
             time = datetime.max
+
         else:
             time = datetime.strptime(data["archived_snapshots"]
                                      ["closest"]
