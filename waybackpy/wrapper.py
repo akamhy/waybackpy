@@ -110,8 +110,8 @@ class Url:
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]
             archive_url = archive_url.replace(
-                "http://web.archive.org/web/", 
-                "https://web.archive.org/web/", 
+                "http://web.archive.org/web/",
+                "https://web.archive.org/web/",
                 1
             )
         
@@ -126,7 +126,7 @@ class Url:
         else:
             time = datetime.strptime(data["archived_snapshots"]
                                      ["closest"]
-                                     ["timestamp"], 
+                                     ["timestamp"],
                                      '%Y%m%d%H%M%S')
         
         return time
