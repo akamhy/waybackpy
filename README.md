@@ -119,12 +119,11 @@ https://web.archive.org/web/20201016153320/https://www.google.com/
 ```python
 import waybackpy
 
-oldest_archive_url = waybackpy.Url(
+url = "https://www.google.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-    "https://www.google.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-).oldest()
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+oldest_archive_url = waybackpy_url_obj.oldest()
 print(oldest_archive_url)
 ```
 
@@ -139,18 +138,16 @@ http://web.archive.org/web/19981111184551/http://google.com:80/
 ```python
 import waybackpy
 
-newest_archive_url = waybackpy.Url(
+url = "https://www.facebook.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
 
-    "https://www.facebook.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
-
-).newest()
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+newest_archive_url = waybackpy_url_obj.newest()
 print(newest_archive_url)
 ```
 
 ```bash
-https://web.archive.org/web/20200714013225/https://www.facebook.com/
+https://web.archive.org/web/20201016150543/https://www.facebook.com/
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
@@ -160,17 +157,16 @@ https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```python
 import waybackpy
 
-json_dict = waybackpy.Url(
+url = "https://www.facebook.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
 
-    "https://www.google.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-).JSON
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+json_dict = waybackpy_url_obj.JSON
 print(json_dict)
 ```
 
 ```javascript
-{'url': 'https://www.google.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016153320/https://www.google.com/', 'timestamp': '20201016153320', 'status': '200'}}}
+{'url': 'https://www.facebook.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016150543/https://www.facebook.com/', 'timestamp': '20201016150543', 'status': '200'}}}
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyJSON></sub>
