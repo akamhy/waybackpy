@@ -432,8 +432,17 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --sub
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh></sub>
 
 ## Tests
-
 [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
+
+To run tests locally:
+```bash
+pip install -U pytest
+pip install codecov
+pip install pytest pytest-cov
+cd tests
+pytest --cov=../waybackpy
+python -m codecov #For reporting coverage on Codecov
+```
 
 ## Dependency
 
