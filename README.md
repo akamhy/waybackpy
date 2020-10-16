@@ -326,6 +326,15 @@ https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashSave></sub>
 
+#### Get archive URL
+
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --archive_url
+https://web.archive.org/web/20040803000845/http://en.wikipedia.org:80/wiki/SpaceX
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashArchiveUrl></sub>
+
 #### Oldest archive
 
 ```bash
@@ -343,6 +352,20 @@ https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNewest></sub>
+
+#### Get JSON data of avaialblity API
+
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --json
+
+```
+
+```javascript
+{'archived_snapshots': {'closest': {'timestamp': '20201007132458', 'status': '200', 'available': True, 'url': 'http://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX'}}, 'url': 'https://en.wikipedia.org/wiki/SpaceX'}
+
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashJSON></sub>
 
 #### Total number of archives
 
