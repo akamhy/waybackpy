@@ -4,7 +4,7 @@ dist: xenial
 cache: pip
 python:
   - 3.6
-  - 3.9
+  - 3.8
 before_install:
   - python --version
   - pip install -U pip
