@@ -112,7 +112,7 @@ print(archive_url)
 ```
 
 ```bash
-http://web.archive.org/web/20201011184551/http://google.com/
+https://web.archive.org/web/20201016153320/https://www.google.com/
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyArchiveUrl></sub>
