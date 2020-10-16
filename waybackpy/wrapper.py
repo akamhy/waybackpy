@@ -72,7 +72,7 @@ class Url:
         self.JSON = self._JSON() # JSON of most recent archive
         self.archive_url = self._archive_url() # URL of archive
         self.timestamp = self._archive_timestamp() # timestamp for last archive
-        
+
     def __repr__(self):
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
 
@@ -82,20 +82,20 @@ class Url:
     def __len__(self):
         td_max = timedelta(days=999999999,
                              hours=23,
-                             minutes=59, 
-                             seconds=59, 
+                             minutes=59,
+                             seconds=59,
                              microseconds=999999)
         if self.timestamp == datetime.max:
             return td_max.days
         else:
             diff = datetime.utcnow() - self.timestamp
             return diff.days
-            
+
     def _url_check(self):
         """Check for common URL problems."""
         if "." not in self.url:
             raise URLError("'%s' is not a vaild URL." % self.url)
-    
+
     def _JSON(self):
         request_url = "https://archive.org/wayback/available?url=%s" % (
             self._clean_url(),
@@ -106,13 +106,13 @@ class Url:
         response = _get_response(req)
         data_string = response.read().decode("UTF-8")
         data = json.loads(data_string)
-        
+
         return data
-            
+
     def _archive_url(self):
         """Get URL of archive."""
         data = self.JSON
-        
+
         if not data["archived_snapshots"]:
             archive_url = None
         else:
@@ -122,13 +122,13 @@ class Url:
                 "https://web.archive.org/web/",
                 1
             )
-        
+
         return archive_url
-        
+
     def _archive_timestamp(self):
         """Get timestamp of last archive."""
         data = self.JSON
-        
+
         if not data["archived_snapshots"]:
             time = datetime.max
 
@@ -137,7 +137,7 @@ class Url:
                                      ["closest"]
                                      ["timestamp"],
                                      '%Y%m%d%H%M%S')
-        
+
         return time
 
     def _clean_url(self):
@@ -207,15 +207,15 @@ class Url:
         archive_url = archive_url.replace(
             "http://web.archive.org/web/", "https://web.archive.org/web/", 1
         )
-        
+
         self.archive_url = archive_url
         self.timestamp = datetime.strptime(data["archived_snapshots"]
                                  ["closest"]
-                                 ["timestamp"], 
+                                 ["timestamp"],
                                  '%Y%m%d%H%M%S')
-         
+
         return self
-        
+
 
     def oldest(self, year=1994):
         """Return the oldest Wayback Machine archive for this URL."""
@@ -285,5 +285,5 @@ class Url:
                 tmp_url_list.append(url)
 
             url_list = tmp_url_list
-        
+
         return url_list
