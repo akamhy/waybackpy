@@ -2,7 +2,7 @@
 import sys
 import pytest
 import random
-import time
+
 
 sys.path.append("..")
 import waybackpy.wrapper as waybackpy  # noqa: E402
@@ -28,8 +28,7 @@ def test_dunders():
     user_agent = "UA"
     target = waybackpy.Url(url, user_agent)
     assert "waybackpy.Url(url=%s, user_agent=%s)" % (url, user_agent) == repr(target)
-    assert len(target) == len(url)
-    assert str(target) == url
+    assert "en.wikipedia.org" in str(target)
 
 def test_archive_url_parser():
     request_url = "https://amazon.com"
@@ -47,7 +46,6 @@ def test_url_check():
 
 def test_save():
     # Test for urls that exist and can be archived.
-    time.sleep(10)
 
     url_list = [
         "en.wikipedia.org",
@@ -64,7 +62,7 @@ def test_save():
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36",
     )
-    archived_url1 = target.save()
+    archived_url1 = str(target.save())
     assert url1 in archived_url1
 
     if sys.version_info > (3, 6):
@@ -73,18 +71,16 @@ def test_save():
         with pytest.raises(Exception):
             url2 = "ha ha ha ha"
             waybackpy.Url(url2, user_agent)
-        time.sleep(5)
         url3 = "http://www.archive.is/faq.html"
         # Test for urls not allowed to archive by robot.txt. Doesn't works anymore. Find alternatives.
 #         with pytest.raises(Exception):
-#             
+#
 #             target = waybackpy.Url(
 #                 url3,
 #                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:25.0) "
 #                 "Gecko/20100101 Firefox/25.0",
 #             )
 #             target.save()
-#         time.sleep(5)
         # Non existent urls, test
         with pytest.raises(Exception):
             target = waybackpy.Url(
@@ -100,7 +96,6 @@ def test_save():
 
 
 def test_near():
-    time.sleep(10)
     url = "google.com"
     target = waybackpy.Url(
         url,
@@ -108,11 +103,10 @@ def test_near():
         "(KHTML, like Gecko) Version/5.0.3 Safari/533.19.4",
     )
     archive_near_year = target.near(year=2010)
-    assert "2010" in archive_near_year
+    assert "2010" in str(archive_near_year)
 
     if sys.version_info > (3, 6):
-        time.sleep(5)
-        archive_near_month_year = target.near(year=2015, month=2)
+        archive_near_month_year = str(target.near(year=2015, month=2))
         assert (
             ("201502" in archive_near_month_year)
             or ("201501" in archive_near_month_year)
@@ -124,9 +118,9 @@ def test_near():
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
             "(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
         )
-        archive_near_hour_day_month_year = target.near(
+        archive_near_hour_day_month_year = str(target.near(
             year=2008, month=5, day=9, hour=15
-        )
+        ))
         assert (
             ("2008050915" in archive_near_hour_day_month_year)
             or ("2008050914" in archive_near_hour_day_month_year)
@@ -146,13 +140,22 @@ def test_near():
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
-    assert "20200504141153" in target.oldest()
+    assert "20200504141153" in str(target.oldest())
 
+def test_json():
+    url = "github.com/akamhy/waybackpy"
+    target = waybackpy.Url(url, user_agent)
+    assert "archived_snapshots" in str(target.JSON)
+
+def test_archive_url():
+    url = "github.com/akamhy/waybackpy"
+    target = waybackpy.Url(url, user_agent)
+    assert "github.com/akamhy" in str(target.archive_url)
 
 def test_newest():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
-    assert url in target.newest()
+    assert url in str(target.newest())
 
 
 def test_get():
