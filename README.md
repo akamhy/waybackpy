@@ -334,7 +334,7 @@ https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_
 
 ```bash
 $ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --archive_url
-https://web.archive.org/web/20040803000845/http://en.wikipedia.org:80/wiki/SpaceX
+https://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashArchiveUrl></sub>
