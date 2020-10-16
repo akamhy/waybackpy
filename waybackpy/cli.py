@@ -10,6 +10,12 @@ from waybackpy.__version__ import __version__
 def _save(obj):
     return (obj.save())
 
+def _archive_url(obj):
+    return (obj.archive_url)
+
+def _json(obj):
+    return (obj.JSON)
+
 def _oldest(obj):
     return (obj.oldest())
 
@@ -34,6 +40,10 @@ def _near(obj, args):
     return (obj.near(**_near_args))
 
 def _known_urls(obj, args):
+    """Abbreviations:
+    sd = subdomain
+    al = alive
+    """
     sd = False
     al = False
     if args.subdomain:
@@ -68,6 +78,9 @@ def _get(obj, args):
     if args.get.lower() == "url":
         return (obj.get())
 
+    if args.get.lower() == "archive_url":
+        return (obj.get(obj.archive_url))
+
     if args.get.lower() == "oldest":
         return (obj.get(obj.oldest()))
 
@@ -79,9 +92,10 @@ def _get(obj, args):
 
     return ("Use get as \"--get 'source'\", 'source' can be one of the followings: \
         \n1) url - get the source code of the url specified using --url/-u.\
-        \n2) oldest - get the source code of the oldest archive for the supplied url.\
-        \n3) newest - get the source code of the newest archive for the supplied url.\
-        \n4) save - Create a new archive and get the source code of this new archive for the supplied url.")
+        \n2) archive_url - get the source code of the newest archive for the supplied url, alias of newest.\
+        \n3) oldest - get the source code of the oldest archive for the supplied url.\
+        \n4) newest - get the source code of the newest archive for the supplied url.\
+        \n5) save - Create a new archive and get the source code of this new archive for the supplied url.")
 
 def args_handler(args):
     if args.version:
@@ -97,6 +111,10 @@ def args_handler(args):
 
     if args.save:
         return _save(obj)
+    if args.archive_url:
+        return _archive_url(obj)
+    if args.json:
+        return _json(obj)
     if args.oldest:
         return _oldest(obj)
     if args.newest:
@@ -122,16 +140,22 @@ def parse_args(argv):
 
     saveArg = parser.add_argument_group("Create new archive/save URL")
     saveArg.add_argument("--save", "-s", action='store_true', help="Save the URL on the Wayback machine")
-    
+
+    auArg = parser.add_argument_group("Get the latest Archive")
+    auArg.add_argument("--archive_url", "-au", action='store_true', help="Get the latest archive URL, alias for --newest")
+
+    jsonArg = parser.add_argument_group("Get the JSON data")
+    jsonArg.add_argument("--json", "-j", action='store_true', help="JSON data of the availability API request")
+
     oldestArg = parser.add_argument_group("Oldest archive")
     oldestArg.add_argument("--oldest", "-o", action='store_true', help="Oldest archive for the specified URL")
-    
+
     newestArg = parser.add_argument_group("Newest archive")
     newestArg.add_argument("--newest", "-n", action='store_true', help="Newest archive for the specified URL")
-    
+
     totalArg = parser.add_argument_group("Total number of archives")
     totalArg.add_argument("--total", "-t", action='store_true', help="Total number of archives for the specified URL")
-    
+
     getArg = parser.add_argument_group("Get source code")
     getArg.add_argument("--get", "-g", help="Prints the source code of the supplied url. Use '--get help' for extended usage")
 
@@ -152,7 +176,7 @@ def parse_args(argv):
     nearArgs.add_argument("--minute", "-MIN", type=int, help="Minute in integer")
 
     parser.add_argument("--version", "-v", action='store_true', help="Waybackpy version")
-    
+
     return parser.parse_args(argv[1:])
 
 def main(argv=None):
