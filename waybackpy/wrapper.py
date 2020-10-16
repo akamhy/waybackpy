@@ -3,7 +3,7 @@
 import re
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from waybackpy.exceptions import WaybackError
 from waybackpy.__version__ import __version__
 
@@ -80,9 +80,17 @@ class Url:
         return "%s" % self.archive_url
 
     def __len__(self):
-        diff = datetime.utcnow() - self.timestamp
-        return diff.days
-
+        td_max = timedelta(days=999999999,
+                             hours=23,
+                             minutes=59, 
+                             seconds=59, 
+                             microseconds=999999)
+        if self.timestamp == datetime.max:
+            return td_max.days
+        else:
+            diff = datetime.utcnow() - self.timestamp
+            return diff.days
+            
     def _url_check(self):
         """Check for common URL problems."""
         if "." not in self.url:
@@ -122,7 +130,8 @@ class Url:
         data = self.JSON
         
         if not data["archived_snapshots"]:
-            time = None
+            time = datetime.max
+
         else:
             time = datetime.strptime(data["archived_snapshots"]
                                      ["closest"]
