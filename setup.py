@@ -22,7 +22,7 @@ setup(
     download_url = 'https://github.com/akamhy/waybackpy/archive/2.1.9.tar.gz',
     keywords = ['wayback', 'archive', 'archive website', 'wayback machine', 'Internet Archive'],
     install_requires=[],
-    python_requires= ">=2.7",
+    python_requires= ">=3.2",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -30,8 +30,6 @@ setup(
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',

@@ -28,8 +28,10 @@ Table of contents
 * [Usage](#usage)
   * [As a Python package](#as-a-python-package)
     * [Saving an url](#capturing-aka-saving-an-url-using-save)
+    * [Retrieving archive](#retrieving-the-archive-for-an-url-using-archive_url)
     * [Retrieving the oldest archive](#retrieving-the-oldest-archive-for-an-url-using-oldest)
     * [Retrieving the recent most/newest archive](#retrieving-the-newest-archive-for-an-url-using-newest)
+    * [Retrieving the JSON response of availability API](#retrieving-the-json-reponse-for-the-avaliblity-api-request)
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
@@ -37,8 +39,10 @@ Table of contents
 
   * [With the Command-line interface](#with-the-command-line-interface)
     * [Save](#save)
-    * [Oldest archive](#oldest-archive)
-    * [Newest archive](#newest-archive)
+    * [Archive URL](#get-archive-url)
+    * [Oldest archive URL](#oldest-archive)
+    * [Newest archive URL](#newest-archive)
+    * [JSON response of API](#get-json-data-of-avaialblity-api)
     * [Total archives](#total-number-of-archives)
     * [Archive near specified time](#archive-near-time)
     * [Get the source code](#get-the-source-code)
@@ -93,6 +97,26 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
 
+#### Retrieving the archive for an URL using archive_url
+
+```python
+import waybackpy
+
+archive_url = waybackpy.Url(
+
+    "https://www.google.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
+).archive_url
+
+print(archive_url)
+```
+
+```bash
+https://web.archive.org/web/20201016153320/https://www.google.com/
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyArchiveUrl></sub>
+
 #### Retrieving the oldest archive for an URL using oldest()
 
 ```python
@@ -133,6 +157,26 @@ https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
+
+#### Retrieving the JSON reponse for the avaliblity API request
+
+```python
+import waybackpy
+
+json_dict = waybackpy.Url(
+
+    "https://www.google.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
+).JSON
+
+print(json_dict)
+```
+
+```javascript
+{'url': 'https://www.google.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016153320/https://www.google.com/', 'timestamp': '20201016153320', 'status': '200'}}}
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyJSON></sub>
 
 #### Retrieving archive close to a specified year, month, day, hour, and minute using near()
 
@@ -286,6 +330,15 @@ https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashSave></sub>
 
+#### Get archive URL
+
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --archive_url
+https://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashArchiveUrl></sub>
+
 #### Oldest archive
 
 ```bash
@@ -303,6 +356,20 @@ https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashNewest></sub>
+
+#### Get JSON data of avaialblity API
+
+```bash
+$ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --json
+
+```
+
+```javascript
+{'archived_snapshots': {'closest': {'timestamp': '20201007132458', 'status': '200', 'available': True, 'url': 'http://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX'}}, 'url': 'https://en.wikipedia.org/wiki/SpaceX'}
+
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashJSON></sub>
 
 #### Total number of archives
 
@@ -365,12 +432,21 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --sub
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh></sub>
 
 ## Tests
-
 [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
+
+To run tests locally:
+```bash
+pip install -U pytest
+pip install codecov
+pip install pytest pytest-cov
+cd tests
+pytest --cov=../waybackpy
+python -m codecov #For reporting coverage on Codecov
+```
 
 ## Dependency
 
-None, just python standard libraries (re, json, urllib, argparse and datetime). Both python 2 and 3 are supported :)
+None, just pre-installed [python standard libraries](https://docs.python.org/3/library/).
 
 ## Packaging
 
