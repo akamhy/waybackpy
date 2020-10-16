@@ -81,18 +81,16 @@ pip install git+https://github.com/akamhy/waybackpy.git
 ```python
 import waybackpy
 
-new_archive_url = waybackpy.Url(
+url = "https://en.wikipedia.org/wiki/Multivariable_calculus"
+user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-    url = "https://en.wikipedia.org/wiki/Multivariable_calculus",
-    user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
-
-).save()
-
-print(new_archive_url)
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+archive = waybackpy_url_obj.save()
+print(archive)
 ```
 
 ```bash
-https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
+https://web.archive.org/web/20201016171808/https://en.wikipedia.org/wiki/Multivariable_calculus
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
