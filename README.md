@@ -410,7 +410,7 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --sub
 
 ## Dependency
 
-None, just python standard libraries (re, json, urllib, argparse and datetime). Both python 2 and 3 are supported :)
+None, just pre-installed [python standard libraries](https://docs.python.org/3/library/).
 
 ## Packaging
 
