@@ -102,12 +102,11 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```python
 import waybackpy
 
-archive_url = waybackpy.Url(
+url = "https://www.google.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-    "https://www.google.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-).archive_url
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+archive_url = waybackpy_url_obj.archive_url
 print(archive_url)
 ```
 
