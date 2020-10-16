@@ -93,6 +93,26 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
 
+#### Retrieving the archive for an URL using archive_url
+
+```python
+import waybackpy
+
+archive_url = waybackpy.Url(
+
+    "https://www.google.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
+).archive_url
+
+print(archive_url)
+```
+
+```bash
+http://web.archive.org/web/20201011184551/http://google.com/
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyArchiveUrl></sub>
+
 #### Retrieving the oldest archive for an URL using oldest()
 
 ```python
@@ -133,6 +153,26 @@ https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
+
+#### Retrieving the JSON reponse for the avaliblity API request
+
+```python
+import waybackpy
+
+json_dict = waybackpy.Url(
+
+    "https://www.google.com/",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
+).JSON
+
+print(json_dict)
+```
+
+```bash
+{"": ""}
+```
+
+<sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyJSON></sub>
 
 #### Retrieving archive close to a specified year, month, day, hour, and minute using near()
 
