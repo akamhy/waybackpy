@@ -2,5 +2,5 @@
 
 class WaybackError(Exception):
     """
-    Raised when API Service error.
+    Raised when Wayback Machine API Service is unreachable/down.
     """
