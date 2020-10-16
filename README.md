@@ -172,8 +172,8 @@ json_dict = waybackpy.Url(
 print(json_dict)
 ```
 
-```bash
-{"": ""}
+```javascript
+{'url': 'https://www.google.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016153320/https://www.google.com/', 'timestamp': '20201016153320', 'status': '200'}}}
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyJSON></sub>
