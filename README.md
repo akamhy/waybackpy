@@ -27,7 +27,7 @@ Table of contents
 
 * [Usage](#usage)
   * [As a Python package](#as-a-python-package)
-    * [Saving an url](#capturing-aka-saving-an-url-using-save)
+    * [Saving a webpage](#capturing-aka-saving-an-url-using-save)
     * [Retrieving archive](#retrieving-the-archive-for-an-url-using-archive_url)
     * [Retrieving the oldest archive](#retrieving-the-oldest-archive-for-an-url-using-oldest)
     * [Retrieving the recent most/newest archive](#retrieving-the-newest-archive-for-an-url-using-newest)
@@ -38,7 +38,7 @@ Table of contents
     * [List of URLs that Wayback Machine knows and has archived for a domain name](#list-of-urls-that-wayback-machine-knows-and-has-archived-for-a-domain-name)
 
   * [With the Command-line interface](#with-the-command-line-interface)
-    * [Save](#save)
+    * [Saving webpage](#save)
     * [Archive URL](#get-archive-url)
     * [Oldest archive URL](#oldest-archive)
     * [Newest archive URL](#newest-archive)

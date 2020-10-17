@@ -10,7 +10,7 @@
 # ━━━━━━━━━━━┗━━┛━━━━━━━━━━━━━━━━━━━━━━━━┗━━┛━
 
 """
-Waybackpy is a Python library that interfaces with the Internet Archive's Wayback Machine API.
+Waybackpy is a Python package that interfaces with the Internet Archive's Wayback Machine API.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Archive pages and retrieve archived pages easily.
