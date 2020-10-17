@@ -220,7 +220,7 @@ print(github_archive_near_2018_4_july_9_2_am)
 https://web.archive.org/web/20180704090245/https://github.com/
 ```
 
-<sub>The library doesn't supports seconds yet. You are encourged to create a PR ;)</sub>
+<sub>The package doesn't support second argument yet. You are encourged to create a PR ;)</sub>
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
@@ -243,16 +243,12 @@ print(current_google_url_source)
 
 # The following chunk of code will force a new archive of google.com and get the source of the archived page.
 # waybackpy_url_object.save() type is string.
-google_newest_archive_source = waybackpy_url_object.get(
-    waybackpy_url_object.save()
-)
+google_newest_archive_source = waybackpy_url_object.get(waybackpy_url_object.save())
 print(google_newest_archive_source)
 
 
 # waybackpy_url_object.oldest() type is str, it's oldest archive of google.com
-google_oldest_archive_source = waybackpy_url_object.get(
-    waybackpy_url_object.oldest()
-)
+google_oldest_archive_source = waybackpy_url_object.get(waybackpy_url_object.oldest())
 print(google_oldest_archive_source)
 ```
 
@@ -264,19 +260,17 @@ print(google_oldest_archive_source)
 import waybackpy
 
 URL = "https://en.wikipedia.org/wiki/Python (programming language)"
-
 UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
 
-archive_count = waybackpy.Url(
-    url=URL,
-    user_agent=UA
-).total_archives()
+waybackpy_url_object = waybackpy.Url(url=URL, user_agent=UA)
+
+archive_count = waybackpy_url_object.total_archives()
 
 print(archive_count) # total_archives() returns an int
 ```
 
 ```bash
-2440
+2516
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
@@ -292,8 +286,8 @@ import waybackpy
 URL = "akamhy.github.io"
 UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
 
-known_urls = waybackpy.Url(url=URL, user_agent=UA).known_urls(alive=True, subdomain=False) # alive and subdomain are optional.
-
+waybackpy_url_object = waybackpy.Url(url=URL, user_agent=UA)
+known_urls = waybackpy_url_object.known_urls(alive=True, subdomain=False) # alive and subdomain are optional.
 print(known_urls) # known_urls() returns list of URLs
 ```
 
