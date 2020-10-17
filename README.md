@@ -275,7 +275,7 @@ print(archive_count) # total_archives() returns an int
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
 
-####  List of URLs that Wayback Machine knows and has archived for a domain name
+#### List of URLs that Wayback Machine knows and has archived for a domain name
 
 1) If alive=True is set, waybackpy will check all URLs to identify the alive URLs. Don't use with popular websites like google or it would take too long.
 2) To include URLs from subdomain set sundomain=True
@@ -341,7 +341,7 @@ https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 #### Get JSON data of avaialblity API
 
 ```bash
-$ waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --json
+waybackpy --url "https://en.wikipedia.org/wiki/SpaceX" --user_agent "my-unique-user-agent" --json
 
 ```
 
@@ -382,7 +382,8 @@ waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
 
-####  Fetch all the URLs that the Wayback Machine knows for a domain
+#### Fetch all the URLs that the Wayback Machine knows for a domain
+
 1) You can add the '--alive' flag to only fetch alive links.
 2) You can add the '--subdomain' flag to add subdomains.
 3) '--alive' and '--subdomain' flags can be used simultaneously.
@@ -393,19 +394,19 @@ pip install waybackpy
 
 # Ignore the above installation line.
 
-waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls 
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls
 # Prints all known URLs under akamhy.github.io
 
 
-waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --alive 
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --alive
 # Prints all known URLs under akamhy.github.io which are still working and not dead links.
 
 
-waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain 
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain
 # Prints all known URLs under akamhy.github.io inclusing subdomain
 
 
-waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive 
+waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive
 # Prints all known URLs under akamhy.github.io including subdomain which are not dead links and still alive.
 
 ```
@@ -413,9 +414,11 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --sub
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh></sub>
 
 ## Tests
+
 [Here](https://github.com/akamhy/waybackpy/tree/master/tests)
 
 To run tests locally:
+
 ```bash
 pip install -U pytest
 pip install codecov
