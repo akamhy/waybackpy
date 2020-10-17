@@ -17,7 +17,7 @@
 
 ![Wayback Machine](https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png)
 
-Waybackpy is a Python library that interfaces with [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
+Waybackpy is a Python package that interfaces with [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
 
 Table of contents
 =================
