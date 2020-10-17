@@ -17,7 +17,7 @@
 
 ![Wayback Machine](https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png)
 
-Waybackpy is a Python library that interfaces with [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
+Waybackpy is a Python package that interfaces with [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
 
 Table of contents
 =================
@@ -81,18 +81,16 @@ pip install git+https://github.com/akamhy/waybackpy.git
 ```python
 import waybackpy
 
-new_archive_url = waybackpy.Url(
+url = "https://en.wikipedia.org/wiki/Multivariable_calculus"
+user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-    url = "https://en.wikipedia.org/wiki/Multivariable_calculus",
-    user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
-
-).save()
-
-print(new_archive_url)
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+archive = waybackpy_url_obj.save()
+print(archive)
 ```
 
 ```bash
-https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
+https://web.archive.org/web/20201016171808/https://en.wikipedia.org/wiki/Multivariable_calculus
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPySaveExample></sub>
@@ -102,12 +100,11 @@ https://web.archive.org/web/20200504141153/https://github.com/akamhy/waybackpy
 ```python
 import waybackpy
 
-archive_url = waybackpy.Url(
+url = "https://www.google.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-    "https://www.google.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-).archive_url
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+archive_url = waybackpy_url_obj.archive_url
 print(archive_url)
 ```
 
@@ -122,12 +119,11 @@ https://web.archive.org/web/20201016153320/https://www.google.com/
 ```python
 import waybackpy
 
-oldest_archive_url = waybackpy.Url(
+url = "https://www.google.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-    "https://www.google.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-).oldest()
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+oldest_archive_url = waybackpy_url_obj.oldest()
 print(oldest_archive_url)
 ```
 
@@ -142,18 +138,16 @@ http://web.archive.org/web/19981111184551/http://google.com:80/
 ```python
 import waybackpy
 
-newest_archive_url = waybackpy.Url(
+url = "https://www.facebook.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
 
-    "https://www.facebook.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
-
-).newest()
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+newest_archive_url = waybackpy_url_obj.newest()
 print(newest_archive_url)
 ```
 
 ```bash
-https://web.archive.org/web/20200714013225/https://www.facebook.com/
+https://web.archive.org/web/20201016150543/https://www.facebook.com/
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
@@ -163,17 +157,16 @@ https://web.archive.org/web/20200714013225/https://www.facebook.com/
 ```python
 import waybackpy
 
-json_dict = waybackpy.Url(
+url = "https://www.facebook.com/"
+user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
 
-    "https://www.google.com/",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:40.0) Gecko/20100101 Firefox/40.0"
-).JSON
-
+waybackpy_url_obj = waybackpy.Url(url, user_agent)
+json_dict = waybackpy_url_obj.JSON
 print(json_dict)
 ```
 
 ```javascript
-{'url': 'https://www.google.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016153320/https://www.google.com/', 'timestamp': '20201016153320', 'status': '200'}}}
+{'url': 'https://www.facebook.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016150543/https://www.facebook.com/', 'timestamp': '20201016150543', 'status': '200'}}}
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyJSON></sub>
@@ -184,56 +177,50 @@ print(json_dict)
 from waybackpy import Url
 
 user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0"
-github_url = "https://github.com/"
+url = "https://github.com/"
 
-
-github_wayback_obj = Url(github_url, user_agent)
+waybackpy_url_obj = Url(url, user_agent)
 
 # Do not pad (don't use zeros in the month, year, day, minute, and hour arguments). e.g. For January, set month = 1 and not month = 01.
 ```
 
 ```python
-github_archive_near_2010 = github_wayback_obj.near(year=2010)
+github_archive_near_2010 = waybackpy_url_obj.near(year=2010)
 print(github_archive_near_2010)
 ```
 
 ```bash
-https://web.archive.org/web/20100719134402/http://github.com/
+https://web.archive.org/web/20101018053604/http://github.com:80/
 ```
 
 ```python
-github_archive_near_2011_may = github_wayback_obj.near(year=2011, month=5)
+github_archive_near_2011_may = waybackpy_url_obj.near(year=2011, month=5)
 print(github_archive_near_2011_may)
 ```
 
 ```bash
-https://web.archive.org/web/20110519185447/https://github.com/
+https://web.archive.org/web/20110518233639/https://github.com/
 ```
 
 ```python
-github_archive_near_2015_january_26 = github_wayback_obj.near(
-    year=2015, month=1, day=26
-)
+github_archive_near_2015_january_26 = waybackpy_url_obj.near(year=2015, month=1, day=26)
 print(github_archive_near_2015_january_26)
 ```
 
 ```bash
-https://web.archive.org/web/20150127031159/https://github.com
+https://web.archive.org/web/20150125102636/https://github.com/
 ```
 
 ```python
-github_archive_near_2018_4_july_9_2_am = github_wayback_obj.near(
-    year=2018, month=7, day=4, hour = 9, minute = 2
-)
+github_archive_near_2018_4_july_9_2_am = waybackpy_url_obj.near(year=2018, month=7, day=4, hour=9, minute=2)
 print(github_archive_near_2018_4_july_9_2_am)
 ```
 
 ```bash
 https://web.archive.org/web/20180704090245/https://github.com/
-
 ```
 
-<sub>The library doesn't supports seconds yet. You are encourged to create a PR ;)</sub>
+<sub>The package doesn't support second argument yet. You are encourged to create a PR ;)</sub>
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
@@ -256,16 +243,12 @@ print(current_google_url_source)
 
 # The following chunk of code will force a new archive of google.com and get the source of the archived page.
 # waybackpy_url_object.save() type is string.
-google_newest_archive_source = waybackpy_url_object.get(
-    waybackpy_url_object.save()
-)
+google_newest_archive_source = waybackpy_url_object.get(waybackpy_url_object.save())
 print(google_newest_archive_source)
 
 
 # waybackpy_url_object.oldest() type is str, it's oldest archive of google.com
-google_oldest_archive_source = waybackpy_url_object.get(
-    waybackpy_url_object.oldest()
-)
+google_oldest_archive_source = waybackpy_url_object.get(waybackpy_url_object.oldest())
 print(google_oldest_archive_source)
 ```
 
@@ -277,19 +260,17 @@ print(google_oldest_archive_source)
 import waybackpy
 
 URL = "https://en.wikipedia.org/wiki/Python (programming language)"
-
 UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
 
-archive_count = waybackpy.Url(
-    url=URL,
-    user_agent=UA
-).total_archives()
+waybackpy_url_object = waybackpy.Url(url=URL, user_agent=UA)
+
+archive_count = waybackpy_url_object.total_archives()
 
 print(archive_count) # total_archives() returns an int
 ```
 
 ```bash
-2440
+2516
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyTotalArchivesExample></sub>
@@ -305,8 +286,8 @@ import waybackpy
 URL = "akamhy.github.io"
 UA = "Mozilla/5.0 (iPad; CPU OS 8_1_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B435 Safari/600.1.4"
 
-known_urls = waybackpy.Url(url=URL, user_agent=UA).known_urls(alive=True, subdomain=False) # alive and subdomain are optional.
-
+waybackpy_url_object = waybackpy.Url(url=URL, user_agent=UA)
+known_urls = waybackpy_url_object.known_urls(alive=True, subdomain=False) # alive and subdomain are optional.
 print(known_urls) # known_urls() returns list of URLs
 ```
 
