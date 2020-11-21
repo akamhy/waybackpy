@@ -7,7 +7,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
 about = {}
 with open(os.path.join(os.path.dirname(__file__), 'waybackpy', '__version__.py')) as f:
     exec(f.read(), about)
-    
+
 setup(
     name = about['__title__'],
     packages = ['waybackpy'],
@@ -22,7 +22,7 @@ setup(
     download_url = 'https://github.com/akamhy/waybackpy/archive/2.2.0.tar.gz',
     keywords = ['waybackpy', 'archive', 'archive website', 'wayback machine', 'Internet Archive'],
     install_requires=[],
-    python_requires= ">=3.2",
+    python_requires= ">=3.4",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -31,13 +31,12 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
         ],
     entry_points={

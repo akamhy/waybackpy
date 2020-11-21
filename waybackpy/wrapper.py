@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import re
-import sys
 import json
 from datetime import datetime, timedelta
 from waybackpy.exceptions import WaybackError
 from waybackpy.__version__ import __version__
+from urllib.request import Request, urlopen
+from urllib.error import URLError
 
-if sys.version_info >= (3, 0):  # If the python ver >= 3
-    from urllib.request import Request, urlopen
-    from urllib.error import URLError
-else:  # For python2.x
-    from urllib2 import Request, urlopen, URLError
 
 default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
 

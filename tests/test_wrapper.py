@@ -7,11 +7,10 @@ import random
 sys.path.append("..")
 import waybackpy.wrapper as waybackpy  # noqa: E402
 
-if sys.version_info >= (3, 0):  # If the python ver >= 3
-    from urllib.request import Request, urlopen
-    from urllib.error import URLError
-else:  # For python2.x
-    from urllib2 import Request, urlopen, URLError
+
+from urllib.request import Request, urlopen
+from urllib.error import URLError
+
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
@@ -65,34 +64,22 @@ def test_save():
     archived_url1 = str(target.save())
     assert url1 in archived_url1
 
-    if sys.version_info > (3, 6):
 
-        # Test for urls that are incorrect.
-        with pytest.raises(Exception):
-            url2 = "ha ha ha ha"
-            waybackpy.Url(url2, user_agent)
-        url3 = "http://www.archive.is/faq.html"
-        # Test for urls not allowed to archive by robot.txt. Doesn't works anymore. Find alternatives.
-#         with pytest.raises(Exception):
-#
-#             target = waybackpy.Url(
-#                 url3,
-#                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:25.0) "
-#                 "Gecko/20100101 Firefox/25.0",
-#             )
-#             target.save()
-        # Non existent urls, test
-        with pytest.raises(Exception):
-            target = waybackpy.Url(
-                url3,
-                "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) "
-                "AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 "
-                "Safari/533.20.27",
-            )
-            target.save()
 
-    else:
-        pass
+    # Test for urls that are incorrect.
+    with pytest.raises(Exception):
+        url2 = "ha ha ha ha"
+        waybackpy.Url(url2, user_agent)
+    url3 = "http://www.archive.is/faq.html"
+
+    with pytest.raises(Exception):
+        target = waybackpy.Url(
+            url3,
+            "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) "
+            "AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 "
+            "Safari/533.20.27",
+        )
+        target.save()
 
 
 def test_near():
@@ -105,36 +92,35 @@ def test_near():
     archive_near_year = target.near(year=2010)
     assert "2010" in str(archive_near_year)
 
-    if sys.version_info > (3, 6):
-        archive_near_month_year = str(target.near(year=2015, month=2))
-        assert (
-            ("201502" in archive_near_month_year)
-            or ("201501" in archive_near_month_year)
-            or ("201503" in archive_near_month_year)
-        )
 
-        target = waybackpy.Url(
-            "www.python.org",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
-        )
-        archive_near_hour_day_month_year = str(target.near(
-            year=2008, month=5, day=9, hour=15
-        ))
-        assert (
-            ("2008050915" in archive_near_hour_day_month_year)
-            or ("2008050914" in archive_near_hour_day_month_year)
-            or ("2008050913" in archive_near_hour_day_month_year)
-        )
+    archive_near_month_year = str(target.near(year=2015, month=2))
+    assert (
+        ("201502" in archive_near_month_year)
+        or ("201501" in archive_near_month_year)
+        or ("201503" in archive_near_month_year)
+    )
 
-        with pytest.raises(Exception):
-            NeverArchivedUrl = (
-                "https://ee_3n.wrihkeipef4edia.org/rwti5r_ki/Nertr6w_rork_rse7c_urity"
-            )
-            target = waybackpy.Url(NeverArchivedUrl, user_agent)
-            target.near(year=2010)
-    else:
-        pass
+    target = waybackpy.Url(
+        "www.python.org",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
+    )
+    archive_near_hour_day_month_year = str(target.near(
+        year=2008, month=5, day=9, hour=15
+    ))
+    assert (
+        ("2008050915" in archive_near_hour_day_month_year)
+        or ("2008050914" in archive_near_hour_day_month_year)
+        or ("2008050913" in archive_near_hour_day_month_year)
+    )
+
+    with pytest.raises(Exception):
+        NeverArchivedUrl = (
+            "https://ee_3n.wrihkeipef4edia.org/rwti5r_ki/Nertr6w_rork_rse7c_urity"
+        )
+        target = waybackpy.Url(NeverArchivedUrl, user_agent)
+        target.near(year=2010)
+
 
 
 def test_oldest():
@@ -182,11 +168,10 @@ def test_get_response():
 
 
 def test_total_archives():
-    if sys.version_info > (3, 6):
-        target = waybackpy.Url(" https://google.com ", user_agent)
-        assert target.total_archives() > 500000
-    else:
-        pass
+
+    target = waybackpy.Url(" https://google.com ", user_agent)
+    assert target.total_archives() > 500000
+
     target = waybackpy.Url(
         " https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8 ", user_agent
     )

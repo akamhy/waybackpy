@@ -9,19 +9,15 @@ import waybackpy.cli as cli  # noqa: E402
 from waybackpy.wrapper import  Url  # noqa: E402
 from waybackpy.__version__ import __version__
 
-codecov_python = False
-if sys.version_info > (3, 7):
-    codecov_python = True
-
 # Namespace(day=None, get=None, hour=None, minute=None, month=None, near=False,
 # newest=False, oldest=False, save=False, total=False, url=None, user_agent=None, version=False, year=None)
 
-if codecov_python:
-    def test_save():
-        args = argparse.Namespace(user_agent=None, url="https://pypi.org/user/akamhy/", total=False, version=False,
-        oldest=False, save=True,  json=False, archive_url=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get=None)
-        reply = cli.args_handler(args)
-        assert "pypi.org/user/akamhy" in str(reply)
+
+def test_save():
+    args = argparse.Namespace(user_agent=None, url="https://pypi.org/user/akamhy/", total=False, version=False,
+    oldest=False, save=True,  json=False, archive_url=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get=None)
+    reply = cli.args_handler(args)
+    assert "pypi.org/user/akamhy" in str(reply)
 
 def test_json():
     args = argparse.Namespace(user_agent=None, url="https://pypi.org/user/akamhy/", total=False, version=False,
@@ -88,12 +84,11 @@ def test_get():
     reply = cli.args_handler(args)
     assert "waybackpy" in str(reply)
 
-    if codecov_python:
-        args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
-        (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
-        oldest=False, save=False, json=False, archive_url=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="save")
-        reply = cli.args_handler(args)
-        assert "waybackpy" in str(reply)
+    args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
+    (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,
+    oldest=False, save=False, json=False, archive_url=False, newest=False, near=False, alive=False, subdomain=False, known_urls=False, get="save")
+    reply = cli.args_handler(args)
+    assert "waybackpy" in str(reply)
 
     args = argparse.Namespace(user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9", url="https://pypi.org/user/akamhy/", total=False, version=False,

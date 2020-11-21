@@ -3,7 +3,6 @@ os: linux
 dist: xenial
 cache: pip
 python:
-  - 3.6
   - 3.8
 before_install:
   - python --version
@@ -15,4 +14,4 @@ script:
   - cd tests
   - pytest --cov=../waybackpy
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.8 ]]; then python -m codecov; fi
+  - python -m codecov
