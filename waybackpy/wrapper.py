@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from waybackpy.exceptions import WaybackError
 from waybackpy.__version__ import __version__
 from urllib.request import Request, urlopen
+import requests
+import concurrent.futures
 from urllib.error import URLError
 
 
@@ -68,6 +70,7 @@ class Url:
         self.JSON = self._JSON() # JSON of most recent archive
         self.archive_url = self._archive_url() # URL of archive
         self.timestamp = self._archive_timestamp() # timestamp for last archive
+        self._alive_url_list = []
 
     def __repr__(self):
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
@@ -237,6 +240,18 @@ class Url:
         # Most efficient method to count number of archives (yet)
         return str(response.read()).count(",")
 
+    def pick_live_urls(self, url):
+
+        try:
+            response_code = requests.get(url).status_code
+        except Exception as e:
+            return #we don't care if urls are not opening
+
+        if response_code >= 400: #200s are OK and 300s are usually redirects, if you don't want redirects replace 400 with 300
+            return
+
+        self._alive_url_list.append(url)
+
     def known_urls(self, alive=False, subdomain=False):
         """Returns list of URLs known to exist for given domain name
         because these URLs were crawled by WayBack Machine bots.
@@ -270,16 +285,8 @@ class Url:
 
         #Remove all deadURLs from url_list if alive=True
         if alive:
-            tmp_url_list = []
-            for url in url_list:
-
-                try:
-                    urlopen(url) # nosec
-                except:
-                    continue
-
-                tmp_url_list.append(url)
-
-            url_list = tmp_url_list
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                executor.map(self.pick_live_urls, url_list)
+            url_list = self._alive_url_list
 
         return url_list

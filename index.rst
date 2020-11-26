@@ -112,7 +112,7 @@ Capturing aka Saving an url using save()
     https://web.archive.org/web/20201016171808/https://en.wikipedia.org/wiki/Multivariable_calculus
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPySaveExample\ 
+https://repl.it/@akamhy/WaybackPySaveExample\
 
 Retrieving the archive for an URL using archive\_url
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -133,7 +133,7 @@ Retrieving the archive for an URL using archive\_url
     https://web.archive.org/web/20201016153320/https://www.google.com/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyArchiveUrl\ 
+https://repl.it/@akamhy/WaybackPyArchiveUrl\
 
 Retrieving the oldest archive for an URL using oldest()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -154,7 +154,7 @@ Retrieving the oldest archive for an URL using oldest()
     http://web.archive.org/web/19981111184551/http://google.com:80/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyOldestExample\ 
+https://repl.it/@akamhy/WaybackPyOldestExample\
 
 Retrieving the newest archive for an URL using newest()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -175,7 +175,7 @@ Retrieving the newest archive for an URL using newest()
     https://web.archive.org/web/20201016150543/https://www.facebook.com/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyNewestExample\ 
+https://repl.it/@akamhy/WaybackPyNewestExample\
 
 Retrieving the JSON reponse for the avaliblity API request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -195,7 +195,7 @@ Retrieving the JSON reponse for the avaliblity API request
 
     {'url': 'https://www.facebook.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016150543/https://www.facebook.com/', 'timestamp': '20201016150543', 'status': '200'}}}
 
-Try this out in your browser @ https://repl.it/@akamhy/WaybackPyJSON\ 
+Try this out in your browser @ https://repl.it/@akamhy/WaybackPyJSON\
 
 Retrieving archive close to a specified year, month, day, hour, and minute using near()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -251,7 +251,7 @@ The package doesn't support second argument yet. You are encourged to
 create a PR ;)
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyNearExample\ 
+https://repl.it/@akamhy/WaybackPyNearExample\
 
 Get the content of webpage using get()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -283,7 +283,7 @@ Get the content of webpage using get()
     print(google_oldest_archive_source)
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyGetExample#main.py\ 
+https://repl.it/@akamhy/WaybackPyGetExample#main.py\
 
 Count total archives for an URL using total\_archives()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -306,7 +306,7 @@ Count total archives for an URL using total\_archives()
     2516
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyTotalArchivesExample\ 
+https://repl.it/@akamhy/WaybackPyTotalArchivesExample\
 
 List of URLs that Wayback Machine knows and has archived for a domain name
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -335,7 +335,7 @@ List of URLs that Wayback Machine knows and has archived for a domain name
     'https://akamhy.github.io/waybackpy/assets/css/style.css?v=f881705d00bf47b5bf0c58808efe29eecba2226c']
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyKnownURLsToWayBackMachineExample#main.py\ 
+https://repl.it/@akamhy/WaybackPyKnownURLsToWayBackMachineExample#main.py\
 
 With the Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -349,7 +349,7 @@ Save
     https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashSave\ 
+https://repl.it/@akamhy/WaybackPyBashSave\
 
 Get archive URL
 ^^^^^^^^^^^^^^^
@@ -360,7 +360,7 @@ Get archive URL
     https://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashArchiveUrl\ 
+https://repl.it/@akamhy/WaybackPyBashArchiveUrl\
 
 Oldest archive
 ^^^^^^^^^^^^^^
@@ -371,7 +371,7 @@ Oldest archive
     https://web.archive.org/web/20040803000845/http://en.wikipedia.org:80/wiki/SpaceX
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashOldest\ 
+https://repl.it/@akamhy/WaybackPyBashOldest\
 
 Newest archive
 ^^^^^^^^^^^^^^
@@ -382,7 +382,7 @@ Newest archive
     https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashNewest\ 
+https://repl.it/@akamhy/WaybackPyBashNewest\
 
 Get JSON data of avaialblity API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -396,7 +396,7 @@ Get JSON data of avaialblity API
     {'archived_snapshots': {'closest': {'timestamp': '20201007132458', 'status': '200', 'available': True, 'url': 'http://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX'}}, 'url': 'https://en.wikipedia.org/wiki/SpaceX'}
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashJSON\ 
+https://repl.it/@akamhy/WaybackPyBashJSON\
 
 Total number of archives
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -407,7 +407,7 @@ Total number of archives
     853
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashTotal\ 
+https://repl.it/@akamhy/WaybackPyBashTotal\
 
 Archive near time
 ^^^^^^^^^^^^^^^^^
@@ -418,7 +418,7 @@ Archive near time
     https://web.archive.org/web/20120512142515/https://www.facebook.com/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashNear\ 
+https://repl.it/@akamhy/WaybackPyBashNear\
 
 Get the source code
 ^^^^^^^^^^^^^^^^^^^
@@ -431,7 +431,7 @@ Get the source code
     waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashGet\ 
+https://repl.it/@akamhy/WaybackPyBashGet\
 
 Fetch all the URLs that the Wayback Machine knows for a domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -464,7 +464,7 @@ Fetch all the URLs that the Wayback Machine knows for a domain
     # Prints all known URLs under akamhy.github.io including subdomain which are not dead links and still alive.
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh\ 
+https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh\
 
 Tests
 -----
@@ -481,12 +481,6 @@ To run tests locally:
     cd tests
     pytest --cov=../waybackpy
     python -m codecov #For reporting coverage on Codecov
-
-Dependency
-----------
-
-None, just pre-installed `python standard
-libraries <https://docs.python.org/3/library/>`__.
 
 Packaging
 ---------

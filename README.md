@@ -428,10 +428,6 @@ pytest --cov=../waybackpy
 python -m codecov #For reporting coverage on Codecov
 ```
 
-## Dependency
-
-None, just pre-installed [python standard libraries](https://docs.python.org/3/library/).
-
 ## Packaging
 
 1. Increment version.

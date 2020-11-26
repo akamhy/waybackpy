@@ -3,6 +3,8 @@ import sys
 import os
 import re
 import argparse
+import string
+import random
 from waybackpy.wrapper import Url
 from waybackpy.__version__ import __version__
 
@@ -38,6 +40,22 @@ def _near(obj, args):
         _near_args["minute"] = args.minute
     return (obj.near(**_near_args))
 
+def _save_urls_on_file(input_list, live_url_count):
+    m = re.search('https?://([A-Za-z_0-9.-]+).*', input_list[0]) # O(1)
+    if m:
+        domain = m.group(1)
+    else:
+        domain = "domain-unknown"
+
+    uid = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
+
+    file_name = "%s-%d-urls-%s.txt" % (domain, live_url_count, uid)
+    file_content = "\n".join(input_list) #join with \n
+    file_path = os.path.join(os.getcwd(), file_name)
+    with open(file_name, "w+") as f:
+        f.write(file_content)
+    return "%s\n\n'%s' saved in current working directory" % (file_content, file_name)
+
 def _known_urls(obj, args):
     """Abbreviations:
     sd = subdomain
@@ -53,21 +71,7 @@ def _known_urls(obj, args):
     total_urls = len(url_list)
 
     if total_urls > 0:
-        m = re.search('https?://([A-Za-z_0-9.-]+).*', url_list[0])
-        if m:
-            domain = m.group(1)
-        else:
-            domain = "domain-unknown"
-
-        dir_path = os.path.abspath(os.getcwd())
-        file_name = dir_path + "/%s-%d-urls.txt" % (domain, total_urls)
-        text = "\n".join(url_list) + "\n"
-        with open(file_name, "a+") as f:
-            f.write(text)
-        text =  text + "%d URLs found and saved in ./%s-%d-urls.txt" % (
-            total_urls, domain, total_urls
-            )
-
+        text = _save_urls_on_file(url_list, total_urls)
     else:
         text = "No known URLs found. Please try a diffrent domain!"
 
