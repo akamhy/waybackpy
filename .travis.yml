@@ -1,5 +1,6 @@
 language: python
-os: osx
+os: linux
+dist: xenial
 cache: pip
 python:
   - 3.8
