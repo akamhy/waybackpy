@@ -38,11 +38,8 @@ jobs:
       run: |
         cd tests
         pytest --cov=../waybackpy
-    - name: Upload coverage data on codecov
-      run: |
-        python -m codecov
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v1.0.6
       with:
         file: ./coverage.xml
         files: ./coverage1.xml,./coverage2.xml
