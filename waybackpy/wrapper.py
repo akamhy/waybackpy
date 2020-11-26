@@ -60,6 +60,7 @@ def _get_response(req):
             raise exc
     return response
 
+
 class Url:
     """waybackpy Url object"""
 
@@ -67,9 +68,9 @@ class Url:
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
-        self.JSON = self._JSON() # JSON of most recent archive
-        self.archive_url = self._archive_url() # URL of archive
-        self.timestamp = self._archive_timestamp() # timestamp for last archive
+        self.JSON = self._JSON()  # JSON of most recent archive
+        self.archive_url = self._archive_url()  # URL of archive
+        self.timestamp = self._archive_timestamp()  # timestamp for last archive
         self._alive_url_list = []
 
     def __repr__(self):
@@ -79,11 +80,13 @@ class Url:
         return "%s" % self.archive_url
 
     def __len__(self):
-        td_max = timedelta(days=999999999,
-                             hours=23,
-                             minutes=59,
-                             seconds=59,
-                             microseconds=999999)
+        td_max = timedelta(
+            days=999999999,
+            hours=23,
+            minutes=59,
+            seconds=59,
+            microseconds=999999
+        )
         if self.timestamp == datetime.max:
             return td_max.days
         else:
@@ -208,13 +211,9 @@ class Url:
         )
 
         self.archive_url = archive_url
-        self.timestamp = datetime.strptime(data["archived_snapshots"]
-                                 ["closest"]
-                                 ["timestamp"],
-                                 '%Y%m%d%H%M%S')
+        self.timestamp = datetime.strptime(data["archived_snapshots"]["closest"]["timestamp"], '%Y%m%d%H%M%S')
 
         return self
-
 
     def oldest(self, year=1994):
         """Return the oldest Wayback Machine archive for this URL."""
@@ -244,10 +243,11 @@ class Url:
 
         try:
             response_code = requests.get(url).status_code
-        except Exception as e:
-            return #we don't care if urls are not opening
+        except Exception:
+            return  # we don't care if urls are not opening
 
-        if response_code >= 400: #200s are OK and 300s are usually redirects, if you don't want redirects replace 400 with 300
+        # 200s are OK and 300s are usually redirects, if you don't want redirects replace 400 with 300
+        if response_code >= 400:
             return
 
         self._alive_url_list.append(url)
@@ -266,14 +266,12 @@ class Url:
 
         if subdomain:
             request_url = (
-            "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey"
-            % self._clean_url()
+                "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey" % self._clean_url()
             )
 
         else:
             request_url = (
-            "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey"
-            % self._clean_url()
+                "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey" % self._clean_url()
             )
 
         hdr = {"User-Agent": "%s" % self.user_agent}
@@ -283,7 +281,7 @@ class Url:
         data = json.loads(response.read().decode("UTF-8"))
         url_list = [y[0] for y in data if y[0] != "original"]
 
-        #Remove all deadURLs from url_list if alive=True
+        # Remove all deadURLs from url_list if alive=True
         if alive:
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 executor.map(self.pick_live_urls, url_list)

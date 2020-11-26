@@ -8,23 +8,30 @@ import random
 from waybackpy.wrapper import Url
 from waybackpy.__version__ import __version__
 
+
 def _save(obj):
     return (obj.save())
+
 
 def _archive_url(obj):
     return (obj.archive_url)
 
+
 def _json(obj):
     return (obj.JSON)
+
 
 def _oldest(obj):
     return (obj.oldest())
 
+
 def _newest(obj):
     return (obj.newest())
 
+
 def _total_archives(obj):
     return (obj.total_archives())
+
 
 def _near(obj, args):
     _near_args = {}
@@ -40,8 +47,9 @@ def _near(obj, args):
         _near_args["minute"] = args.minute
     return (obj.near(**_near_args))
 
+
 def _save_urls_on_file(input_list, live_url_count):
-    m = re.search('https?://([A-Za-z_0-9.-]+).*', input_list[0]) # O(1)
+    m = re.search('https?://([A-Za-z_0-9.-]+).*', input_list[0])
     if m:
         domain = m.group(1)
     else:
@@ -50,11 +58,12 @@ def _save_urls_on_file(input_list, live_url_count):
     uid = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(6))
 
     file_name = "%s-%d-urls-%s.txt" % (domain, live_url_count, uid)
-    file_content = "\n".join(input_list) #join with \n
+    file_content = "\n".join(input_list)
     file_path = os.path.join(os.getcwd(), file_name)
-    with open(file_name, "w+") as f:
+    with open(file_path, "w+") as f:
         f.write(file_content)
     return "%s\n\n'%s' saved in current working directory" % (file_content, file_name)
+
 
 def _known_urls(obj, args):
     """Abbreviations:
@@ -76,6 +85,7 @@ def _known_urls(obj, args):
         text = "No known URLs found. Please try a diffrent domain!"
 
     return text
+
 
 def _get(obj, args):
     if args.get.lower() == "url":
@@ -99,6 +109,7 @@ def _get(obj, args):
         \n3) oldest - get the source code of the oldest archive for the supplied url.\
         \n4) newest - get the source code of the newest archive for the supplied url.\
         \n5) save - Create a new archive and get the source code of this new archive for the supplied url.")
+
 
 def args_handler(args):
     if args.version:
@@ -130,7 +141,12 @@ def args_handler(args):
         return _near(obj, args)
     if args.get:
         return _get(obj, args)
-    return ("You only specified the URL. But you also need to specify the operation.\nSee 'waybackpy --help' for help using this tool.")
+    message = (
+        "You only specified the URL. But you also need to specify the operation."
+        "\nSee 'waybackpy --help' for help using this tool."
+    )
+    return message
+
 
 def parse_args(argv):
     parser = argparse.ArgumentParser()
@@ -139,7 +155,8 @@ def parse_args(argv):
     requiredArgs.add_argument("--url", "-u", help="URL on which Wayback machine operations would occur")
 
     userAgentArg = parser.add_argument_group('User Agent')
-    userAgentArg.add_argument("--user_agent", "-ua", help="User agent, default user_agent is \"waybackpy python package - https://github.com/akamhy/waybackpy\"")
+    help_text = "User agent, default user_agent is \"waybackpy python package - https://github.com/akamhy/waybackpy\""
+    userAgentArg.add_argument("--user_agent", "-ua", help=help_text)
 
     saveArg = parser.add_argument_group("Create new archive/save URL")
     saveArg.add_argument("--save", "-s", action='store_true', help="Save the URL on the Wayback machine")
@@ -164,9 +181,10 @@ def parse_args(argv):
 
     knownUrlArg = parser.add_argument_group("URLs known and archived to Waybcak Machine for the site.")
     knownUrlArg.add_argument("--known_urls", "-ku", action='store_true', help="URLs known for the domain.")
-    knownUrlArg.add_argument("--subdomain", "-sub", action='store_true', help="Use with '--known_urls' to include known URLs for subdomains.")
-    knownUrlArg.add_argument("--alive", "-a", action='store_true', help="Only include live URLs. Will not inlclude dead links.")
-
+    help_text = "Use with '--known_urls' to include known URLs for subdomains."
+    knownUrlArg.add_argument("--subdomain", "-sub", action='store_true', help=help_text)
+    help_text = "Only include live URLs. Will not inlclude dead links."
+    knownUrlArg.add_argument("--alive", "-a", action='store_true', help=help_text)
 
     nearArg = parser.add_argument_group('Archive close to time specified')
     nearArg.add_argument("--near", "-N", action='store_true', help="Archive near specified time")
@@ -182,12 +200,14 @@ def parse_args(argv):
 
     return parser.parse_args(argv[1:])
 
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv
     args = parse_args(argv)
     output = args_handler(args)
     print(output)
+
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
