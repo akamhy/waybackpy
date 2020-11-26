@@ -36,12 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        cd tests
-        pytest --cov=../waybackpy
+        pytest --cov=waybackpy tests/
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1.0.6
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        env_vars: OS,PYTHON
-        fail_ci_if_error: true
-        verbose: true
+      run: |
+        bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
