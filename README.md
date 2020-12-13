@@ -417,18 +417,28 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --sub
 
 ## Tests
 
-[Here](https://github.com/akamhy/waybackpy/tree/master/tests)
-
 To run tests locally:
 
+1) Install or update the testing/coverage tools 
+
 ```bash
-pip install -U pytest
-pip install codecov
-pip install pytest pytest-cov
-cd tests
-pytest --cov=../waybackpy
-python -m codecov #For reporting coverage on Codecov
+pip install codecov pytest pytest-cov -U
 ```
+
+2) Inside the repository run the following commands
+
+```bash
+pytest --cov=waybackpy tests/
+```
+
+3) To report coverage run
+
+```bash
+bash <(curl -s https://codecov.io/bash) -t SECRET_CODECOV_TOKEN
+```
+
+You can find the tests [here](https://github.com/akamhy/waybackpy/tree/master/tests).
+
 
 ## Packaging
 
