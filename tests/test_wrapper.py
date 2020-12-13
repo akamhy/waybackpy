@@ -2,14 +2,10 @@
 import sys
 import pytest
 import random
-
-
+import requests
 sys.path.append("..")
+
 import waybackpy.wrapper as waybackpy  # noqa: E402
-
-
-from urllib.request import Request, urlopen
-from urllib.error import URLError
 
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
@@ -30,10 +26,11 @@ def test_dunders():
     assert "en.wikipedia.org" in str(target)
 
 def test_archive_url_parser():
-    request_url = "https://amazon.com"
-    hdr = {"User-Agent": user_agent}  # nosec
-    req = Request(request_url, headers=hdr)  # nosec
-    header = waybackpy._get_response(req).headers
+    endpoint = "https://amazon.com"
+    user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
+    headers = {"User-Agent": "%s" % user_agent}
+    response = waybackpy._get_response(endpoint, params=None, headers=headers)
+    header = response.headers
     with pytest.raises(Exception):
         waybackpy._archive_url_parser(header)
 
@@ -158,13 +155,11 @@ def test_wayback_timestamp():
 
 
 def test_get_response():
-    hdr = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) "
-        "Gecko/20100101 Firefox/78.0"
-    }
-    req = Request("https://www.google.com", headers=hdr)  # nosec
-    response = waybackpy._get_response(req)
-    assert response.code == 200
+    endpoint = "https://www.google.com"
+    user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0"
+    headers = {"User-Agent": "%s" % user_agent}
+    response = waybackpy._get_response(endpoint, params=None, headers=headers)
+    assert response.status_code == 200
 
 
 def test_total_archives():
