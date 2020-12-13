@@ -1,22 +1,25 @@
-# waybackpy
+<div align="center">
+  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/improve-appearance-of-readme/assets/waybackpy_logo.svg"><br>
+</div>
 
-![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
+-----------------
+
+## Python package & CLI tool that interfaces with the Wayback Machine API. 
+[![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions)
 [![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
+[![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)](https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
 [![Downloads](https://pepy.tech/badge/waybackpy/month)](https://pepy.tech/project/waybackpy)
 [![Release](https://img.shields.io/github/v/release/akamhy/waybackpy.svg)](https://github.com/akamhy/waybackpy/releases)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability)](https://codeclimate.com/github/akamhy/waybackpy/maintainability)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-[![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
-![Repo size](https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square)](https://github.com/akamhy/waybackpy/commits/master)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 
-![Wayback Machine](https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png)
 
-Waybackpy is a Python package that interfaces with [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
 
 Table of contents
 =================
@@ -29,8 +32,8 @@ Table of contents
     * [Saving a webpage](#capturing-aka-saving-an-url-using-save)
     * [Retrieving archive](#retrieving-the-archive-for-an-url-using-archive_url)
     * [Retrieving the oldest archive](#retrieving-the-oldest-archive-for-an-url-using-oldest)
-    * [Retrieving the recent most/newest archive](#retrieving-the-newest-archive-for-an-url-using-newest)
-    * [Retrieving the JSON response of availability API](#retrieving-the-json-reponse-for-the-avaliblity-api-request)
+    * [Retrieving the latest/newest archive](#retrieving-the-newest-archive-for-an-url-using-newest)
+    * [Retrieving the JSON response of availability API](#retrieving-the-json-response-for-the-availability-api-request)
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
@@ -48,8 +51,6 @@ Table of contents
     * [Fetch all the URLs that the Wayback Machine knows for a domain](#fetch-all-the-urls-that-the-wayback-machine-knows-for-a-domain)
 
 * [Tests](#tests)
-
-* [Dependency](#dependency)
 
 * [Packaging](#packaging)
 
@@ -75,7 +76,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ### As a Python package
 
-#### Capturing aka Saving an url using save()
+#### Capturing aka Saving an URL using save()
 
 ```python
 import waybackpy
@@ -151,7 +152,7 @@ https://web.archive.org/web/20201016150543/https://www.facebook.com/
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
 
-#### Retrieving the JSON reponse for the avaliblity API request
+#### Retrieving the JSON response for the availability API request
 
 ```python
 import waybackpy
@@ -219,7 +220,7 @@ print(github_archive_near_2018_4_july_9_2_am)
 https://web.archive.org/web/20180704090245/https://github.com/
 ```
 
-<sub>The package doesn't support second argument yet. You are encourged to create a PR ;)</sub>
+<sub>The package doesn't support the seconds' argument yet. You are encouraged to create a PR ;)</sub>
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
@@ -373,10 +374,10 @@ https://web.archive.org/web/20120512142515/https://www.facebook.com/
 #### Get the source code
 
 ```bash
-waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the URL
 waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
 waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
-waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on Wayback machine then print the source code of this archive.
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
@@ -402,7 +403,7 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --ali
 
 
 waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain
-# Prints all known URLs under akamhy.github.io inclusing subdomain
+# Prints all known URLs under akamhy.github.io including subdomain
 
 
 waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive
@@ -414,18 +415,28 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --sub
 
 ## Tests
 
-[Here](https://github.com/akamhy/waybackpy/tree/master/tests)
-
 To run tests locally:
 
+1) Install or update the testing/coverage tools 
+
 ```bash
-pip install -U pytest
-pip install codecov
-pip install pytest pytest-cov
-cd tests
-pytest --cov=../waybackpy
-python -m codecov #For reporting coverage on Codecov
+pip install codecov pytest pytest-cov -U
 ```
+
+2) Inside the repository run the following commands
+
+```bash
+pytest --cov=waybackpy tests/
+```
+
+3) To report coverage run
+
+```bash
+bash <(curl -s https://codecov.io/bash) -t SECRET_CODECOV_TOKEN
+```
+
+You can find the tests [here](https://github.com/akamhy/waybackpy/tree/master/tests).
+
 
 ## Packaging
 

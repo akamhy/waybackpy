@@ -45,7 +45,8 @@ setup(
         ]
     },
     project_urls={
-        'Documentation': 'https://waybackpy.readthedocs.io',
+        'Documentation': 'https://akamhy.github.io/waybackpy/',
         'Source': 'https://github.com/akamhy/waybackpy',
+        'Tracker': 'https://github.com/akamhy/waybackpy/issues',
     },
 )
