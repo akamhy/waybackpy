@@ -4,7 +4,7 @@
 
 -----------------
 
-# Python package & CLI tool that interfaces with the Wayback Machine API. 
+## Python package & CLI tool that interfaces with the Wayback Machine API. 
 ![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions)
 [![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
