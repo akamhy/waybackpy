@@ -189,6 +189,10 @@ class Url:
         headers = {"User-Agent": "%s" % self.user_agent}
         payload = {"url": "%s" % self._clean_url(), "timestamp" : timestamp}
         response = _get_response(endpoint, params=payload, headers=headers)
+<<<<<<< HEAD
+=======
+        print(response.text)
+>>>>>>> bc3efc7d63621b319606f3241498be9df107b794
         data = response.json()
         if not data["archived_snapshots"]:
             raise WaybackError(
