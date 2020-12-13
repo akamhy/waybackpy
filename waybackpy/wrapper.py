@@ -53,7 +53,7 @@ def _get_response(endpoint, params=None, headers=None):
         try:
             response = requests.get(endpoint, params=params, headers=headers)  # nosec
         except Exception as e:
-            exc = WaybackError("Error while retrieving %s" % req.full_url)
+            exc = WaybackError("Error while retrieving %s" % endpoint)
             exc.__cause__ = e
             raise exc
     return response
