@@ -6,8 +6,6 @@ import requests
 sys.path.append("..")
 
 import waybackpy.wrapper as waybackpy  # noqa: E402
-from urllib.request import Request
-
 
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
