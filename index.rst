@@ -1,27 +1,12 @@
-.. raw:: html
-
-   <div align="center">
-     <img src="https://raw.githubusercontent.com/akamhy/waybackpy/improve-appearance-of-readme/assets/waybackpy_logo.svg"><br>
-   </div>
-
 --------------
 
 Python package & CLI tool that interfaces with the Wayback Machine API.
 -----------------------------------------------------------------------
 
-| |pypi|
-| |License: MIT|
-| |Build Status|
-| |codecov|
-| |contributions welcome|
-| |Codacy Badge|
-| |Downloads|
-| |Release|
-| |Maintainability|
-| |made-with-python|
-| |Maintenance|
-| |GitHub last commit|
-| |PyPI - Python Version|
+|pypi| |License: MIT| |Build Status| |codecov| |contributions welcome|
+|Codacy Badge| |Downloads| |Release| |Maintainability|
+|made-with-python| |Maintenance| |GitHub last commit| |PyPI - Python
+Version|
 
 Table of contents
 =================
@@ -320,10 +305,10 @@ https://repl.it/@akamhy/WaybackPyTotalArchivesExample\
 List of URLs that Wayback Machine knows and has archived for a domain name
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-| 1) If alive=True is set, waybackpy will check all URLs to identify the
-alive URLs. Don't use with popular websites like google or it would take
-too long.
-| 2) To include URLs from subdomain set sundomain=True
+1) If alive=True is set, waybackpy will check all URLs to identify the
+   alive URLs. Don't use with popular websites like google or it would
+   take too long.
+2) To include URLs from subdomain set sundomain=True
 
 .. code:: python
 
@@ -445,11 +430,11 @@ https://repl.it/@akamhy/WaybackPyBashGet\
 Fetch all the URLs that the Wayback Machine knows for a domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-| 1) You can add the '--alive' flag to only fetch alive links.
-| 2) You can add the '--subdomain' flag to add subdomains.
-| 3) '--alive' and '--subdomain' flags can be used simultaneously.
-| 4) All links will be saved in a file, and the file will be created in
-the current working directory.
+1) You can add the '--alive' flag to only fetch alive links.
+2) You can add the '--subdomain' flag to add subdomains.
+3) '--alive' and '--subdomain' flags can be used simultaneously.
+4) All links will be saved in a file, and the file will be created in
+   the current working directory.
 
 .. code:: bash
 
@@ -504,17 +489,17 @@ You can find the tests
 Packaging
 ---------
 
-#. Increment version.
+1. Increment version.
 
-#. Build package ``python setup.py sdist bdist_wheel``.
+2. Build package ``python setup.py sdist bdist_wheel``.
 
-#. Sign & upload the package ``twine upload -s dist/*``.
+3. Sign & upload the package ``twine upload -s dist/*``.
 
 License
 -------
 
-| Released under the MIT License. See
-| `license <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
+Released under the MIT License. See
+`license <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
 for details.
 
 .. |pypi| image:: https://img.shields.io/pypi/v/waybackpy.svg
