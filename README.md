@@ -52,8 +52,6 @@ Table of contents
 
 * [Tests](#tests)
 
-* [Dependency](#dependency)
-
 * [Packaging](#packaging)
 
 * [License](#license)
