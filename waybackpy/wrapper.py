@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import re
-import json
 from datetime import datetime, timedelta
-from waybackpy.exceptions import WaybackError
+from waybackpy.exceptions import WaybackError, URLError
 from waybackpy.__version__ import __version__
-from urllib.request import Request, urlopen
 import requests
 import concurrent.futures
-from urllib.error import URLError
 
 
 default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
@@ -47,13 +44,14 @@ def _wayback_timestamp(**kwargs):
     )
 
 
-def _get_response(req):
+def _get_response(endpoint, params=None, headers=None):
     """Get response for the supplied request."""
+
     try:
-        response = urlopen(req)  # nosec
+        response = requests.get(endpoint, params=params, headers=headers)
     except Exception:
         try:
-            response = urlopen(req)  # nosec
+            response = requests.get(endpoint, params=params, headers=headers)  # nosec
         except Exception as e:
             exc = WaybackError("Error while retrieving %s" % req.full_url)
             exc.__cause__ = e
@@ -99,17 +97,11 @@ class Url:
             raise URLError("'%s' is not a vaild URL." % self.url)
 
     def _JSON(self):
-        request_url = "https://archive.org/wayback/available?url=%s" % (
-            self._clean_url(),
-        )
-
-        hdr = {"User-Agent": "%s" % self.user_agent}
-        req = Request(request_url, headers=hdr)  # nosec
-        response = _get_response(req)
-        data_string = response.read().decode("UTF-8")
-        data = json.loads(data_string)
-
-        return data
+        endpoint = "https://archive.org/wayback/available"
+        headers = {"User-Agent": "%s" % self.user_agent}
+        payload = {"url": "%s" % self._clean_url()}
+        response = _get_response(endpoint, params=payload, headers=headers)
+        return response.json()
 
     def _archive_url(self):
         """Get URL of archive."""
@@ -149,10 +141,9 @@ class Url:
     def save(self):
         """Create a new Wayback Machine archive for this URL."""
         request_url = "https://web.archive.org/save/" + self._clean_url()
-        hdr = {"User-Agent": "%s" % self.user_agent}  # nosec
-        req = Request(request_url, headers=hdr)  # nosec
-        header = _get_response(req).headers
-        self.archive_url = "https://" + _archive_url_parser(header)
+        headers = {"User-Agent": "%s" % self.user_agent}
+        response = _get_response(request_url, params=None, headers=headers)
+        self.archive_url = "https://" + _archive_url_parser(response.headers)
         self.timestamp = datetime.utcnow()
         return self
 
@@ -167,15 +158,16 @@ class Url:
         if not user_agent:
             user_agent = self.user_agent
 
-        hdr = {"User-Agent": "%s" % user_agent}
-        req = Request(url, headers=hdr)  # nosec
-        response = _get_response(req)
+        headers = {"User-Agent": "%s" % self.user_agent}
+        response = _get_response(url, params=None, headers=headers)
+
         if not encoding:
             try:
-                encoding = response.headers["content-type"].split("charset=")[-1]
+                encoding = response.encoding
             except AttributeError:
                 encoding = "UTF-8"
-        return response.read().decode(encoding.replace("text/html", "UTF-8", 1))
+
+        return response.content.decode(encoding.replace("text/html", "UTF-8", 1))
 
     def near(self, year=None, month=None, day=None, hour=None, minute=None):
         """ Return the closest Wayback Machine archive to the time supplied.
@@ -192,14 +184,13 @@ class Url:
             minute=minute if minute else now.tm_min,
         )
 
-        request_url = "https://archive.org/wayback/available?url=%s&timestamp=%s" % (
-            self._clean_url(),
-            timestamp,
-        )
-        hdr = {"User-Agent": "%s" % self.user_agent}
-        req = Request(request_url, headers=hdr)  # nosec
-        response = _get_response(req)
-        data = json.loads(response.read().decode("UTF-8"))
+
+        endpoint = "https://archive.org/wayback/available"
+        headers = {"User-Agent": "%s" % self.user_agent}
+        payload = {"url": "%s" % self._clean_url(), "timestamp" : timestamp}
+        response = _get_response(endpoint, params=payload, headers=headers)
+        print(response.text)
+        data = response.json()
         if not data["archived_snapshots"]:
             raise WaybackError(
                 "Can not find archive for '%s' try later or use wayback.Url(url, user_agent).save() "
@@ -229,15 +220,14 @@ class Url:
 
     def total_archives(self):
         """Returns the total number of Wayback Machine archives for this URL."""
-        hdr = {"User-Agent": "%s" % self.user_agent}
-        request_url = (
-            "https://web.archive.org/cdx/search/cdx?url=%s&output=json&fl=statuscode"
-            % self._clean_url()
-        )
-        req = Request(request_url, headers=hdr)  # nosec
-        response = _get_response(req)
+
+        endpoint = "https://web.archive.org/cdx/search/cdx"
+        headers = {"User-Agent": "%s" % self.user_agent, "output" : "json", "fl" : "statuscode"}
+        payload = {"url": "%s" % self._clean_url()}
+        response = _get_response(endpoint, params=payload, headers=headers)
+
         # Most efficient method to count number of archives (yet)
-        return str(response.read()).count(",")
+        return response.text.count(",")
 
     def pick_live_urls(self, url):
 
@@ -255,9 +245,7 @@ class Url:
     def known_urls(self, alive=False, subdomain=False):
         """Returns list of URLs known to exist for given domain name
         because these URLs were crawled by WayBack Machine bots.
-
         Useful for pen-testers and others.
-
         Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
         https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
         """
@@ -268,17 +256,14 @@ class Url:
             request_url = (
                 "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey" % self._clean_url()
             )
-
         else:
             request_url = (
                 "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey" % self._clean_url()
             )
 
-        hdr = {"User-Agent": "%s" % self.user_agent}
-        req = Request(request_url, headers=hdr)  # nosec
-        response = _get_response(req)
-
-        data = json.loads(response.read().decode("UTF-8"))
+        headers = {"User-Agent": "%s" % self.user_agent}
+        response = _get_response(request_url, params=None, headers=headers)
+        data = response.json()
         url_list = [y[0] for y in data if y[0] != "original"]
 
         # Remove all deadURLs from url_list if alive=True
