@@ -20,8 +20,10 @@ setup(
     author_email=about['__author_email__'],
     url=about['__url__'],
     download_url='https://github.com/akamhy/waybackpy/archive/2.3.0.tar.gz',
-    keywords=['Archive It', 'Archive Website', 'Wayback Machine', 'waybackurls', 'Internet Archive'],
-    install_requires=[],
+    keywords=['Archive It', 'Archive Website', 'Wayback Machine',
+              'waybackurls', 'Internet Archive',
+        ],
+    install_requires=['requests'],
     python_requires=">=3.4",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
