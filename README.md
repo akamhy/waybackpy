@@ -1,4 +1,6 @@
-# waybackpy
+<div align="center">
+  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy%20colored.png"><br>
+</div>
 
 ![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions)
