@@ -33,7 +33,7 @@ Table of contents
     * [Retrieving archive](#retrieving-the-archive-for-an-url-using-archive_url)
     * [Retrieving the oldest archive](#retrieving-the-oldest-archive-for-an-url-using-oldest)
     * [Retrieving the latest/newest archive](#retrieving-the-newest-archive-for-an-url-using-newest)
-    * [Retrieving the JSON response of availability API](#retrieving-the-json-response-for-the-avaliblity-api-request)
+    * [Retrieving the JSON response of availability API](#retrieving-the-json-response-for-the-availability-api-request)
     * [Retrieving archive close to a specified year, month, day, hour, and minute](#retrieving-archive-close-to-a-specified-year-month-day-hour-and-minute-using-near)
     * [Get the content of webpage](#get-the-content-of-webpage-using-get)
     * [Count total archives for an URL](#count-total-archives-for-an-url-using-total_archives)
