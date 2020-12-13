@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/improve-appearance-of-readme/assets/waybackpy_logo.svg"><br>
+  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
 </div>
 
 -----------------
