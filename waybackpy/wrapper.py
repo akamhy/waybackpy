@@ -14,9 +14,7 @@ default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
 def _archive_url_parser(header):
     """Parse out the archive from header."""
     # Regex1
-    arch = re.search(
-        r"Content-Location: (/web/[0-9]{14}/.*)", str(header)
-    )
+    arch = re.search(r"Content-Location: (/web/[0-9]{14}/.*)", str(header))
     if arch:
         return "web.archive.org" + arch.group(1)
     # Regex2
@@ -79,11 +77,7 @@ class Url:
 
     def __len__(self):
         td_max = timedelta(
-            days=999999999,
-            hours=23,
-            minutes=59,
-            seconds=59,
-            microseconds=999999
+            days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
         )
         if self.timestamp == datetime.max:
             return td_max.days
@@ -112,9 +106,7 @@ class Url:
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]
             archive_url = archive_url.replace(
-                "http://web.archive.org/web/",
-                "https://web.archive.org/web/",
-                1
+                "http://web.archive.org/web/", "https://web.archive.org/web/", 1
             )
 
         return archive_url
@@ -127,10 +119,9 @@ class Url:
             time = datetime.max
 
         else:
-            time = datetime.strptime(data["archived_snapshots"]
-                                     ["closest"]
-                                     ["timestamp"],
-                                     '%Y%m%d%H%M%S')
+            time = datetime.strptime(
+                data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
+            )
 
         return time
 
@@ -170,9 +161,9 @@ class Url:
         return response.content.decode(encoding.replace("text/html", "UTF-8", 1))
 
     def near(self, year=None, month=None, day=None, hour=None, minute=None):
-        """ Return the closest Wayback Machine archive to the time supplied.
-            Supported params are year, month, day, hour and minute.
-            Any non-supplied parameters default to the current time.
+        """Return the closest Wayback Machine archive to the time supplied.
+        Supported params are year, month, day, hour and minute.
+        Any non-supplied parameters default to the current time.
 
         """
         now = datetime.utcnow().timetuple()
@@ -184,10 +175,9 @@ class Url:
             minute=minute if minute else now.tm_min,
         )
 
-
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
-        payload = {"url": "%s" % self._clean_url(), "timestamp" : timestamp}
+        payload = {"url": "%s" % self._clean_url(), "timestamp": timestamp}
         response = _get_response(endpoint, params=payload, headers=headers)
         data = response.json()
         if not data["archived_snapshots"]:
@@ -201,7 +191,9 @@ class Url:
         )
 
         self.archive_url = archive_url
-        self.timestamp = datetime.strptime(data["archived_snapshots"]["closest"]["timestamp"], '%Y%m%d%H%M%S')
+        self.timestamp = datetime.strptime(
+            data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
+        )
 
         return self
 
@@ -221,7 +213,11 @@ class Url:
         """Returns the total number of Wayback Machine archives for this URL."""
 
         endpoint = "https://web.archive.org/cdx/search/cdx"
-        headers = {"User-Agent": "%s" % self.user_agent, "output" : "json", "fl" : "statuscode"}
+        headers = {
+            "User-Agent": "%s" % self.user_agent,
+            "output": "json",
+            "fl": "statuscode",
+        }
         payload = {"url": "%s" % self._clean_url()}
         response = _get_response(endpoint, params=payload, headers=headers)
 
@@ -253,11 +249,13 @@ class Url:
 
         if subdomain:
             request_url = (
-                "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey" % self._clean_url()
+                "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey"
+                % self._clean_url()
             )
         else:
             request_url = (
-                "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey" % self._clean_url()
+                "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey"
+                % self._clean_url()
             )
 
         headers = {"User-Agent": "%s" % self.user_agent}

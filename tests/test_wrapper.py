@@ -3,6 +3,7 @@ import sys
 import pytest
 import random
 import requests
+
 sys.path.append("..")
 
 import waybackpy.wrapper as waybackpy  # noqa: E402
@@ -18,12 +19,14 @@ def test_clean_url():
     test_result = target._clean_url()
     assert answer == test_result
 
+
 def test_dunders():
     url = "https://en.wikipedia.org/wiki/Network_security"
     user_agent = "UA"
     target = waybackpy.Url(url, user_agent)
     assert "waybackpy.Url(url=%s, user_agent=%s)" % (url, user_agent) == repr(target)
     assert "en.wikipedia.org" in str(target)
+
 
 def test_archive_url_parser():
     endpoint = "https://amazon.com"
@@ -33,6 +36,7 @@ def test_archive_url_parser():
     header = response.headers
     with pytest.raises(Exception):
         waybackpy._archive_url_parser(header)
+
 
 def test_url_check():
     broken_url = "http://wwwgooglecom/"
@@ -61,8 +65,6 @@ def test_save():
     archived_url1 = str(target.save())
     assert url1 in archived_url1
 
-
-
     # Test for urls that are incorrect.
     with pytest.raises(Exception):
         url2 = "ha ha ha ha"
@@ -89,7 +91,6 @@ def test_near():
     archive_near_year = target.near(year=2010)
     assert "2010" in str(archive_near_year)
 
-
     archive_near_month_year = str(target.near(year=2015, month=2))
     assert (
         ("201502" in archive_near_month_year)
@@ -102,9 +103,9 @@ def test_near():
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
     )
-    archive_near_hour_day_month_year = str(target.near(
-        year=2008, month=5, day=9, hour=15
-    ))
+    archive_near_hour_day_month_year = str(
+        target.near(year=2008, month=5, day=9, hour=15)
+    )
     assert (
         ("2008050915" in archive_near_hour_day_month_year)
         or ("2008050914" in archive_near_hour_day_month_year)
@@ -119,21 +120,23 @@ def test_near():
         target.near(year=2010)
 
 
-
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
     assert "20200504141153" in str(target.oldest())
+
 
 def test_json():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
     assert "archived_snapshots" in str(target.JSON)
 
+
 def test_archive_url():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
     assert "github.com/akamhy" in str(target.archive_url)
+
 
 def test_newest():
     url = "github.com/akamhy/waybackpy"
@@ -146,17 +149,16 @@ def test_get():
     assert "Welcome to Google" in target.get(target.oldest())
 
 
-
 def test_wayback_timestamp():
-    ts = waybackpy._wayback_timestamp(
-        year=2020, month=1, day=2, hour=3, minute=4
-    )
+    ts = waybackpy._wayback_timestamp(year=2020, month=1, day=2, hour=3, minute=4)
     assert "202001020304" in str(ts)
 
 
 def test_get_response():
     endpoint = "https://www.google.com"
-    user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0"
+    user_agent = (
+        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0"
+    )
     headers = {"User-Agent": "%s" % user_agent}
     response = waybackpy._get_response(endpoint, params=None, headers=headers)
     assert response.status_code == 200
@@ -171,6 +173,7 @@ def test_total_archives():
         " https://gaha.e4i3n.m5iai3kip6ied.cima/gahh2718gs/ahkst63t7gad8 ", user_agent
     )
     assert target.total_archives() == 0
+
 
 def test_known_urls():
 
