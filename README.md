@@ -78,7 +78,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ### As a Python package
 
-#### Capturing aka Saving an url using save()
+#### Capturing aka Saving an URL using save()
 
 ```python
 import waybackpy
@@ -154,7 +154,7 @@ https://web.archive.org/web/20201016150543/https://www.facebook.com/
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNewestExample></sub>
 
-#### Retrieving the JSON reponse for the avaliblity API request
+#### Retrieving the JSON response for the availability API request
 
 ```python
 import waybackpy
@@ -222,7 +222,7 @@ print(github_archive_near_2018_4_july_9_2_am)
 https://web.archive.org/web/20180704090245/https://github.com/
 ```
 
-<sub>The package doesn't support second argument yet. You are encourged to create a PR ;)</sub>
+<sub>The package doesn't support the seconds' argument yet. You are encouraged to create a PR ;)</sub>
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyNearExample></sub>
 
@@ -376,10 +376,10 @@ https://web.archive.org/web/20120512142515/https://www.facebook.com/
 #### Get the source code
 
 ```bash
-waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the url
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get url # Prints the source code of the URL
 waybackpy --url google.com --user_agent "my-unique-user-agent" --get oldest # Prints the source code of the oldest archive
 waybackpy --url google.com --user_agent "my-unique-user-agent" --get newest # Prints the source code of the newest archive
-waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
+waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on Wayback machine then print the source code of this archive.
 ```
 
 <sub>Try this out in your browser @ <https://repl.it/@akamhy/WaybackPyBashGet></sub>
@@ -405,7 +405,7 @@ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --ali
 
 
 waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain
-# Prints all known URLs under akamhy.github.io inclusing subdomain
+# Prints all known URLs under akamhy.github.io including subdomain
 
 
 waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls --subdomain --alive
