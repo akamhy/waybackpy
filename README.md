@@ -2,6 +2,9 @@
   <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy%20black%20white.svg"><br>
 </div>
 
+-----------------
+
+# waybackpy: Python package & command-line tool that interfaces with the Wayback Machine API. 
 ![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions)
 [![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
@@ -14,11 +17,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
 ![Repo size](https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
-![Wayback Machine](https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png)
-
-Waybackpy is a Python package that interfaces with [Internet Archive](https://en.wikipedia.org/wiki/Internet_Archive)'s [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API. Archive webpages and retrieve archived webpages easily.
 
 Table of contents
 =================
