@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy%20colored.png"><br>
+  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy%20black%20white.svg"><br>
 </div>
 
 ![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)
