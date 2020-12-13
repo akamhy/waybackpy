@@ -87,9 +87,9 @@ class Url:
         )
         if self.timestamp == datetime.max:
             return td_max.days
-        else:
-            diff = datetime.utcnow() - self.timestamp
-            return diff.days
+
+        diff = datetime.utcnow() - self.timestamp
+        return diff.days
 
     def _url_check(self):
         """Check for common URL problems."""
