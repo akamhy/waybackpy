@@ -1,18 +1,20 @@
-waybackpy
-=========
+.. raw:: html
 
-|contributions welcome| |Build Status| |codecov| |Downloads| |Release|
-|Codacy Badge| |Maintainability| |CodeFactor| |made-with-python| |pypi|
-|PyPI - Python Version| |Maintenance| |Repo size| |License: MIT|
+   <div align="center">
 
-.. figure:: https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy-colored%20284.png
-   :alt: Wayback Machine
+.. raw:: html
 
-   Wayback Machine
-Waybackpy is a Python package that interfaces with `Internet
-Archive <https://en.wikipedia.org/wiki/Internet_Archive>`__'s `Wayback
-Machine <https://en.wikipedia.org/wiki/Wayback_Machine>`__ API. Archive
-webpages and retrieve archived webpages easily.
+   </div>
+
+--------------
+
+Python package & CLI tool that interfaces with the Wayback Machine API.
+-----------------------------------------------------------------------
+
+|pypi| |License: MIT| |Build Status| |codecov| |contributions welcome|
+|Codacy Badge| |Downloads| |Release| |Maintainability|
+|made-with-python| |Maintenance| |GitHub last commit| |PyPI - Python
+Version|
 
 Table of contents
 =================
@@ -112,7 +114,7 @@ Capturing aka Saving an url using save()
     https://web.archive.org/web/20201016171808/https://en.wikipedia.org/wiki/Multivariable_calculus
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPySaveExample\
+https://repl.it/@akamhy/WaybackPySaveExample\ 
 
 Retrieving the archive for an URL using archive\_url
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -133,7 +135,7 @@ Retrieving the archive for an URL using archive\_url
     https://web.archive.org/web/20201016153320/https://www.google.com/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyArchiveUrl\
+https://repl.it/@akamhy/WaybackPyArchiveUrl\ 
 
 Retrieving the oldest archive for an URL using oldest()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -154,7 +156,7 @@ Retrieving the oldest archive for an URL using oldest()
     http://web.archive.org/web/19981111184551/http://google.com:80/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyOldestExample\
+https://repl.it/@akamhy/WaybackPyOldestExample\ 
 
 Retrieving the newest archive for an URL using newest()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -175,7 +177,7 @@ Retrieving the newest archive for an URL using newest()
     https://web.archive.org/web/20201016150543/https://www.facebook.com/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyNewestExample\
+https://repl.it/@akamhy/WaybackPyNewestExample\ 
 
 Retrieving the JSON reponse for the avaliblity API request
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -195,7 +197,7 @@ Retrieving the JSON reponse for the avaliblity API request
 
     {'url': 'https://www.facebook.com/', 'archived_snapshots': {'closest': {'available': True, 'url': 'http://web.archive.org/web/20201016150543/https://www.facebook.com/', 'timestamp': '20201016150543', 'status': '200'}}}
 
-Try this out in your browser @ https://repl.it/@akamhy/WaybackPyJSON\
+Try this out in your browser @ https://repl.it/@akamhy/WaybackPyJSON\ 
 
 Retrieving archive close to a specified year, month, day, hour, and minute using near()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -251,7 +253,7 @@ The package doesn't support second argument yet. You are encourged to
 create a PR ;)
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyNearExample\
+https://repl.it/@akamhy/WaybackPyNearExample\ 
 
 Get the content of webpage using get()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -283,7 +285,7 @@ Get the content of webpage using get()
     print(google_oldest_archive_source)
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyGetExample#main.py\
+https://repl.it/@akamhy/WaybackPyGetExample#main.py\ 
 
 Count total archives for an URL using total\_archives()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -306,7 +308,7 @@ Count total archives for an URL using total\_archives()
     2516
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyTotalArchivesExample\
+https://repl.it/@akamhy/WaybackPyTotalArchivesExample\ 
 
 List of URLs that Wayback Machine knows and has archived for a domain name
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -335,7 +337,7 @@ List of URLs that Wayback Machine knows and has archived for a domain name
     'https://akamhy.github.io/waybackpy/assets/css/style.css?v=f881705d00bf47b5bf0c58808efe29eecba2226c']
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyKnownURLsToWayBackMachineExample#main.py\
+https://repl.it/@akamhy/WaybackPyKnownURLsToWayBackMachineExample#main.py\ 
 
 With the Command-line interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -349,7 +351,7 @@ Save
     https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashSave\
+https://repl.it/@akamhy/WaybackPyBashSave\ 
 
 Get archive URL
 ^^^^^^^^^^^^^^^
@@ -360,7 +362,7 @@ Get archive URL
     https://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashArchiveUrl\
+https://repl.it/@akamhy/WaybackPyBashArchiveUrl\ 
 
 Oldest archive
 ^^^^^^^^^^^^^^
@@ -371,7 +373,7 @@ Oldest archive
     https://web.archive.org/web/20040803000845/http://en.wikipedia.org:80/wiki/SpaceX
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashOldest\
+https://repl.it/@akamhy/WaybackPyBashOldest\ 
 
 Newest archive
 ^^^^^^^^^^^^^^
@@ -382,7 +384,7 @@ Newest archive
     https://web.archive.org/web/20200606044708/https://en.wikipedia.org/wiki/YouTube
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashNewest\
+https://repl.it/@akamhy/WaybackPyBashNewest\ 
 
 Get JSON data of avaialblity API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -396,7 +398,7 @@ Get JSON data of avaialblity API
     {'archived_snapshots': {'closest': {'timestamp': '20201007132458', 'status': '200', 'available': True, 'url': 'http://web.archive.org/web/20201007132458/https://en.wikipedia.org/wiki/SpaceX'}}, 'url': 'https://en.wikipedia.org/wiki/SpaceX'}
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashJSON\
+https://repl.it/@akamhy/WaybackPyBashJSON\ 
 
 Total number of archives
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -407,7 +409,7 @@ Total number of archives
     853
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashTotal\
+https://repl.it/@akamhy/WaybackPyBashTotal\ 
 
 Archive near time
 ^^^^^^^^^^^^^^^^^
@@ -418,7 +420,7 @@ Archive near time
     https://web.archive.org/web/20120512142515/https://www.facebook.com/
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashNear\
+https://repl.it/@akamhy/WaybackPyBashNear\ 
 
 Get the source code
 ^^^^^^^^^^^^^^^^^^^
@@ -431,7 +433,7 @@ Get the source code
     waybackpy --url google.com --user_agent "my-unique-user-agent" --get save # Save a new archive on wayback machine then print the source code of this archive.
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackPyBashGet\
+https://repl.it/@akamhy/WaybackPyBashGet\ 
 
 Fetch all the URLs that the Wayback Machine knows for a domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -464,23 +466,33 @@ Fetch all the URLs that the Wayback Machine knows for a domain
     # Prints all known URLs under akamhy.github.io including subdomain which are not dead links and still alive.
 
 Try this out in your browser @
-https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh\
+https://repl.it/@akamhy/WaybackpyKnownUrlsFromWaybackMachine#main.sh\ 
 
 Tests
 -----
 
-`Here <https://github.com/akamhy/waybackpy/tree/master/tests>`__
-
 To run tests locally:
+
+1) Install or update the testing/coverage tools
 
 .. code:: bash
 
-    pip install -U pytest
-    pip install codecov
-    pip install pytest pytest-cov
-    cd tests
-    pytest --cov=../waybackpy
-    python -m codecov #For reporting coverage on Codecov
+    pip install codecov pytest pytest-cov -U
+
+2) Inside the repository run the following commands
+
+.. code:: bash
+
+    pytest --cov=waybackpy tests/
+
+3) To report coverage run
+
+.. code:: bash
+
+    bash <(curl -s https://codecov.io/bash) -t SECRET_CODECOV_TOKEN
+
+You can find the tests
+`here <https://github.com/akamhy/waybackpy/tree/master/tests>`__.
 
 Packaging
 ---------
@@ -498,28 +510,28 @@ Released under the MIT License. See
 `license <https://github.com/akamhy/waybackpy/blob/master/LICENSE>`__
 for details.
 
-.. |contributions welcome| image:: https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square
-.. |Build Status| image:: https://img.shields.io/travis/akamhy/waybackpy.svg?label=Travis%20CI&logo=travis&style=flat-square
-   :target: https://travis-ci.org/akamhy/waybackpy
-.. |codecov| image:: https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/akamhy/waybackpy
-.. |Downloads| image:: https://pepy.tech/badge/waybackpy/month
-   :target: https://pepy.tech/project/waybackpy/month
-.. |Release| image:: https://img.shields.io/github/v/release/akamhy/waybackpy.svg
-   :target: https://github.com/akamhy/waybackpy/releases
-.. |Codacy Badge| image:: https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65
-   :target: https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&utm_medium=referral&utm_content=akamhy/waybackpy&utm_campaign=Badge_Grade
-.. |Maintainability| image:: https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability
-   :target: https://codeclimate.com/github/akamhy/waybackpy/maintainability
-.. |CodeFactor| image:: https://www.codefactor.io/repository/github/akamhy/waybackpy/badge
-   :target: https://www.codefactor.io/repository/github/akamhy/waybackpy
-.. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
-   :target: https://www.python.org/
 .. |pypi| image:: https://img.shields.io/pypi/v/waybackpy.svg
    :target: https://pypi.org/project/waybackpy/
-.. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square
-.. |Maintenance| image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
-   :target: https://github.com/akamhy/waybackpy/graphs/commit-activity
-.. |Repo size| image:: https://img.shields.io/github/repo-size/akamhy/waybackpy.svg?label=Repo%20size&style=flat-square
 .. |License: MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://github.com/akamhy/waybackpy/blob/master/LICENSE
+.. |Build Status| image:: https://github.com/akamhy/waybackpy/workflows/CI/badge.svg
+   :target: https://github.com/akamhy/waybackpy/actions
+.. |codecov| image:: https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/akamhy/waybackpy
+.. |contributions welcome| image:: https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square
+   :target: https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md
+.. |Codacy Badge| image:: https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65
+   :target: https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&utm_medium=referral&utm_content=akamhy/waybackpy&utm_campaign=Badge_Grade
+.. |Downloads| image:: https://pepy.tech/badge/waybackpy/month
+   :target: https://pepy.tech/project/waybackpy
+.. |Release| image:: https://img.shields.io/github/v/release/akamhy/waybackpy.svg
+   :target: https://github.com/akamhy/waybackpy/releases
+.. |Maintainability| image:: https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability
+   :target: https://codeclimate.com/github/akamhy/waybackpy/maintainability
+.. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
+   :target: https://www.python.org/
+.. |Maintenance| image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
+   :target: https://github.com/akamhy/waybackpy/graphs/commit-activity
+.. |GitHub last commit| image:: https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square
+   :target: https://github.com/akamhy/waybackpy/commits/master
+.. |PyPI - Python Version| image:: https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square
