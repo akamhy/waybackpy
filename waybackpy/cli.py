@@ -91,26 +91,29 @@ def _known_urls(obj, args):
 
 def _get(obj, args):
     if args.get.lower() == "url":
-        return obj.get()
+        output = obj.get()
 
-    if args.get.lower() == "archive_url":
-        return obj.get(obj.archive_url)
+    elif args.get.lower() == "archive_url":
+        output = obj.get(obj.archive_url)
 
-    if args.get.lower() == "oldest":
-        return obj.get(obj.oldest())
+    elif args.get.lower() == "oldest":
+        output = obj.get(obj.oldest())
 
-    if args.get.lower() == "latest" or args.get.lower() == "newest":
-        return obj.get(obj.newest())
+    elif args.get.lower() == "latest" or args.get.lower() == "newest":
+        output = obj.get(obj.newest())
 
-    if args.get.lower() == "save":
-        return obj.get(obj.save())
+    elif args.get.lower() == "save":
+        output = obj.get(obj.save())
 
-    return "Use get as \"--get 'source'\", 'source' can be one of the followings: \
-        \n1) url - get the source code of the url specified using --url/-u.\
-        \n2) archive_url - get the source code of the newest archive for the supplied url, alias of newest.\
-        \n3) oldest - get the source code of the oldest archive for the supplied url.\
-        \n4) newest - get the source code of the newest archive for the supplied url.\
-        \n5) save - Create a new archive and get the source code of this new archive for the supplied url."
+    else:
+        output = "Use get as \"--get 'source'\", 'source' can be one of the followings: \
+            \n1) url - get the source code of the url specified using --url/-u.\
+            \n2) archive_url - get the source code of the newest archive for the supplied url, alias of newest.\
+            \n3) oldest - get the source code of the oldest archive for the supplied url.\
+            \n4) newest - get the source code of the newest archive for the supplied url.\
+            \n5) save - Create a new archive and get the source code of this new archive for the supplied url."
+
+    return output
 
 
 def args_handler(args):
@@ -123,34 +126,34 @@ def args_handler(args):
             % __version__
         )
 
+    obj = Url(args.url)
     if args.user_agent:
         obj = Url(args.url, args.user_agent)
-    else:
-        obj = Url(args.url)
 
     if args.save:
-        return _save(obj)
-    if args.archive_url:
-        return _archive_url(obj)
-    if args.json:
-        return _json(obj)
-    if args.oldest:
-        return _oldest(obj)
-    if args.newest:
-        return _newest(obj)
-    if args.known_urls:
-        return _known_urls(obj, args)
-    if args.total:
-        return _total_archives(obj)
-    if args.near:
-        return _near(obj, args)
-    if args.get:
-        return _get(obj, args)
-    message = (
-        "You only specified the URL. But you also need to specify the operation."
-        "\nSee 'waybackpy --help' for help using this tool."
-    )
-    return message
+        output = _save(obj)
+    elif args.archive_url:
+        output = _archive_url(obj)
+    elif args.json:
+        output = _json(obj)
+    elif args.oldest:
+        output = _oldest(obj)
+    elif args.newest:
+        output = _newest(obj)
+    elif args.known_urls:
+        output = _known_urls(obj, args)
+    elif args.total:
+        output = _total_archives(obj)
+    elif args.near:
+        output = _near(obj, args)
+    elif args.get:
+        output = _get(obj, args)
+    else:
+        output = (
+            "You only specified the URL. But you also need to specify the operation."
+            "\nSee 'waybackpy --help' for help using this tool."
+        )
+    return output
 
 
 def parse_args(argv):
