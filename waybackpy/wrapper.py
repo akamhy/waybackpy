@@ -64,8 +64,6 @@ class Url:
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
-        self.archive_url = self._archive_url()  # URL of archive
-        self.timestamp = self._archive_timestamp()  # timestamp for last archive
         self._alive_url_list = []
 
     def __repr__(self):
@@ -97,7 +95,8 @@ class Url:
         response = _get_response(endpoint, params=payload, headers=headers)
         return response.json()
 
-    def _archive_url(self):
+    @property
+    def archive_url(self):
         """Get URL of archive."""
         data = self.JSON
 
@@ -111,7 +110,8 @@ class Url:
 
         return archive_url
 
-    def _archive_timestamp(self):
+    @property
+    def timestamp(self):
         """Get timestamp of last archive."""
         data = self.JSON
 
