@@ -65,7 +65,7 @@ class Url:
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
         self._archive_url = None  # URL of archive
-        self._timestamp = None  # timestamp for last archive
+        self.timestamp = None  # timestamp for last archive
         self._alive_url_list = []
 
     def __repr__(self):
@@ -81,13 +81,13 @@ class Url:
             days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
         )
 
-        if not self._timestamp:
-            self._timestamp = self.timestamp
+        if not self.timestamp:
+            self.timestamp = self._timestamp
 
-        if self._timestamp == datetime.max:
+        if self.timestamp == datetime.max:
             return td_max.days
 
-        diff = datetime.utcnow() - self._timestamp
+        diff = datetime.utcnow() - self.timestamp
         return diff.days
 
     def _url_check(self):
@@ -106,6 +106,10 @@ class Url:
     @property
     def archive_url(self):
         """Get URL of archive."""
+
+        if self._archive_url:
+            return self._archive_url
+
         data = self.JSON
 
         if not data["archived_snapshots"]:
@@ -119,7 +123,7 @@ class Url:
         return archive_url
 
     @property
-    def timestamp(self):
+    def _timestamp(self):
         """Get timestamp of last archive."""
         data = self.JSON
 
@@ -130,7 +134,7 @@ class Url:
             ts = datetime.strptime(
                 data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
             )
-        self._timestamp = ts
+        self.timestamp = ts
         return ts
 
     def _clean_url(self):
@@ -143,7 +147,7 @@ class Url:
         headers = {"User-Agent": "%s" % self.user_agent}
         response = _get_response(request_url, params=None, headers=headers)
         self._archive_url = "https://" + _archive_url_parser(response.headers)
-        self._timestamp = datetime.utcnow()
+        self.timestamp = datetime.utcnow()
         return self
 
     def get(self, url="", user_agent="", encoding=""):
@@ -199,7 +203,7 @@ class Url:
         )
 
         self._archive_url = archive_url
-        self._timestamp = datetime.strptime(
+        self.timestamp = datetime.strptime(
             data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
         )
 
