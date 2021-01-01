@@ -64,7 +64,6 @@ class Url:
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
-        self.JSON = self._JSON()  # JSON of most recent archive
         self.archive_url = self._archive_url()  # URL of archive
         self.timestamp = self._archive_timestamp()  # timestamp for last archive
         self._alive_url_list = []
@@ -90,7 +89,8 @@ class Url:
         if "." not in self.url:
             raise URLError("'%s' is not a vaild URL." % self.url)
 
-    def _JSON(self):
+    @property
+    def JSON(self):
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
         payload = {"url": "%s" % self._clean_url()}
