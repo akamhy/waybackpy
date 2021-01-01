@@ -29,7 +29,7 @@ def _archive_url_parser(header):
         return arch.group(1)
     raise WaybackError(
         "No archive URL found in the API response. "
-        "This version of waybackpy (%s) is likely out of date. Visit "
+        "This version of waybackpy (%s) is likely out of date or WayBack Machine is malfunctioning. Visit "
         "https://github.com/akamhy/waybackpy for the latest version "
         "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
     )
@@ -97,6 +97,9 @@ class Url:
 
     @property
     def JSON(self):
+        """
+        Returns JSON data from 'https://archive.org/wayback/available?url=YOUR-URL'.
+        """
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
         payload = {"url": "%s" % self._clean_url()}
@@ -105,7 +108,13 @@ class Url:
 
     @property
     def archive_url(self):
-        """Get URL of archive."""
+        """
+        Returns any random archive for the instance.
+        But if near, oldest, newest were used before
+        then it returns the same archive again.
+
+        We cache archive in self._archive_url
+        """
 
         if self._archive_url:
             return self._archive_url
@@ -124,7 +133,15 @@ class Url:
 
     @property
     def _timestamp(self):
-        """Get timestamp of last archive."""
+        """
+        Get timestamp of last fetched archive.
+        If used before fetching any archive, This
+        randomly picks archive.
+        """
+
+        if self.timestamp:
+            return self.timestamp
+
         data = self.JSON
 
         if not data["archived_snapshots"]:
@@ -138,7 +155,10 @@ class Url:
         return ts
 
     def _clean_url(self):
-        """Fix the URL, if possible."""
+        """
+        Remove newlines
+        replace " " with "_"
+        """
         return str(self.url).strip().replace(" ", "_")
 
     def save(self):
@@ -236,7 +256,7 @@ class Url:
         # Most efficient method to count number of archives (yet)
         return response.text.count(",")
 
-    def pick_live_urls(self, url):
+    def live_urls_picker(self, url):
 
         try:
             response_code = requests.get(url).status_code
@@ -278,7 +298,7 @@ class Url:
         # Remove all deadURLs from url_list if alive=True
         if alive:
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                executor.map(self.pick_live_urls, url_list)
+                executor.map(self.live_urls_picker, url_list)
             url_list = self._alive_url_list
 
         return url_list
