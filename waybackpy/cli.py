@@ -7,10 +7,28 @@ import string
 import random
 from waybackpy.wrapper import Url
 from waybackpy.__version__ import __version__
+from waybackpy.exceptions import WaybackError
 
 
 def _save(obj):
-    return obj.save()
+    try:
+        return obj.save()
+    except Exception as err:
+        e = str(err)
+        url = obj.url
+        m = re.search(r"Header:\n(.*)", e)
+        if m:
+            header = m.group(1)
+        if "No archive URL found in the API response" in e:
+            return (
+                "\n[waybackpy] Can not save/archive your link.\n[waybackpy] This\
+                 could happen because either your waybackpy (%s) is likely out of\
+                 date or Wayback Machine is malfunctioning.\n[waybackpy] Visit\
+                 https://github.com/akamhy/waybackpy for the latest version of \
+                waybackpy.\n[waybackpy] API response Header :\n%s"
+                % (__version__, header)
+            )
+        return WaybackError(err)
 
 
 def _archive_url(obj):
@@ -21,12 +39,33 @@ def _json(obj):
     return obj.JSON
 
 
+def handle_not_archived_error(e, obj):
+    m = re.search(r"archive\sfor\s\'(.*?)\'\stry", str(e))
+    if m:
+        url = m.group(1)
+        ua = obj.user_agent
+        if "github.com/akamhy/waybackpy" in ua:
+            ua = "YOUR_USER_AGENT_HERE"
+        return (
+            "\n[Waybackpy] Can not find archive for '%s'.\n[Waybackpy] You can"
+            " save the URL using the following command:\n[Waybackpy] waybackpy --"
+            'user_agent "%s" --url "%s" --save' % (url, ua, url)
+        )
+    return WaybackError(e)
+
+
 def _oldest(obj):
-    return obj.oldest()
+    try:
+        return obj.oldest()
+    except Exception as e:
+        return handle_not_archived_error(e, obj)
 
 
 def _newest(obj):
-    return obj.newest()
+    try:
+        return obj.newest()
+    except Exception as e:
+        return handle_not_archived_error(e, obj)
 
 
 def _total_archives(obj):
@@ -45,7 +84,11 @@ def _near(obj, args):
         _near_args["hour"] = args.hour
     if args.minute:
         _near_args["minute"] = args.minute
-    return obj.near(**_near_args)
+
+    try:
+        return obj.near(**_near_args)
+    except Exception as e:
+        return handle_not_archived_error(e, obj)
 
 
 def _save_urls_on_file(input_list, live_url_count):
