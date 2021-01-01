@@ -11,6 +11,7 @@ import waybackpy.wrapper as waybackpy  # noqa: E402
 
 user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
+
 def test_clean_url():
     test_url = " https://en.wikipedia.org/wiki/Network security "
     answer = "https://en.wikipedia.org/wiki/Network_security"
@@ -125,6 +126,12 @@ def test_oldest():
     assert "20200504141153" in str(target.oldest())
 
 
+def test_json():
+    url = "github.com/akamhy/waybackpy"
+    target = waybackpy.Url(url, user_agent)
+    assert "archived_snapshots" in str(target.JSON)
+
+
 def test_archive_url():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
@@ -145,6 +152,16 @@ def test_get():
 def test_wayback_timestamp():
     ts = waybackpy._wayback_timestamp(year=2020, month=1, day=2, hour=3, minute=4)
     assert "202001020304" in str(ts)
+
+
+def test_get_response():
+    endpoint = "https://www.google.com"
+    user_agent = (
+        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0"
+    )
+    headers = {"User-Agent": "%s" % user_agent}
+    response = waybackpy._get_response(endpoint, params=None, headers=headers)
+    assert response.status_code == 200
 
 
 def test_total_archives():
