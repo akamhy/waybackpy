@@ -64,22 +64,30 @@ class Url:
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
+        self._archive_url = None  # URL of archive
+        self._timestamp = None  # timestamp for last archive
         self._alive_url_list = []
 
     def __repr__(self):
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
 
     def __str__(self):
-        return "%s" % self.archive_url
+        if not self._archive_url:
+            self._archive_url = self.archive_url
+        return "%s" % self._archive_url
 
     def __len__(self):
         td_max = timedelta(
             days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
         )
-        if self.timestamp == datetime.max:
+
+        if not self._timestamp:
+            self._timestamp = self.timestamp
+
+        if self._timestamp == datetime.max:
             return td_max.days
 
-        diff = datetime.utcnow() - self.timestamp
+        diff = datetime.utcnow() - self._timestamp
         return diff.days
 
     def _url_check(self):
@@ -107,7 +115,7 @@ class Url:
             archive_url = archive_url.replace(
                 "http://web.archive.org/web/", "https://web.archive.org/web/", 1
             )
-
+        self._archive_url = archive_url
         return archive_url
 
     @property
@@ -116,14 +124,14 @@ class Url:
         data = self.JSON
 
         if not data["archived_snapshots"]:
-            time = datetime.max
+            ts = datetime.max
 
         else:
-            time = datetime.strptime(
+            ts = datetime.strptime(
                 data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
             )
-
-        return time
+        self._timestamp = ts
+        return ts
 
     def _clean_url(self):
         """Fix the URL, if possible."""
@@ -134,8 +142,8 @@ class Url:
         request_url = "https://web.archive.org/save/" + self._clean_url()
         headers = {"User-Agent": "%s" % self.user_agent}
         response = _get_response(request_url, params=None, headers=headers)
-        self.archive_url = "https://" + _archive_url_parser(response.headers)
-        self.timestamp = datetime.utcnow()
+        self._archive_url = "https://" + _archive_url_parser(response.headers)
+        self._timestamp = datetime.utcnow()
         return self
 
     def get(self, url="", user_agent="", encoding=""):
@@ -190,8 +198,8 @@ class Url:
             "http://web.archive.org/web/", "https://web.archive.org/web/", 1
         )
 
-        self.archive_url = archive_url
-        self.timestamp = datetime.strptime(
+        self._archive_url = archive_url
+        self._timestamp = datetime.strptime(
             data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
         )
 
