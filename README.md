@@ -21,8 +21,8 @@
 
 
 
-Table of contents
-=================
+## Table of contents
+
 <!--ts-->
 
 * [Installation](#installation)
@@ -37,7 +37,7 @@ Table of contents
 
 <!--te-->
 
-## Installation
+### Installation
 
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 
@@ -52,7 +52,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
 
-## Tests
+### Tests
 
 To run tests locally:
 
@@ -77,7 +77,7 @@ bash <(curl -s https://codecov.io/bash) -t SECRET_CODECOV_TOKEN
 You can find the tests [here](https://github.com/akamhy/waybackpy/tree/master/tests).
 
 
-## Packaging
+### Packaging
 
 1. Increment version.
 
