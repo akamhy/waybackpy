@@ -8,6 +8,6 @@ __description__ = (
 __url__ = "https://akamhy.github.io/waybackpy/"
 __version__ = "2.3.2"
 __author__ = "akamhy"
-__author_email__ = "akash3pro@gmail.com"
+__author_email__ = "akamhy@yahoo.com"
 __license__ = "MIT"
 __copyright__ = "Copyright 2020 akamhy"
