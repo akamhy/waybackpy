@@ -13,35 +13,43 @@ user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
 
 
 def test_clean_url():
+    """No API use"""
     test_url = " https://en.wikipedia.org/wiki/Network security "
     answer = "https://en.wikipedia.org/wiki/Network_security"
     target = waybackpy.Url(test_url, user_agent)
     test_result = target._clean_url()
     assert answer == test_result
 
-
 def test_dunders():
+    """No API use"""
     url = "https://en.wikipedia.org/wiki/Network_security"
     user_agent = "UA"
     target = waybackpy.Url(url, user_agent)
     assert "waybackpy.Url(url=%s, user_agent=%s)" % (url, user_agent) == repr(target)
     assert "en.wikipedia.org" in str(target)
 
-
-def test_archive_url_parser():
-    endpoint = "https://amazon.com"
-    user_agent = "Mozilla/5.0 (Windows NT 6.2; rv:20.0) Gecko/20121202 Firefox/20.0"
-    headers = {"User-Agent": "%s" % user_agent}
-    response = waybackpy._get_response(endpoint, params=None, headers=headers)
-    header = response.headers
-    with pytest.raises(Exception):
-        waybackpy._archive_url_parser(header)
-
-
 def test_url_check():
+    """No API Use"""
     broken_url = "http://wwwgooglecom/"
     with pytest.raises(Exception):
         waybackpy.Url(broken_url, user_agent)
+
+def test_archive_url_parser():
+    """No API Use"""
+    perfect_header = """
+    {'Server': 'nginx/1.15.8', 'Date': 'Sat, 02 Jan 2021 09:40:25 GMT', 'Content-Type': 'text/html; charset=UTF-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'X-Archive-Orig-Server': 'nginx', 'X-Archive-Orig-Date': 'Sat, 02 Jan 2021 09:40:09 GMT', 'X-Archive-Orig-Transfer-Encoding': 'chunked', 'X-Archive-Orig-Connection': 'keep-alive', 'X-Archive-Orig-Vary': 'Accept-Encoding', 'X-Archive-Orig-Last-Modified': 'Fri, 01 Jan 2021 12:19:00 GMT', 'X-Archive-Orig-Strict-Transport-Security': 'max-age=31536000, max-age=0;', 'X-Archive-Guessed-Content-Type': 'text/html', 'X-Archive-Guessed-Charset': 'utf-8', 'Memento-Datetime': 'Sat, 02 Jan 2021 09:40:09 GMT', 'Link': '<https://www.scribbr.com/citing-sources/et-al/>; rel="original", <https://web.archive.org/web/timemap/link/https://www.scribbr.com/citing-sources/et-al/>; rel="timemap"; type="application/link-format", <https://web.archive.org/web/https://www.scribbr.com/citing-sources/et-al/>; rel="timegate", <https://web.archive.org/web/20200601082911/https://www.scribbr.com/citing-sources/et-al/>; rel="first memento"; datetime="Mon, 01 Jun 2020 08:29:11 GMT", <https://web.archive.org/web/20201126185327/https://www.scribbr.com/citing-sources/et-al/>; rel="prev memento"; datetime="Thu, 26 Nov 2020 18:53:27 GMT", <https://web.archive.org/web/20210102094009/https://www.scribbr.com/citing-sources/et-al/>; rel="memento"; datetime="Sat, 02 Jan 2021 09:40:09 GMT", <https://web.archive.org/web/20210102094009/https://www.scribbr.com/citing-sources/et-al/>; rel="last memento"; datetime="Sat, 02 Jan 2021 09:40:09 GMT"', 'Content-Security-Policy': "default-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob: archive.org web.archive.org analytics.archive.org pragma.archivelab.org", 'X-Archive-Src': 'spn2-20210102092956-wwwb-spn20.us.archive.org-8001.warc.gz', 'Server-Timing': 'captures_list;dur=112.646325, exclusion.robots;dur=0.172010, exclusion.robots.policy;dur=0.158205, RedisCDXSource;dur=2.205932, esindex;dur=0.014647, LoadShardBlock;dur=82.205012, PetaboxLoader3.datanode;dur=70.750239, CDXLines.iter;dur=24.306278, load_resource;dur=26.520179', 'X-App-Server': 'wwwb-app200', 'X-ts': '200', 'X-location': 'All', 'X-Cache-Key': 'httpsweb.archive.org/web/20210102094009/https://www.scribbr.com/citing-sources/et-al/IN', 'X-RL': '0', 'X-Page-Cache': 'MISS', 'X-Archive-Screenname': '0', 'Content-Encoding': 'gzip'}
+    """
+
+    archive = waybackpy._archive_url_parser(perfect_header)
+    assert "web.archive.org/web/20210102094009" in archive
+
+    # The below header should result in Exception
+    no_archive_header = """
+    {'Server': 'nginx/1.15.8', 'Date': 'Sat, 02 Jan 2021 09:42:45 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Cache-Control': 'no-cache', 'X-App-Server': 'wwwb-app52', 'X-ts': '523', 'X-RL': '0', 'X-Page-Cache': 'MISS', 'X-Archive-Screenname': '0'}
+    """
+
+    with pytest.raises(Exception):
+        waybackpy._archive_url_parser(no_archive_header)
 
 
 def test_save():
@@ -89,13 +97,13 @@ def test_near():
         "(KHTML, like Gecko) Version/5.0.3 Safari/533.19.4",
     )
     archive_near_year = target.near(year=2010)
-    assert "2010" in str(archive_near_year)
+    assert "2010" in str(archive_near_year.timestamp)
 
-    archive_near_month_year = str(target.near(year=2015, month=2))
+    archive_near_month_year = str(target.near(year=2015, month=2).timestamp)
     assert (
-        ("201502" in archive_near_month_year)
-        or ("201501" in archive_near_month_year)
-        or ("201503" in archive_near_month_year)
+        ("2015-02" in archive_near_month_year)
+        or ("2015-01" in archive_near_month_year)
+        or ("2015-03" in archive_near_month_year)
     )
 
     target = waybackpy.Url(

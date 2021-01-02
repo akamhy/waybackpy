@@ -66,6 +66,7 @@ class Url:
         self._url_check()  # checks url validity on init.
         self._archive_url = None  # URL of archive
         self.timestamp = None  # timestamp for last archive
+        self._JSON = None
         self._alive_url_list = []
 
     def __repr__(self):
@@ -100,6 +101,10 @@ class Url:
         """
         Returns JSON data from 'https://archive.org/wayback/available?url=YOUR-URL'.
         """
+
+        if self._JSON:
+            return self._JSON
+
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
         payload = {"url": "%s" % self._clean_url()}
@@ -212,6 +217,7 @@ class Url:
         payload = {"url": "%s" % self._clean_url(), "timestamp": timestamp}
         response = _get_response(endpoint, params=payload, headers=headers)
         data = response.json()
+
         if not data["archived_snapshots"]:
             raise WaybackError(
                 "Can not find archive for '%s' try later or use wayback.Url(url, user_agent).save() "
@@ -226,6 +232,7 @@ class Url:
         self.timestamp = datetime.strptime(
             data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
         )
+        self._JSON = data
 
         return self
 
@@ -261,7 +268,7 @@ class Url:
         try:
             response_code = requests.get(url).status_code
         except Exception:
-            return  # we don't care if urls are not opening
+            return # we don't care if Exception
 
         # 200s are OK and 300s are usually redirects, if you don't want redirects replace 400 with 300
         if response_code >= 400:
