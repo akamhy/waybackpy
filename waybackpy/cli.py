@@ -15,7 +15,6 @@ def _save(obj):
         return obj.save()
     except Exception as err:
         e = str(err)
-        url = obj.url
         m = re.search(r"Header:\n(.*)", e)
         if m:
             header = m.group(1)
