@@ -29,7 +29,7 @@ def _archive_url_parser(header):
         return arch.group(1)
     raise WaybackError(
         "No archive URL found in the API response. "
-        "This version of waybackpy (%s) is likely out of date. Visit "
+        "This version of waybackpy (%s) is likely out of date or WayBack Machine is malfunctioning. Visit "
         "https://github.com/akamhy/waybackpy for the latest version "
         "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
     )
@@ -64,20 +64,26 @@ class Url:
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
-        self.archive_url = self._archive_url()  # URL of archive
-        self.timestamp = self._archive_timestamp()  # timestamp for last archive
+        self._archive_url = None  # URL of archive
+        self.timestamp = None  # timestamp for last archive
         self._alive_url_list = []
 
     def __repr__(self):
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
 
     def __str__(self):
-        return "%s" % self.archive_url
+        if not self._archive_url:
+            self._archive_url = self.archive_url
+        return "%s" % self._archive_url
 
     def __len__(self):
         td_max = timedelta(
             days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
         )
+
+        if not self.timestamp:
+            self.timestamp = self._timestamp
+
         if self.timestamp == datetime.max:
             return td_max.days
 
@@ -91,14 +97,28 @@ class Url:
 
     @property
     def JSON(self):
+        """
+        Returns JSON data from 'https://archive.org/wayback/available?url=YOUR-URL'.
+        """
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
         payload = {"url": "%s" % self._clean_url()}
         response = _get_response(endpoint, params=payload, headers=headers)
         return response.json()
 
-    def _archive_url(self):
-        """Get URL of archive."""
+    @property
+    def archive_url(self):
+        """
+        Returns any random archive for the instance.
+        But if near, oldest, newest were used before
+        then it returns the same archive again.
+
+        We cache archive in self._archive_url
+        """
+
+        if self._archive_url:
+            return self._archive_url
+
         data = self.JSON
 
         if not data["archived_snapshots"]:
@@ -108,25 +128,37 @@ class Url:
             archive_url = archive_url.replace(
                 "http://web.archive.org/web/", "https://web.archive.org/web/", 1
             )
-
+        self._archive_url = archive_url
         return archive_url
 
-    def _archive_timestamp(self):
-        """Get timestamp of last archive."""
+    @property
+    def _timestamp(self):
+        """
+        Get timestamp of last fetched archive.
+        If used before fetching any archive, This
+        randomly picks archive.
+        """
+
+        if self.timestamp:
+            return self.timestamp
+
         data = self.JSON
 
         if not data["archived_snapshots"]:
-            time = datetime.max
+            ts = datetime.max
 
         else:
-            time = datetime.strptime(
+            ts = datetime.strptime(
                 data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
             )
-
-        return time
+        self.timestamp = ts
+        return ts
 
     def _clean_url(self):
-        """Fix the URL, if possible."""
+        """
+        Remove newlines
+        replace " " with "_"
+        """
         return str(self.url).strip().replace(" ", "_")
 
     def save(self):
@@ -134,7 +166,7 @@ class Url:
         request_url = "https://web.archive.org/save/" + self._clean_url()
         headers = {"User-Agent": "%s" % self.user_agent}
         response = _get_response(request_url, params=None, headers=headers)
-        self.archive_url = "https://" + _archive_url_parser(response.headers)
+        self._archive_url = "https://" + _archive_url_parser(response.headers)
         self.timestamp = datetime.utcnow()
         return self
 
@@ -190,7 +222,7 @@ class Url:
             "http://web.archive.org/web/", "https://web.archive.org/web/", 1
         )
 
-        self.archive_url = archive_url
+        self._archive_url = archive_url
         self.timestamp = datetime.strptime(
             data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
         )
@@ -224,7 +256,7 @@ class Url:
         # Most efficient method to count number of archives (yet)
         return response.text.count(",")
 
-    def pick_live_urls(self, url):
+    def live_urls_picker(self, url):
 
         try:
             response_code = requests.get(url).status_code
@@ -266,7 +298,7 @@ class Url:
         # Remove all deadURLs from url_list if alive=True
         if alive:
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                executor.map(self.pick_live_urls, url_list)
+                executor.map(self.live_urls_picker, url_list)
             url_list = self._alive_url_list
 
         return url_list
