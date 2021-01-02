@@ -47,7 +47,7 @@ setup(
     ],
     entry_points={"console_scripts": ["waybackpy = waybackpy.cli:main"]},
     project_urls={
-        "Documentation": "https://akamhy.github.io/waybackpy/",
+        "Documentation": "https://github.com/akamhy/waybackpy/wiki",
         "Source": "https://github.com/akamhy/waybackpy",
         "Tracker": "https://github.com/akamhy/waybackpy/issues",
     },
