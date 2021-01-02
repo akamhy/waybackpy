@@ -6,7 +6,7 @@ __description__ = (
     "Archive pages and retrieve archived pages easily."
 )
 __url__ = "https://akamhy.github.io/waybackpy/"
-__version__ = "2.3.1"
+__version__ = "2.3.2"
 __author__ = "akamhy"
 __author_email__ = "akash3pro@gmail.com"
 __license__ = "MIT"
