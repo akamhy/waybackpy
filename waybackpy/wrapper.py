@@ -12,7 +12,30 @@ default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
 
 def _archive_url_parser(header):
-    """Parse out the archive from header."""
+    """
+    This method has some regexen (or regexes)
+    that search for archive url in header.
+
+    This method is used when you try to
+    save a webpage on wayback machine.
+
+    The wayback machine's save API doesn't
+    return JSON response, we are required
+    to read the header of the API response
+    and look for the archive URL.
+
+    Two cases are possible:
+    1) Either we find the archive url in
+       the header.
+
+    2) We didn't find the archive url in
+       API header.
+
+    If we found the archive we return it.
+
+    And if we couldn't find it we raise
+    WaybackError with a standard Error message.
+    """
     # Regex1
     arch = re.search(r"Content-Location: (/web/[0-9]{14}/.*)", str(header))
     if arch:
@@ -36,14 +59,49 @@ def _archive_url_parser(header):
 
 
 def _wayback_timestamp(**kwargs):
-    """Return a formatted timestamp."""
+    """
+    Wayback Machine archive URLs
+    have a timestamp in them.
+
+    The standard archive URL format is
+    https://web.archive.org/web/20191214041711/https://www.youtube.com
+
+    If we break it down in three parts:
+    1 ) The start (https://web.archive.org/web/)
+    2 ) timestamp (20191214041711)
+    3 ) https://www.youtube.com, the original URL
+
+    The near method takes year, month, day, hour and minute
+    as Arguments, their type is int.
+
+    This method takes those integers and converts it to
+    wayback machine timestamp and returns it.
+
+    Return format is string.
+    """
     return "".join(
         str(kwargs[key]).zfill(2) for key in ["year", "month", "day", "hour", "minute"]
     )
 
 
 def _get_response(endpoint, params=None, headers=None):
-    """Get response for the supplied request."""
+    """
+    This function is used make get request.
+    We use the requests package to make the
+    requests.
+
+
+    We try twice and if both the times is fails And
+    raises exceptions we give-up and raise WaybackError.
+
+    You can handles WaybackError by importing:
+    from waybackpy.exceptions import WaybackError
+
+    try:
+        ...
+    except WaybackError as e:
+        # handle it
+    """
 
     try:
         response = requests.get(endpoint, params=params, headers=headers)
@@ -58,14 +116,16 @@ def _get_response(endpoint, params=None, headers=None):
 
 
 class Url:
-    """waybackpy Url object"""
+    """
+    waybackpy Url object <class 'waybackpy.wrapper.Url'>
+    """
 
     def __init__(self, url, user_agent=default_UA):
         self.url = url
         self.user_agent = user_agent
         self._url_check()  # checks url validity on init.
-        self._archive_url = None  # URL of archive
-        self.timestamp = None  # timestamp for last archive
+        self._archive_url = None
+        self.timestamp = None
         self._JSON = None
         self._alive_url_list = []
 
@@ -73,6 +133,17 @@ class Url:
         return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
 
     def __str__(self):
+        """
+        Output when print() is used on <class 'waybackpy.wrapper.Url'>
+        This should print an archive URL.
+
+        We check if self._archive_url is not None.
+        If not None, good. We return string of self._archive_url.
+
+        If self._archive_url is None, it means we ain't used any method that
+        sets self._archive_url, we now set self._archive_url to self.archive_url
+        and return it.
+        """
         if not self._archive_url:
             self._archive_url = self.archive_url
         return "%s" % self._archive_url
@@ -92,7 +163,13 @@ class Url:
         return diff.days
 
     def _url_check(self):
-        """Check for common URL problems."""
+        """
+        Check for common URL problems.
+        What we are checking:
+        1) '.' in self.url, no url that ain't '.' in it.
+
+        If you known any others, please create a PR on the github repo.
+        """
         if "." not in self.url:
             raise URLError("'%s' is not a vaild URL." % self.url)
 
@@ -198,10 +275,26 @@ class Url:
         return response.content.decode(encoding.replace("text/html", "UTF-8", 1))
 
     def near(self, year=None, month=None, day=None, hour=None, minute=None):
-        """Return the closest Wayback Machine archive to the time supplied.
-        Supported params are year, month, day, hour and minute.
-        Any non-supplied parameters default to the current time.
+        """
+        Wayback Machine can have many archives of a webpage,
+        sometimes we want archive close to a specific time.
 
+        This method takes year, month, day, hour and minute as input.
+        The input type must be integer. Any non-supplied parameters
+        default to the current time.
+
+        We convert the input to a wayback machine timestamp using
+        _wayback_timestamp(), it returns a string.
+
+        We use the wayback machine's availability API
+        (https://archive.org/wayback/available)
+        to get the closest archive from the timestamp.
+
+        We set self._archive_url to the archive found, if any.
+        If archive found, we set self.timestamp to its timestamp.
+        We self._JSON to the response of the availability API.
+
+        And finally return self.
         """
         now = datetime.utcnow().timetuple()
         timestamp = _wayback_timestamp(
@@ -237,11 +330,22 @@ class Url:
         return self
 
     def oldest(self, year=1994):
-        """Return the oldest Wayback Machine archive for this URL."""
+        """
+        Returns the earliest/oldest Wayback Machine archive for the webpage.
+
+        Wayback machine has started archiving the internet around 1997 and
+        therefore we can't have any archive older than 1997, we use 1994 as the
+        deafult year to look for the oldest archive.
+
+        We simply pass the year in near() and return it.
+        """
         return self.near(year=year)
 
     def newest(self):
-        """Return the newest Wayback Machine archive available for this URL.
+        """
+        Return the newest Wayback Machine archive available for this URL.
+
+        We return the output of self.near() as it deafults to current utc time.
 
         Due to Wayback Machine database lag, this may not always be the
         most recent archive.
@@ -249,7 +353,15 @@ class Url:
         return self.near()
 
     def total_archives(self):
-        """Returns the total number of Wayback Machine archives for this URL."""
+        """
+        A webpage can have multiple archives on the wayback machine
+        If someone wants to count the total number of archives of a
+        webpage on wayback machine they can use this method.
+
+        Returns the total number of Wayback Machine archives for the URL.
+
+        Return type in integer.
+        """
 
         endpoint = "https://web.archive.org/cdx/search/cdx"
         headers = {
@@ -264,6 +376,10 @@ class Url:
         return response.text.count(",")
 
     def live_urls_picker(self, url):
+        """
+        This method is used to check if supplied url
+        is >= 400.
+        """
 
         try:
             response_code = requests.get(url).status_code
@@ -277,7 +393,8 @@ class Url:
         self._alive_url_list.append(url)
 
     def known_urls(self, alive=False, subdomain=False):
-        """Returns list of URLs known to exist for given domain name
+        """
+        Returns list of URLs known to exist for given domain name
         because these URLs were crawled by WayBack Machine bots.
         Useful for pen-testers and others.
         Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
