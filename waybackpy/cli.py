@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
-import sys
 import os
 import re
-import argparse
-import string
+import sys
 import random
+import string
+import argparse
 from waybackpy.wrapper import Url
-from waybackpy.__version__ import __version__
 from waybackpy.exceptions import WaybackError
+from waybackpy.__version__ import __version__
 
 
 def _save(obj):
@@ -38,7 +37,7 @@ def _json(obj):
     return obj.JSON
 
 
-def handle_not_archived_error(e, obj):
+def no_archive_handler(e, obj):
     m = re.search(r"archive\sfor\s\'(.*?)\'\stry", str(e))
     if m:
         url = m.group(1)
@@ -57,14 +56,14 @@ def _oldest(obj):
     try:
         return obj.oldest()
     except Exception as e:
-        return handle_not_archived_error(e, obj)
+        return no_archive_handler(e, obj)
 
 
 def _newest(obj):
     try:
         return obj.newest()
     except Exception as e:
-        return handle_not_archived_error(e, obj)
+        return no_archive_handler(e, obj)
 
 
 def _total_archives(obj):
@@ -83,15 +82,15 @@ def _near(obj, args):
     try:
         return obj.near(**_near_args)
     except Exception as e:
-        return handle_not_archived_error(e, obj)
+        return no_archive_handler(e, obj)
 
 
 def _save_urls_on_file(input_list, live_url_count):
     m = re.search("https?://([A-Za-z_0-9.-]+).*", input_list[0])
+
+    domain = "domain-unknown"
     if m:
         domain = m.group(1)
-    else:
-        domain = "domain-unknown"
 
     uid = "".join(
         random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
@@ -106,44 +105,39 @@ def _save_urls_on_file(input_list, live_url_count):
 
 
 def _known_urls(obj, args):
-    """Abbreviations:
-    sd = subdomain
-    al = alive
     """
+    Known urls for a domain.
+    """
+    # sd = subdomain
     sd = False
-    al = False
     if args.subdomain:
         sd = True
+
+    # al = alive
+    al = False
     if args.alive:
         al = True
+
     url_list = obj.known_urls(alive=al, subdomain=sd)
     total_urls = len(url_list)
 
     if total_urls > 0:
-        text = _save_urls_on_file(url_list, total_urls)
-    else:
-        text = "No known URLs found. Please try a diffrent domain!"
+        return _save_urls_on_file(url_list, total_urls)
 
-    return text
+    return "No known URLs found. Please try a diffrent domain!"
 
 
 def _get(obj, args):
     if args.get.lower() == "url":
         return obj.get()
-
     if args.get.lower() == "archive_url":
         return obj.get(obj.archive_url)
-
     if args.get.lower() == "oldest":
         return obj.get(obj.oldest())
-
     if args.get.lower() == "latest" or args.get.lower() == "newest":
         return obj.get(obj.newest())
-
     if args.get.lower() == "save":
         return obj.get(obj.save())
-
-
     return "Use get as \"--get 'source'\", 'source' can be one of the followings: \
         \n1) url - get the source code of the url specified using --url/-u.\
         \n2) archive_url - get the source code of the newest archive for the supplied url, alias of newest.\
@@ -167,38 +161,47 @@ def args_handler(args):
         obj = Url(args.url, args.user_agent)
 
     if args.save:
-        return _save(obj)
-    if args.archive_url:
-        return _archive_url(obj)
-    if args.json:
-        return _json(obj)
-    if args.oldest:
-        return _oldest(obj)
-    if args.newest:
-        return _newest(obj)
-    if args.known_urls:
-        return _known_urls(obj, args)
-    if args.total:
-        return _total_archives(obj)
-    if args.near:
+        output = _save(obj)
+    elif args.archive_url:
+        output = _archive_url(obj)
+    elif args.json:
+        output = _json(obj)
+    elif args.oldest:
+        output = _oldest(obj)
+    elif args.newest:
+        output = _newest(obj)
+    elif args.known_urls:
+        output = _known_urls(obj, args)
+    elif args.total:
+        output = _total_archives(obj)
+    elif args.near:
         return _near(obj, args)
-    if args.get:
-        return _get(obj, args)
-
-    return (
+    elif args.get:
+        output = _get(obj, args)
+    else:
+        output = (
             "You only specified the URL. But you also need to specify the operation."
             "\nSee 'waybackpy --help' for help using this tool."
         )
+    return output
+
+
+def add_requiredArgs(requiredArgs):
+    requiredArgs.add_argument(
+        "--url", "-u", help="URL on which Wayback machine operations would occur"
+    )
 
 
 def add_userAgentArg(userAgentArg):
     help_text = 'User agent, default user_agent is "waybackpy python package - https://github.com/akamhy/waybackpy"'
     userAgentArg.add_argument("--user_agent", "-ua", help=help_text)
 
+
 def add_saveArg(saveArg):
     saveArg.add_argument(
         "--save", "-s", action="store_true", help="Save the URL on the Wayback machine"
     )
+
 
 def add_auArg(auArg):
     auArg.add_argument(
@@ -208,6 +211,7 @@ def add_auArg(auArg):
         help="Get the latest archive URL, alias for --newest",
     )
 
+
 def add_jsonArg(jsonArg):
     jsonArg.add_argument(
         "--json",
@@ -215,6 +219,7 @@ def add_jsonArg(jsonArg):
         action="store_true",
         help="JSON data of the availability API request",
     )
+
 
 def add_oldestArg(oldestArg):
     oldestArg.add_argument(
@@ -224,6 +229,7 @@ def add_oldestArg(oldestArg):
         help="Oldest archive for the specified URL",
     )
 
+
 def add_newestArg(newestArg):
     newestArg.add_argument(
         "--newest",
@@ -231,6 +237,7 @@ def add_newestArg(newestArg):
         action="store_true",
         help="Newest archive for the specified URL",
     )
+
 
 def add_totalArg(totalArg):
     totalArg.add_argument(
@@ -240,12 +247,14 @@ def add_totalArg(totalArg):
         help="Total number of archives for the specified URL",
     )
 
+
 def add_getArg(getArg):
     getArg.add_argument(
         "--get",
         "-g",
         help="Prints the source code of the supplied url. Use '--get help' for extended usage",
     )
+
 
 def add_knownUrlArg(knownUrlArg):
     knownUrlArg.add_argument(
@@ -257,6 +266,12 @@ def add_knownUrlArg(knownUrlArg):
     knownUrlArg.add_argument("--alive", "-a", action="store_true", help=help_text)
 
 
+def add_nearArg(nearArg):
+    nearArg.add_argument(
+        "--near", "-N", action="store_true", help="Archive near specified time"
+    )
+
+
 def add_nearArgs(nearArgs):
     nearArgs.add_argument("--year", "-Y", type=int, help="Year in integer")
     nearArgs.add_argument("--month", "-M", type=int, help="Month in integer")
@@ -264,64 +279,35 @@ def add_nearArgs(nearArgs):
     nearArgs.add_argument("--hour", "-H", type=int, help="Hour in intege")
     nearArgs.add_argument("--minute", "-MIN", type=int, help="Minute in integer")
 
+
 def parse_args(argv):
     parser = argparse.ArgumentParser()
-
-    requiredArgs = parser.add_argument_group("URL argument (required)")
-    requiredArgs.add_argument(
-        "--url", "-u", help="URL on which Wayback machine operations would occur"
+    add_requiredArgs(parser.add_argument_group("URL argument (required)"))
+    add_userAgentArg(parser.add_argument_group("User Agent"))
+    add_saveArg(parser.add_argument_group("Create new archive/save URL"))
+    add_auArg(parser.add_argument_group("Get the latest Archive"))
+    add_jsonArg(parser.add_argument_group("Get the JSON data"))
+    add_oldestArg(parser.add_argument_group("Oldest archive"))
+    add_newestArg(parser.add_argument_group("Newest archive"))
+    add_totalArg(parser.add_argument_group("Total number of archives"))
+    add_getArg(parser.add_argument_group("Get source code"))
+    add_knownUrlArg(
+        parser.add_argument_group(
+            "URLs known and archived to Waybcak Machine for the site."
+        )
     )
-
-    userAgentArg = parser.add_argument_group("User Agent")
-    add_userAgentArg(userAgentArg)
-
-    saveArg = parser.add_argument_group("Create new archive/save URL")
-    add_saveArg(saveArg)
-
-    auArg = parser.add_argument_group("Get the latest Archive")
-    add_auArg(auArg)
-
-    jsonArg = parser.add_argument_group("Get the JSON data")
-    add_jsonArg(jsonArg)
-
-    oldestArg = parser.add_argument_group("Oldest archive")
-    add_oldestArg(oldestArg)
-
-    newestArg = parser.add_argument_group("Newest archive")
-    add_newestArg(newestArg)
-
-    totalArg = parser.add_argument_group("Total number of archives")
-    add_totalArg(totalArg)
-
-    getArg = parser.add_argument_group("Get source code")
-    add_getArg(getArg)
-
-    knownUrlArg = parser.add_argument_group(
-        "URLs known and archived to Waybcak Machine for the site."
-    )
-    add_knownUrlArg(knownUrlArg)
-
-    nearArg = parser.add_argument_group("Archive close to time specified")
-    nearArg.add_argument(
-        "--near", "-N", action="store_true", help="Archive near specified time"
-    )
-    #The following is adding supplementary args used with near.
-    nearArgs = parser.add_argument_group("Arguments that are used only with --near")
-    add_nearArgs(nearArgs)
-
+    add_nearArg(parser.add_argument_group("Archive close to time specified"))
+    add_nearArgs(parser.add_argument_group("Arguments that are used only with --near"))
     parser.add_argument(
         "--version", "-v", action="store_true", help="Waybackpy version"
     )
-
     return parser.parse_args(argv[1:])
 
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    args = parse_args(argv)
-    output = args_handler(args)
-    print(output)
+    print(args_handler(parse_args(argv)))
 
 
 if __name__ == "__main__":

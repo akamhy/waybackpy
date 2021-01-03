@@ -1,59 +1,62 @@
-# -*- coding: utf-8 -*-
-
 import re
-from datetime import datetime, timedelta
-from waybackpy.exceptions import WaybackError, URLError
-from waybackpy.__version__ import __version__
 import requests
 import concurrent.futures
+from datetime import datetime, timedelta
+from waybackpy.__version__ import __version__
+from waybackpy.exceptions import WaybackError, URLError
 
 
-default_UA = "waybackpy python package - https://github.com/akamhy/waybackpy"
+default_user_agent = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
 
-def _archive_url_parser(header):
+def _archive_url_parser(header, url):
     """
+    The wayback machine's save API doesn't
+    return JSON response, we are required
+    to read the header of the API response
+    and look for the archive URL.
+
     This method has some regexen (or regexes)
     that search for archive url in header.
 
     This method is used when you try to
     save a webpage on wayback machine.
 
-    The wayback machine's save API doesn't
-    return JSON response, we are required
-    to read the header of the API response
-    and look for the archive URL.
-
     Two cases are possible:
     1) Either we find the archive url in
        the header.
 
-    2) We didn't find the archive url in
+    2) Or we didn't find the archive url in
        API header.
 
-    If we found the archive we return it.
+    If we found the archive URL we return it.
 
-    And if we couldn't find it we raise
-    WaybackError with a standard Error message.
+    And if we couldn't find it, we raise
+    WaybackError with an error message.
     """
+
     # Regex1
-    arch = re.search(r"Content-Location: (/web/[0-9]{14}/.*)", str(header))
-    if arch:
-        return "web.archive.org" + arch.group(1)
+    m = re.search(r"Content-Location: (/web/[0-9]{14}/.*)", str(header))
+    if m:
+        return "web.archive.org" + m.group(1)
+
     # Regex2
-    arch = re.search(
+    m = re.search(
         r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>", str(header)
     )
-    if arch:
-        return arch.group(1)
+    if m:
+        return m.group(1)
+
     # Regex3
-    arch = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
-    if arch:
-        return arch.group(1)
+    m = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
+    if m:
+        return m.group(1)
+
     raise WaybackError(
         "No archive URL found in the API response. "
-        "This version of waybackpy (%s) is likely out of date or WayBack Machine is malfunctioning. Visit "
-        "https://github.com/akamhy/waybackpy for the latest version "
+        "If '%s' can be accessed via your web browser then either "
+        "this version of waybackpy (%s) is out of date or WayBack Machine is malfunctioning. Visit "
+        "'https://github.com/akamhy/waybackpy' for the latest version "
         "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
     )
 
@@ -79,6 +82,7 @@ def _wayback_timestamp(**kwargs):
 
     Return format is string.
     """
+
     return "".join(
         str(kwargs[key]).zfill(2) for key in ["year", "month", "day", "hour", "minute"]
     )
@@ -104,26 +108,25 @@ def _get_response(endpoint, params=None, headers=None):
     """
 
     try:
-        response = requests.get(endpoint, params=params, headers=headers)
+        return requests.get(endpoint, params=params, headers=headers)
     except Exception:
         try:
-            response = requests.get(endpoint, params=params, headers=headers)  # nosec
+            return requests.get(endpoint, params=params, headers=headers)
         except Exception as e:
             exc = WaybackError("Error while retrieving %s" % endpoint)
             exc.__cause__ = e
             raise exc
-    return response
 
 
 class Url:
     """
-    waybackpy Url object <class 'waybackpy.wrapper.Url'>
+    waybackpy Url object, Type : <class 'waybackpy.wrapper.Url'>
     """
 
-    def __init__(self, url, user_agent=default_UA):
+    def __init__(self, url, user_agent=default_user_agent):
         self.url = url
         self.user_agent = user_agent
-        self._url_check()  # checks url validity on init.
+        self._url_check()
         self._archive_url = None
         self.timestamp = None
         self._JSON = None
@@ -144,6 +147,7 @@ class Url:
         sets self._archive_url, we now set self._archive_url to self.archive_url
         and return it.
         """
+
         if not self._archive_url:
             self._archive_url = self.archive_url
         return "%s" % self._archive_url
@@ -159,8 +163,7 @@ class Url:
         if self.timestamp == datetime.max:
             return td_max.days
 
-        diff = datetime.utcnow() - self.timestamp
-        return diff.days
+        return (datetime.utcnow() - self.timestamp).days
 
     def _url_check(self):
         """
@@ -170,6 +173,7 @@ class Url:
 
         If you known any others, please create a PR on the github repo.
         """
+
         if "." not in self.url:
             raise URLError("'%s' is not a vaild URL." % self.url)
 
@@ -184,7 +188,7 @@ class Url:
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
-        payload = {"url": "%s" % self._clean_url()}
+        payload = {"url": "%s" % self._cleaned_url()}
         response = _get_response(endpoint, params=payload, headers=headers)
         return response.json()
 
@@ -236,7 +240,7 @@ class Url:
         self.timestamp = ts
         return ts
 
-    def _clean_url(self):
+    def _cleaned_url(self):
         """
         Remove newlines
         replace " " with "_"
@@ -245,10 +249,10 @@ class Url:
 
     def save(self):
         """Create a new Wayback Machine archive for this URL."""
-        request_url = "https://web.archive.org/save/" + self._clean_url()
+        request_url = "https://web.archive.org/save/" + self._cleaned_url()
         headers = {"User-Agent": "%s" % self.user_agent}
         response = _get_response(request_url, params=None, headers=headers)
-        self._archive_url = "https://" + _archive_url_parser(response.headers)
+        self._archive_url = "https://" + _archive_url_parser(response.headers, self.url)
         self.timestamp = datetime.utcnow()
         return self
 
@@ -258,7 +262,7 @@ class Url:
         """
 
         if not url:
-            url = self._clean_url()
+            url = self._cleaned_url()
 
         if not user_agent:
             user_agent = self.user_agent
@@ -307,14 +311,14 @@ class Url:
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": "%s" % self.user_agent}
-        payload = {"url": "%s" % self._clean_url(), "timestamp": timestamp}
+        payload = {"url": "%s" % self._cleaned_url(), "timestamp": timestamp}
         response = _get_response(endpoint, params=payload, headers=headers)
         data = response.json()
 
         if not data["archived_snapshots"]:
             raise WaybackError(
                 "Can not find archive for '%s' try later or use wayback.Url(url, user_agent).save() "
-                "to create a new archive." % self._clean_url()
+                "to create a new archive." % self._cleaned_url()
             )
         archive_url = data["archived_snapshots"]["closest"]["url"]
         archive_url = archive_url.replace(
@@ -362,18 +366,24 @@ class Url:
 
         Return type in integer.
         """
+        total_pages_url = (
+            "https://web.archive.org/cdx/search/cdx?url=%s&showNumPages=true"
+            % self._cleaned_url()
+        )
+        headers = {"User-Agent": "%s" % self.user_agent}
+        total_pages = int(
+            (_get_response(total_pages_url, headers=headers).text).strip()
+        )
 
-        endpoint = "https://web.archive.org/cdx/search/cdx"
-        headers = {
-            "User-Agent": "%s" % self.user_agent,
-            "output": "json",
-            "fl": "statuscode",
-        }
-        payload = {"url": "%s" % self._clean_url()}
-        response = _get_response(endpoint, params=payload, headers=headers)
-
-        # Most efficient method to count number of archives (yet)
-        return response.text.count(",")
+        archive_count = 0
+        for i in range(total_pages):
+            page_url = "https://web.archive.org/cdx/search/cdx?url=%s&page=%s" % (
+                self._cleaned_url(),
+                str(i),
+            )
+            count = str(_get_response(page_url, headers=headers).text).count("\n")
+            archive_count = archive_count + count
+        return archive_count
 
     def live_urls_picker(self, url):
         """
@@ -384,7 +394,7 @@ class Url:
         try:
             response_code = requests.get(url).status_code
         except Exception:
-            return # we don't care if Exception
+            return  # we don't care if Exception
 
         # 200s are OK and 300s are usually redirects, if you don't want redirects replace 400 with 300
         if response_code >= 400:
@@ -406,12 +416,12 @@ class Url:
         if subdomain:
             request_url = (
                 "https://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey"
-                % self._clean_url()
+                % self._cleaned_url()
             )
         else:
             request_url = (
                 "http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey"
-                % self._clean_url()
+                % self._cleaned_url()
             )
 
         headers = {"User-Agent": "%s" % self.user_agent}

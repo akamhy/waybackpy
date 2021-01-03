@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 import os
 import pytest
@@ -286,7 +285,7 @@ def test_get():
         alive=False,
         subdomain=False,
         known_urls=False,
-        get="BullShit",
+        get="foobar",
     )
     reply = cli.args_handler(args)
     assert "get the source code of the" in str(reply)
