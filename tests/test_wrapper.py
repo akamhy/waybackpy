@@ -2,6 +2,7 @@ import sys
 import pytest
 import random
 import requests
+from datetime import datetime
 
 sys.path.append("..")
 
@@ -18,6 +19,12 @@ def test_cleaned_url():
     target = waybackpy.Url(test_url, user_agent)
     test_result = target._cleaned_url()
     assert answer == test_result
+
+
+def test_ts():
+    a = waybackpy.Url("https://google.com", user_agent)
+    ts = a._timestamp
+    assert str(datetime.utcnow().year) in str(ts)
 
 
 def test_dunders():
@@ -46,6 +53,26 @@ def test_archive_url_parser():
         perfect_header, "https://www.scribbr.com/citing-sources/et-al/"
     )
     assert "web.archive.org/web/20210102094009" in archive
+
+    header = """
+    vhgvkjv
+    Content-Location: /web/20201126185327/https://www.scribbr.com/citing-sources/et-al
+    ghvjkbjmmcmhj
+    """
+    archive = waybackpy._archive_url_parser(
+        header, "https://www.scribbr.com/citing-sources/et-al/"
+    )
+    assert "20201126185327" in archive
+
+    header = """
+    hfjkfjfcjhmghmvjm
+    X-Cache-Key: https://web.archive.org/web/20171128185327/https://www.scribbr.com/citing-sources/et-al/US
+    yfu,u,gikgkikik
+    """
+    archive = waybackpy._archive_url_parser(
+        header, "https://www.scribbr.com/citing-sources/et-al/"
+    )
+    assert "20171128185327" in archive
 
     # The below header should result in Exception
     no_archive_header = """
@@ -137,7 +164,9 @@ def test_near():
 def test_oldest():
     url = "github.com/akamhy/waybackpy"
     target = waybackpy.Url(url, user_agent)
-    assert "20200504141153" in str(target.oldest())
+    o = target.oldest()
+    assert "20200504141153" in str(o)
+    assert "2020-05-04" in str(o._timestamp)
 
 
 def test_json():
