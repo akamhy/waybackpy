@@ -305,8 +305,7 @@ def parse_args(argv):
 
 
 def main(argv=None):
-    if argv is None:
-        argv = sys.argv
+    argv = sys.argv if argv is None else argv
     print(args_handler(parse_args(argv)))
 
 

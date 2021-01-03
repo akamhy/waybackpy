@@ -57,7 +57,7 @@ def _archive_url_parser(header, url):
         "If '%s' can be accessed via your web browser then either "
         "this version of waybackpy (%s) is out of date or WayBack Machine is malfunctioning. Visit "
         "'https://github.com/akamhy/waybackpy' for the latest version "
-        "of waybackpy.\nHeader:\n%s" % (__version__, str(header))
+        "of waybackpy.\nHeader:\n%s" % (url, __version__, str(header))
     )
 
 
