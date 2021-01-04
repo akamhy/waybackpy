@@ -16,6 +16,8 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
 ### Installation
 
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
