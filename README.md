@@ -1,11 +1,8 @@
+![waybackpy Logo](https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg)
+
+<h2 align="center">Python package & CLI tool that interfaces with the Wayback Machine API</h2>
+
 <div align="center">
-
-<img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
-
-<h2>Python package & CLI tool that interfaces with the Wayback Machine API</h2>
-
-</div>
-
 
 [![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
@@ -17,6 +14,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square)](https://github.com/akamhy/waybackpy/commits/master)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 
+</div>
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
