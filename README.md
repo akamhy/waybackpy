@@ -1,9 +1,9 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
-</div>
 
 ---------------------------------------------------------------------------------------------------
-<center> <h1>Python package & CLI tool that interfaces with the Wayback Machine API</h1> </center>
+<h1>Python package & CLI tool that interfaces with the Wayback Machine API</h1>
+</div>
 
 [![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
