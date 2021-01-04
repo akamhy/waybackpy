@@ -80,8 +80,3 @@ You can find the tests [here](https://github.com/akamhy/waybackpy/tree/master/te
 2. Build package ``python setup.py sdist bdist_wheel``.
 
 3. Sign & upload the package ``twine upload -s dist/*``.
-
-## License
-
-Released under the MIT License. See
-[license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
