@@ -88,3 +88,8 @@ https://akamhy.github.io/waybackpy/
 'akamhy.github.io-10-urls-m2a24y.txt' saved in current working directory
 ```
 
+
+> Full documentation can be found at <https://github.com/akamhy/waybackpy/wiki>.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
