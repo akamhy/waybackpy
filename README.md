@@ -2,9 +2,9 @@
   <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
 </div>
 
------------------
+---------------------------------------------------------------------------------------------------
+<center> <h1>Python package & CLI tool that interfaces with the Wayback Machine API</h1> </center>
 
-## Python package & CLI tool that interfaces with the Wayback Machine API. 
 [![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
