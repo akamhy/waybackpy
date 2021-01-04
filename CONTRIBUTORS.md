@@ -4,4 +4,4 @@
  - AntiCompositeNumber (<https://github.com/AntiCompositeNumber>)
 
 # ACKNOWLEDGEMENTS
-- mhmdiaa (<https://github.com/mhmdiaa>) for <https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050>
+- mhmdiaa (<https://github.com/mhmdiaa>) for <https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050>. known_urls is based on this gist.
