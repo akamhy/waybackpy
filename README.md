@@ -5,6 +5,7 @@
 
 </div>
 
+
 [![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
@@ -33,35 +34,3 @@ pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
 
-### Tests
-
-To run tests locally:
-
-1) Install or update the testing/coverage tools 
-
-```bash
-pip install codecov pytest pytest-cov -U
-```
-
-2) Inside the repository run the following commands
-
-```bash
-pytest --cov=waybackpy tests/
-```
-
-3) To report coverage run
-
-```bash
-bash <(curl -s https://codecov.io/bash) -t SECRET_CODECOV_TOKEN
-```
-
-You can find the tests [here](https://github.com/akamhy/waybackpy/tree/master/tests).
-
-
-### Packaging
-
-1. Increment version.
-
-2. Build package ``python setup.py sdist bdist_wheel``.
-
-3. Sign & upload the package ``twine upload -s dist/*``.
