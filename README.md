@@ -27,7 +27,7 @@ Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 pip install waybackpy
 ```
 
-or direct from this repository using git.
+Install directly from GitHub:
 
 ```bash
 pip install git+https://github.com/akamhy/waybackpy.git
