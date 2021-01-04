@@ -35,6 +35,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ### Usage
 
+#### As a python package
 ```python
 >>> import waybackpy
 
@@ -60,6 +61,30 @@ datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
 
 >> str(wayback.newest())
 'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
+```
 
+
+#### As a CLI tool
+```bash
+$ waybackpy --save --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent"
+https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
+
+$ waybackpy --oldest --url "https://en.wikipedia.org/wiki/Humanoid" --user_agent "my-unique-user-agent"
+https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid
+
+$ waybackpy --newest --url "https://en.wikipedia.org/wiki/Remote_sensing" --user_agent "my-unique-user-agent"
+https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_sensing
+
+$ waybackpy --total --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent"
+1904
+
+$ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls
+https://akamhy.github.io
+https://akamhy.github.io/assets/js/scale.fix.js
+https://akamhy.github.io/favicon.ico
+https://akamhy.github.io/robots.txt
+https://akamhy.github.io/waybackpy/
+
+'akamhy.github.io-10-urls-m2a24y.txt' saved in current working directory
 ```
 
