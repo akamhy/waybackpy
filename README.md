@@ -6,7 +6,6 @@
 
 ## Python package & CLI tool that interfaces with the Wayback Machine API. 
 [![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 [![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
 [![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
 [![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)](https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md)
