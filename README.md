@@ -78,7 +78,7 @@ https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_
 $ waybackpy --total --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent"
 1904
 
-$ waybackpy --url akamhy.github.io --user_agent "my-user-agent" --known_urls
+$ waybackpy --known_urls --url akamhy.github.io --user_agent "my-unique-user-agent"
 https://akamhy.github.io
 https://akamhy.github.io/assets/js/scale.fix.js
 https://akamhy.github.io/favicon.ico
