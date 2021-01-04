@@ -1,8 +1,9 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
 
----------------------------------------------------------------------------------------------------
 <h1>Python package & CLI tool that interfaces with the Wayback Machine API</h1>
+---------------------------------------------------------------------------------------------------
+
 </div>
 
 [![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
