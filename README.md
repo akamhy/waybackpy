@@ -63,6 +63,8 @@ datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
 >>> str(wayback.newest())
 'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 ```
+> Full python package documentation can be found at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
+
 
 
 #### As a CLI tool
@@ -88,9 +90,7 @@ https://akamhy.github.io/waybackpy/
 
 'akamhy.github.io-10-urls-m2a24y.txt' saved in current working directory
 ```
-
-
-> Full documentation can be found at <https://github.com/akamhy/waybackpy/wiki>.
+> Full CLI documentation can be found at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
 ## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
