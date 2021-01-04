@@ -16,23 +16,6 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
 
 
-
-## Table of contents
-
-<!--ts-->
-
-* [Installation](#installation)
-
-* [Documentation and Wiki](https://github.com/akamhy/waybackpy/wiki)
-
-* [Tests](#tests)
-
-* [Packaging](#packaging)
-
-* [License](#license)
-
-<!--te-->
-
 ### Installation
 
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
