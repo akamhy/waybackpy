@@ -63,7 +63,7 @@ datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
 >>> str(wayback.newest())
 'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 ```
-> Full python package documentation can be found at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
+> Full Python package documentation can be found at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
 
 
 
