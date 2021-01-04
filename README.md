@@ -1,41 +1,24 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
+
+<img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
+
+<h2>Python package & CLI tool that interfaces with the Wayback Machine API</h2>
+
 </div>
 
------------------
+<p align="center">
+<a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
+<a href="https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI"><img alt="Build Status" src="https://github.com/akamhy/waybackpy/workflows/CI/badge.svg"></a>
+<a href="https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65"></a>
+<a href="https://codecov.io/gh/akamhy/waybackpy"><img alt="codecov" src="https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg"></a>
+<a href="https://codeclimate.com/github/akamhy/waybackpy/maintainability"><img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability"></a>
+<a href="https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md"><img alt="Contributions Welcome" src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square"></a>
+<a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
+<a href="https://github.com/akamhy/waybackpy/commits/master"><img alt="GitHub lastest commit" src="https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square"></a>
+<a href="#"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square"></a>
+</p>
 
-## Python package & CLI tool that interfaces with the Wayback Machine API. 
-[![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
-[![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
-[![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)](https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
-[![Downloads](https://pepy.tech/badge/waybackpy/month)](https://pepy.tech/project/waybackpy)
-[![Release](https://img.shields.io/github/v/release/akamhy/waybackpy.svg)](https://github.com/akamhy/waybackpy/releases)
-[![Maintainability](https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability)](https://codeclimate.com/github/akamhy/waybackpy/maintainability)
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/akamhy/waybackpy/graphs/commit-activity)
-[![GitHub last commit](https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square)](https://github.com/akamhy/waybackpy/commits/master)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
-
-
-
-## Table of contents
-
-<!--ts-->
-
-* [Installation](#installation)
-
-* [Documentation and Wiki](https://github.com/akamhy/waybackpy/wiki)
-
-* [Tests](#tests)
-
-* [Packaging](#packaging)
-
-* [License](#license)
-
-<!--te-->
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installation
 
@@ -45,47 +28,76 @@ Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 pip install waybackpy
 ```
 
-or direct from this repository using git.
+Install directly from GitHub:
 
 ```bash
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
+### Usage
 
-### Tests
+#### As a python package
+```python
+>>> import waybackpy
 
-To run tests locally:
+>>> url = "https://en.wikipedia.org/wiki/Multivariable_calculus"
+>>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
 
-1) Install or update the testing/coverage tools 
+>>> wayback = waybackpy.Url(url, user_agent)
 
-```bash
-pip install codecov pytest pytest-cov -U
+>>> archive = wayback.save()
+>>> str(archive)
+'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
+
+>>> archive.timestamp
+datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
+
+>>> oldest_archive = wayback.oldest()
+>>> str(oldest_archive)
+'https://web.archive.org/web/20050422130129/http://en.wikipedia.org:80/wiki/Multivariable_calculus'
+
+>>> archive_close_to_2010_feb = wayback.near(year=2010, month=2)
+>>> str(archive_close_to_2010_feb)
+'https://web.archive.org/web/20100215001541/http://en.wikipedia.org:80/wiki/Multivariable_calculus'
+
+>>> str(wayback.newest())
+'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 ```
 
-2) Inside the repository run the following commands
 
+#### As a CLI tool
 ```bash
-pytest --cov=waybackpy tests/
+$ waybackpy --save --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent"
+https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
+
+$ waybackpy --oldest --url "https://en.wikipedia.org/wiki/Humanoid" --user_agent "my-unique-user-agent"
+https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid
+
+$ waybackpy --newest --url "https://en.wikipedia.org/wiki/Remote_sensing" --user_agent "my-unique-user-agent"
+https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_sensing
+
+$ waybackpy --total --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent"
+1904
+
+$ waybackpy --known_urls --url akamhy.github.io --user_agent "my-unique-user-agent"
+https://akamhy.github.io
+https://akamhy.github.io/assets/js/scale.fix.js
+https://akamhy.github.io/favicon.ico
+https://akamhy.github.io/robots.txt
+https://akamhy.github.io/waybackpy/
+
+'akamhy.github.io-10-urls-m2a24y.txt' saved in current working directory
 ```
 
-3) To report coverage run
 
-```bash
-bash <(curl -s https://codecov.io/bash) -t SECRET_CODECOV_TOKEN
-```
-
-You can find the tests [here](https://github.com/akamhy/waybackpy/tree/master/tests).
-
-
-### Packaging
-
-1. Increment version.
-
-2. Build package ``python setup.py sdist bdist_wheel``.
-
-3. Sign & upload the package ``twine upload -s dist/*``.
+> Full documentation can be found at <https://github.com/akamhy/waybackpy/wiki>.
 
 ## License
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
 Released under the MIT License. See
 [license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
