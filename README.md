@@ -91,5 +91,12 @@ https://akamhy.github.io/waybackpy/
 
 > Full documentation can be found at <https://github.com/akamhy/waybackpy/wiki>.
 
+## License
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
+
+Released under the MIT License. See
+[license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
+
+
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
