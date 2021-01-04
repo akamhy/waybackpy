@@ -6,17 +6,17 @@
 
 </div>
 
-
-[![pypi](https://img.shields.io/pypi/v/waybackpy.svg)](https://pypi.org/project/waybackpy/)
-[![Build Status](https://github.com/akamhy/waybackpy/workflows/CI/badge.svg)](https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65)](https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg)](https://codecov.io/gh/akamhy/waybackpy)
-[![Maintainability](https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability)](https://codeclimate.com/github/akamhy/waybackpy/maintainability)
-[![contributions welcome](https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square)](https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md)
-[![Downloads](https://pepy.tech/badge/waybackpy/month)](https://pepy.tech/project/waybackpy)
-[![GitHub last commit](https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square)](https://github.com/akamhy/waybackpy/commits/master)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square)
-
+<p align="center">
+<a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
+<a href="https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI"><img alt="Build Status" src="https://github.com/akamhy/waybackpy/workflows/CI/badge.svg"></a>
+<a href="https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65"></a>
+<a href="https://codecov.io/gh/akamhy/waybackpy"><img alt="codecov" src="https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg"></a>
+<a href="https://codeclimate.com/github/akamhy/waybackpy/maintainability"><img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/942f13d8177a56c1c906/maintainability"></a>
+<a href="https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md"><img alt="Contributions Welcome" src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square"></a>
+<a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
+<a href="https://github.com/akamhy/waybackpy/commits/master"><img alt="GitHub lastest commit" src="https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square"></a>
+<a href="#"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square"></a>
+</p>
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
