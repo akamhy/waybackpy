@@ -11,10 +11,10 @@ default_user_agent = "waybackpy python package - https://github.com/akamhy/wayba
 
 def _get_total_pages(url, user_agent):
     """
-    If showNumPages is passed in cdx API, it returns 'number of pages of'
-    and each page has many archives.
+    If showNumPages is passed in cdx API, it returns
+    'number of archive pages'and each page has many archives.
 
-    This func returns number of pages (type int).
+    This func returns number of pages of archives (type int).
     """
     total_pages_url = (
         "https://web.archive.org/cdx/search/cdx?url=%s&showNumPages=true" % url
@@ -167,6 +167,19 @@ class Url:
         return "%s" % self._archive_url
 
     def __len__(self):
+        """
+        Why do we have len here?
+
+        Applying len() on <class 'waybackpy.wrapper.Url'>
+        will calculate the number of days between today and
+        the archive timestamp.
+
+        Can be applied on return values of near and its
+        childs (e.g. oldest) and if applied on waybackpy.Url()
+        whithout using any functions, it just grabs
+        self._timestamp and def _timestamp gets it
+        from def JSON.
+        """
         td_max = timedelta(
             days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
         )
@@ -194,7 +207,12 @@ class Url:
     @property
     def JSON(self):
         """
-        Returns JSON data from 'https://archive.org/wayback/available?url=YOUR-URL'.
+        If the end user has used near() or its childs like oldest, newest
+        and archive_url then the JSON response of these are cached in self._JSON
+
+        If we find that self._JSON is not None we return it.
+        else we get the response of 'https://archive.org/wayback/available?url=YOUR-URL'
+        and return it.
         """
 
         if self._JSON:
@@ -235,8 +253,12 @@ class Url:
     def _timestamp(self):
         """
         Get timestamp of last fetched archive.
-        If used before fetching any archive, This
-        randomly picks archive.
+        If used before fetching any archive, will
+        use whatever self.JSON returns.
+
+        self.timestamp is None implies that
+        self.JSON will return any archive's JSON
+        that wayback machine provides it.
         """
 
         if self.timestamp:
@@ -256,13 +278,25 @@ class Url:
 
     def _cleaned_url(self):
         """
-        Remove newlines
+        Remove EOL
         replace " " with "_"
         """
         return str(self.url).strip().replace(" ", "_")
 
     def save(self):
-        """Create a new Wayback Machine archive for this URL."""
+        """
+        To save a webpage on WayBack machine we
+        need to send get request to https://web.archive.org/save/
+
+        And to get the archive URL we are required to read the
+        header of the API response.
+
+        _get_response() takes care of the get requests. It uses requests
+        package.
+
+        _archive_url_parser() parses the archive from the header.
+
+        """
         request_url = "https://web.archive.org/save/" + self._cleaned_url()
         headers = {"User-Agent": self.user_agent}
         response = _get_response(request_url, params=None, headers=headers)
@@ -271,8 +305,10 @@ class Url:
         return self
 
     def get(self, url="", user_agent="", encoding=""):
-        """Return the source code of the supplied URL.
-        If encoding is not supplied, it is auto-detected from the response.
+        """
+        Return the source code of the supplied URL.
+        If encoding is not supplied, it is auto-detected
+         from the response itself by requests package.
         """
 
         if not url:
@@ -452,8 +488,10 @@ class Url:
 
 class CdxSnapshot:
     """
-    [["urlkey","timestamp","original","mimetype","statuscode","digest","length"],
-    ["org,archive)/", "19970126045828", "http://www.archive.org:80/", "text/html", "200", "Q4YULN754FHV2U6Q5JUT6Q2P57WEWNNY", "1415"]]
+    This class helps to handle the Cdx Snapshots easily.
+
+    What the raw data looks like:
+    org,archive)/ 20080126045828 http://github.com text/html 200 Q4YULN754FHV2U6Q5JUT6Q2P57WEWNNY 1415
     """
 
     def __init__(
@@ -478,6 +516,7 @@ class CdxSnapshot:
 class Cdx:
     """
     waybackpy Cdx class, Type : <class 'waybackpy.wrapper.Cdx'>
+
     Cdx keys are :
     urlkey
     timestamp
@@ -501,6 +540,10 @@ class Cdx:
         self.end_timestamp = str(end_timestamp) if end_timestamp else None
 
     def snapshots(self):
+        """
+        This function yeilds snapshots encapsulated
+        in CdxSnapshot for more usability.
+        """
         payload = {}
         endpoint = "https://web.archive.org/cdx/search/cdx"
         total_pages = _get_total_pages(self.url, self.user_agent)
