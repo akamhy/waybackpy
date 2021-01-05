@@ -1,7 +1,9 @@
 import re
 import requests
 import concurrent.futures
+from urllib3.util.retry import Retry
 from datetime import datetime, timedelta
+from requests.adapters import HTTPAdapter
 from waybackpy.__version__ import __version__
 from waybackpy.exceptions import WaybackError, URLError
 
@@ -102,15 +104,15 @@ def _wayback_timestamp(**kwargs):
     )
 
 
-def _get_response(endpoint, params=None, headers=None):
+def _get_response(endpoint, params=None, headers=None, retries=5):
     """
     This function is used make get request.
     We use the requests package to make the
     requests.
 
 
-    We try twice and if both the times is fails And
-    raises exceptions we give-up and raise WaybackError.
+    We try five times and if it fails it raises
+    WaybackError exception.
 
     You can handles WaybackError by importing:
     from waybackpy.exceptions import WaybackError
@@ -121,15 +123,18 @@ def _get_response(endpoint, params=None, headers=None):
         # handle it
     """
 
+    # From https://stackoverflow.com/a/35504626
+    # By https://stackoverflow.com/users/401467/datashaman
+    s = requests.Session()
+    retries = Retry(total=retries, backoff_factor=0.5, status_forcelist=[ 500, 502, 503, 504 ])
+    s.mount('https://', HTTPAdapter(max_retries=retries))
+
     try:
-        return requests.get(endpoint, params=params, headers=headers)
-    except Exception:
-        try:
-            return requests.get(endpoint, params=params, headers=headers)
-        except Exception as e:
-            exc = WaybackError("Error while retrieving %s" % endpoint)
-            exc.__cause__ = e
-            raise exc
+        return s.get(endpoint, params=params, headers=headers)
+    except Exception as e:
+        exc = WaybackError("Error while retrieving %s" % endpoint)
+        exc.__cause__ = e
+        raise exc
 
 
 class Url:
@@ -450,11 +455,12 @@ class Url:
     ):
         """
         Returns list of URLs known to exist for given domain name
-        because these URLs were crawled by WayBack Machine bots.
-        Useful for pen-testers and others.
-        Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
-        https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
+        because these URLs were crawled by WayBack Machine spider.
+        Useful for pen-testing.
         """
+
+        # Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
+        # https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
 
         url_list = []
 

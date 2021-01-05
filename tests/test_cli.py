@@ -208,7 +208,7 @@ def test_known_urls():
     args = argparse.Namespace(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9",
-        url="https://akamhy.github.io",
+        url="https://www.keybr.com",
         total=False,
         version=False,
         oldest=False,
@@ -217,13 +217,13 @@ def test_known_urls():
         archive_url=False,
         newest=False,
         near=False,
-        alive=True,
-        subdomain=True,
+        alive=False,
+        subdomain=False,
         known_urls=True,
         get=None,
     )
     reply = cli.args_handler(args)
-    assert "github" in str(reply)
+    assert "keybr" in str(reply)
 
     args = argparse.Namespace(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
@@ -305,7 +305,7 @@ def test_get():
     args = argparse.Namespace(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9",
-        url="https://pypi.org/user/akamhy/",
+        url="https://github.com/akamhy",
         total=False,
         version=False,
         oldest=False,
@@ -325,7 +325,7 @@ def test_get():
     args = argparse.Namespace(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9",
-        url="https://pypi.org/user/akamhy/",
+        url="https://github.com/akamhy/waybackpy",
         total=False,
         version=False,
         oldest=False,
@@ -345,7 +345,7 @@ def test_get():
     args = argparse.Namespace(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
     (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9",
-        url="https://pypi.org/user/akamhy/",
+        url="https://akamhy.github.io/waybackpy/",
         total=False,
         version=False,
         oldest=False,

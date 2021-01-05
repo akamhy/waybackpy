@@ -223,7 +223,7 @@ def test_total_archives():
 def test_known_urls():
 
     target = waybackpy.Url("akamhy.github.io", user_agent)
-    assert len(target.known_urls(alive=True, subdomain=True)) > 2
+    assert len(target.known_urls(alive=True, subdomain=False)) > 2
 
     target = waybackpy.Url("akamhy.github.io", user_agent)
     assert len(target.known_urls()) > 3
