@@ -318,7 +318,7 @@ class Url:
             user_agent = self.user_agent
 
         headers = {"User-Agent": str(user_agent)}
-        response = _get_response(url, params=None, headers=headers)
+        response = _get_response(str(url), params=None, headers=headers)
 
         if not encoding:
             try:
