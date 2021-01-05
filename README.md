@@ -36,7 +36,7 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ### Usage
 
-#### As a python package
+#### As a Python package
 ```python
 >>> import waybackpy
 
@@ -46,21 +46,21 @@ pip install git+https://github.com/akamhy/waybackpy.git
 >>> wayback = waybackpy.Url(url, user_agent)
 
 >>> archive = wayback.save()
->>> str(archive)
+>>> archive.archive_url
 'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 
 >>> archive.timestamp
 datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
 
 >>> oldest_archive = wayback.oldest()
->>> str(oldest_archive)
+>>> oldest_archive.archive_url
 'https://web.archive.org/web/20050422130129/http://en.wikipedia.org:80/wiki/Multivariable_calculus'
 
 >>> archive_close_to_2010_feb = wayback.near(year=2010, month=2)
->>> str(archive_close_to_2010_feb)
+>>> archive_close_to_2010_feb.archive_url
 'https://web.archive.org/web/20100215001541/http://en.wikipedia.org:80/wiki/Multivariable_calculus'
 
->>> str(wayback.newest())
+>>> wayback.newest().archive_url
 'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 ```
 > Full Python package documentation can be found at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
