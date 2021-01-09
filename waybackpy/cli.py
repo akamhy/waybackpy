@@ -4,9 +4,9 @@ import sys
 import random
 import string
 import argparse
-from waybackpy.wrapper import Url
-from waybackpy.exceptions import WaybackError
-from waybackpy.__version__ import __version__
+from .wrapper import Url
+from .exceptions import WaybackError
+from .__version__ import __version__
 
 
 def _save(obj):
@@ -19,11 +19,11 @@ def _save(obj):
             header = m.group(1)
         if "No archive URL found in the API response" in e:
             return (
-                "\n[waybackpy] Can not save/archive your link.\n[waybackpy] This\
-                 could happen because either your waybackpy (%s) is likely out of\
-                 date or Wayback Machine is malfunctioning.\n[waybackpy] Visit\
-                 https://github.com/akamhy/waybackpy for the latest version of \
-                waybackpy.\n[waybackpy] API response Header :\n%s"
+                "\n[waybackpy] Can not save/archive your link.\n[waybackpy] This "
+                "could happen because either your waybackpy (%s) is likely out of "
+                "date or Wayback Machine is malfunctioning.\n[waybackpy] Visit "
+                "https://github.com/akamhy/waybackpy for the latest version of "
+                "waybackpy.\n[waybackpy] API response Header :\n%s"
                 % (__version__, header)
             )
         return WaybackError(err)
@@ -108,17 +108,16 @@ def _known_urls(obj, args):
     """
     Known urls for a domain.
     """
-    # sd = subdomain
-    sd = False
+
+    subdomain = False
     if args.subdomain:
-        sd = True
+        subdomain = True
 
-    # al = alive
-    al = False
+    alive = False
     if args.alive:
-        al = True
+        alive = True
 
-    url_list = obj.known_urls(alive=al, subdomain=sd)
+    url_list = obj.known_urls(alive=alive, subdomain=subdomain)
     total_urls = len(url_list)
 
     if total_urls > 0:

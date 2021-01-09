@@ -1,151 +1,24 @@
-import re
 import requests
 import concurrent.futures
-from urllib3.util.retry import Retry
 from datetime import datetime, timedelta
-from requests.adapters import HTTPAdapter
-from waybackpy.__version__ import __version__
-from waybackpy.exceptions import WaybackError, URLError
-
-
-default_user_agent = "waybackpy python package - https://github.com/akamhy/waybackpy"
-
-
-def _get_total_pages(url, user_agent):
-    """
-    If showNumPages is passed in cdx API, it returns
-    'number of archive pages'and each page has many archives.
-
-    This func returns number of pages of archives (type int).
-    """
-    total_pages_url = (
-        "https://web.archive.org/cdx/search/cdx?url=%s&showNumPages=true" % url
-    )
-    headers = {"User-Agent": user_agent}
-    return int((_get_response(total_pages_url, headers=headers).text).strip())
-
-
-def _archive_url_parser(header, url):
-    """
-    The wayback machine's save API doesn't
-    return JSON response, we are required
-    to read the header of the API response
-    and look for the archive URL.
-
-    This method has some regexen (or regexes)
-    that search for archive url in header.
-
-    This method is used when you try to
-    save a webpage on wayback machine.
-
-    Two cases are possible:
-    1) Either we find the archive url in
-       the header.
-
-    2) Or we didn't find the archive url in
-       API header.
-
-    If we found the archive URL we return it.
-
-    And if we couldn't find it, we raise
-    WaybackError with an error message.
-    """
-
-    # Regex1
-    m = re.search(r"Content-Location: (/web/[0-9]{14}/.*)", str(header))
-    if m:
-        return "web.archive.org" + m.group(1)
-
-    # Regex2
-    m = re.search(
-        r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>", str(header)
-    )
-    if m:
-        return m.group(1)
-
-    # Regex3
-    m = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
-    if m:
-        return m.group(1)
-
-    raise WaybackError(
-        "No archive URL found in the API response. "
-        "If '%s' can be accessed via your web browser then either "
-        "this version of waybackpy (%s) is out of date or WayBack Machine is malfunctioning. Visit "
-        "'https://github.com/akamhy/waybackpy' for the latest version "
-        "of waybackpy.\nHeader:\n%s" % (url, __version__, str(header))
-    )
-
-
-def _wayback_timestamp(**kwargs):
-    """
-    Wayback Machine archive URLs
-    have a timestamp in them.
-
-    The standard archive URL format is
-    https://web.archive.org/web/20191214041711/https://www.youtube.com
-
-    If we break it down in three parts:
-    1 ) The start (https://web.archive.org/web/)
-    2 ) timestamp (20191214041711)
-    3 ) https://www.youtube.com, the original URL
-
-    The near method takes year, month, day, hour and minute
-    as Arguments, their type is int.
-
-    This method takes those integers and converts it to
-    wayback machine timestamp and returns it.
-
-    Return format is string.
-    """
-
-    return "".join(
-        str(kwargs[key]).zfill(2) for key in ["year", "month", "day", "hour", "minute"]
-    )
-
-
-def _get_response(endpoint, params=None, headers=None, retries=5):
-    """
-    This function is used make get request.
-    We use the requests package to make the
-    requests.
-
-
-    We try five times and if it fails it raises
-    WaybackError exception.
-
-    You can handles WaybackError by importing:
-    from waybackpy.exceptions import WaybackError
-
-    try:
-        ...
-    except WaybackError as e:
-        # handle it
-    """
-
-    # From https://stackoverflow.com/a/35504626
-    # By https://stackoverflow.com/users/401467/datashaman
-    s = requests.Session()
-    retries = Retry(total=retries, backoff_factor=0.5, status_forcelist=[ 500, 502, 503, 504 ])
-    s.mount('https://', HTTPAdapter(max_retries=retries))
-
-    try:
-        return s.get(endpoint, params=params, headers=headers)
-    except Exception as e:
-        exc = WaybackError("Error while retrieving %s" % endpoint)
-        exc.__cause__ = e
-        raise exc
+from .exceptions import WaybackError
+from .cdx import Cdx
+from .utils import (
+    _archive_url_parser,
+    _wayback_timestamp,
+    _get_response,
+    default_user_agent,
+    _url_check,
+    _cleaned_url,
+    _ts,
+)
 
 
 class Url:
-    """
-    waybackpy Url class, Type : <class 'waybackpy.wrapper.Url'>
-    """
-
     def __init__(self, url, user_agent=default_user_agent):
         self.url = url
         self.user_agent = str(user_agent)
-        self._url_check()
+        _url_check(self.url)
         self._archive_url = None
         self.timestamp = None
         self._JSON = None
@@ -197,18 +70,6 @@ class Url:
 
         return (datetime.utcnow() - self.timestamp).days
 
-    def _url_check(self):
-        """
-        Check for common URL problems.
-        What we are checking:
-        1) '.' in self.url, no url that ain't '.' in it.
-
-        If you known any others, please create a PR on the github repo.
-        """
-
-        if "." not in self.url:
-            raise URLError("'%s' is not a vaild URL." % self.url)
-
     @property
     def JSON(self):
         """
@@ -225,7 +86,7 @@ class Url:
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": self.user_agent}
-        payload = {"url": "%s" % self._cleaned_url()}
+        payload = {"url": "%s" % _cleaned_url(self.url)}
         response = _get_response(endpoint, params=payload, headers=headers)
         return response.json()
 
@@ -256,37 +117,8 @@ class Url:
 
     @property
     def _timestamp(self):
-        """
-        Get timestamp of last fetched archive.
-        If used before fetching any archive, will
-        use whatever self.JSON returns.
-
-        self.timestamp is None implies that
-        self.JSON will return any archive's JSON
-        that wayback machine provides it.
-        """
-
-        if self.timestamp:
-            return self.timestamp
-
-        data = self.JSON
-
-        if not data["archived_snapshots"]:
-            ts = datetime.max
-
-        else:
-            ts = datetime.strptime(
-                data["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
-            )
-        self.timestamp = ts
-        return ts
-
-    def _cleaned_url(self):
-        """
-        Remove EOL
-        replace " " with "_"
-        """
-        return str(self.url).strip().replace(" ", "_")
+        self.timestamp = _ts(self.timestamp, self.JSON)
+        return self.timestamp
 
     def save(self):
         """
@@ -302,7 +134,7 @@ class Url:
         _archive_url_parser() parses the archive from the header.
 
         """
-        request_url = "https://web.archive.org/save/" + self._cleaned_url()
+        request_url = "https://web.archive.org/save/" + _cleaned_url(self.url)
         headers = {"User-Agent": self.user_agent}
         response = _get_response(request_url, params=None, headers=headers)
         self._archive_url = "https://" + _archive_url_parser(response.headers, self.url)
@@ -317,7 +149,7 @@ class Url:
         """
 
         if not url:
-            url = self._cleaned_url()
+            url = _cleaned_url(self.url)
 
         if not user_agent:
             user_agent = self.user_agent
@@ -366,14 +198,15 @@ class Url:
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": self.user_agent}
-        payload = {"url": "%s" % self._cleaned_url(), "timestamp": timestamp}
+        payload = {"url": "%s" % _cleaned_url(self.url), "timestamp": timestamp}
         response = _get_response(endpoint, params=payload, headers=headers)
         data = response.json()
 
         if not data["archived_snapshots"]:
             raise WaybackError(
                 "Can not find archive for '%s' try later or use wayback.Url(url, user_agent).save() "
-                "to create a new archive." % self._cleaned_url()
+                "to create a new archive.\nAPI response:\n%s"
+                % (_cleaned_url(self.url), response.text)
             )
         archive_url = data["archived_snapshots"]["closest"]["url"]
         archive_url = archive_url.replace(
@@ -423,17 +256,17 @@ class Url:
         """
 
         cdx = Cdx(
-            self._cleaned_url(),
+            _cleaned_url(self.url),
             user_agent=self.user_agent,
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
         )
         i = 0
         for _ in cdx.snapshots():
-            i += 1
+            i = i + 1
         return i
 
-    def live_urls_picker(self, url):
+    def live_urls_finder(self, url):
         """
         This method is used to check if supplied url
         is >= 400.
@@ -465,9 +298,9 @@ class Url:
         url_list = []
 
         if subdomain:
-            url = "*.%s/*" % self._cleaned_url()
+            url = "*.%s/*" % _cleaned_url(self.url)
         else:
-            url = "%s/*" % self._cleaned_url()
+            url = "%s/*" % _cleaned_url(self.url)
 
         cdx = Cdx(
             url,
@@ -486,99 +319,7 @@ class Url:
         # Remove all deadURLs from url_list if alive=True
         if alive:
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                executor.map(self.live_urls_picker, url_list)
+                executor.map(self.live_urls_finder, url_list)
             url_list = self._alive_url_list
 
         return url_list
-
-
-class CdxSnapshot:
-    """
-    This class helps to handle the Cdx Snapshots easily.
-
-    What the raw data looks like:
-    org,archive)/ 20080126045828 http://github.com text/html 200 Q4YULN754FHV2U6Q5JUT6Q2P57WEWNNY 1415
-    """
-
-    def __init__(
-        self, urlkey, timestamp, original, mimetype, statuscode, digest, length
-    ):
-        self.urlkey = urlkey  # Useless
-        self.timestamp = timestamp
-        self.original = original
-        self.mimetype = mimetype
-        self.statuscode = statuscode
-        self.digest = digest
-        self.length = length
-        self.archive_url = "https://web.archive.org/web/%s/%s" % (
-            self.timestamp,
-            self.original,
-        )
-
-    def __str__(self):
-        return self.archive_url
-
-
-class Cdx:
-    """
-    waybackpy Cdx class, Type : <class 'waybackpy.wrapper.Cdx'>
-
-    Cdx keys are :
-    urlkey
-    timestamp
-    original
-    mimetype
-    statuscode
-    digest
-    length
-    """
-
-    def __init__(
-        self,
-        url,
-        user_agent=default_user_agent,
-        start_timestamp=None,
-        end_timestamp=None,
-    ):
-        self.url = url
-        self.user_agent = str(user_agent)
-        self.start_timestamp = str(start_timestamp) if start_timestamp else None
-        self.end_timestamp = str(end_timestamp) if end_timestamp else None
-
-    def snapshots(self):
-        """
-        This function yeilds snapshots encapsulated
-        in CdxSnapshot for more usability.
-        """
-        payload = {}
-        endpoint = "https://web.archive.org/cdx/search/cdx"
-        total_pages = _get_total_pages(self.url, self.user_agent)
-        headers = {"User-Agent": self.user_agent}
-        if self.start_timestamp:
-            payload["from"] = self.start_timestamp
-        if self.end_timestamp:
-            payload["to"] = self.end_timestamp
-        payload["url"] = self.url
-
-        for i in range(total_pages):
-            payload["page"] = str(i)
-            res = _get_response(endpoint, params=payload, headers=headers)
-            text = res.text
-            if text.isspace() or len(text) <= 1 or not text:
-                break
-            snapshot_list = text.split("\n")
-            for snapshot in snapshot_list:
-                if len(snapshot) < 15:
-                    continue
-                (
-                    urlkey,
-                    timestamp,
-                    original,
-                    mimetype,
-                    statuscode,
-                    digest,
-                    length,
-                ) = snapshot.split(" ")
-                yield CdxSnapshot(
-                    urlkey, timestamp, original, mimetype, statuscode, digest, length
-                )
