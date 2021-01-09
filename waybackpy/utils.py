@@ -70,9 +70,11 @@ def _check_collapses(collapses):
                 N = match.group(2)
 
             if N:
-                assert field + N == c
+                if not (field + N == c):
+                    raise Exception
             else:
-                assert field == c
+                if not (field == c):
+                    raise Exception
 
         except Exception:
             e = "collapse argument '%s' is not following the cdx collapse syntax." % c
@@ -94,21 +96,8 @@ def _check_filters(filters):
             key = match.group(1)
             val = match.group(2)
 
-            if "statuscode" in key:
-                assert len(val) == 3
-                assert isinstance(int(val), int) == True
 
-            if "timestamp" in key:
-
-                int_ts = int(val)
-                assert len(val) == 14  # must be 14 and not less to filter
-                assert int_ts > 19_950_000_000_000  # year 1995, 14 digit ts
-                assert isinstance(int_ts, int) == True
-
-            if "original" in key:
-                assert "http" in val
-
-        except Exception as e:
+        except Exception:
             e = "Filter '%s' not following the cdx filter syntax." % f
             raise WaybackError(e)
 

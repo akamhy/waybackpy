@@ -1,7 +1,6 @@
 from .snapshot import CdxSnapshot
 from .exceptions import WaybackError
 from .utils import (
-    _full_url,
     _get_total_pages,
     _get_response,
     default_user_agent,
@@ -122,7 +121,6 @@ class Cdx:
 
                 if len(lines) >= 3:
 
-                    last_line = lines[-1]
                     second_last_line = lines[-2]
 
                     if len(second_last_line) == 0:
