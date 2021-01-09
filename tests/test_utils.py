@@ -37,10 +37,6 @@ def test_check_filters():
     filters = ["statuscode:200", "timestamp:20215678901234", "original:https://url.com"]
     _check_filters(filters)
 
-    filters = ["statuscode:2768900", "timestamp:123456789", "original:://url.com"]
-    with pytest.raises(WaybackError):
-        _check_filters(filters)
-
     with pytest.raises(WaybackError):
         _check_filters("not-list")
 
