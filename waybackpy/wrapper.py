@@ -308,8 +308,6 @@ class Url:
         for snapshot in snapshots:
             url_list.append(snapshot.original)
 
-        url_list = list(set(url_list))  # remove duplicates
-
         # Remove all deadURLs from url_list if alive=True
         if alive:
             with concurrent.futures.ThreadPoolExecutor() as executor:
