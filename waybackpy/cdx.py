@@ -7,6 +7,7 @@ from .utils import (
     _check_filters,
     _check_collapses,
     _check_match_type,
+    _add_payload,
 )
 
 # TODO : Threading support for pagination API. It's designed for Threading.
@@ -147,27 +148,7 @@ class Cdx:
         payload = {}
         headers = {"User-Agent": self.user_agent}
 
-        if self.start_timestamp:
-            payload["from"] = self.start_timestamp
-
-        if self.end_timestamp:
-            payload["to"] = self.end_timestamp
-
-        if self.gzip != True:
-            payload["gzip"] = "false"
-
-        if self.match_type:
-            payload["matchType"] = self.match_type
-
-        if self.filters and len(self.filters) > 0:
-            for i, f in enumerate(self.filters):
-                payload["filter" + str(i)] = f
-
-        if self.collapses and len(self.collapses) > 0:
-            for i, f in enumerate(self.collapses):
-                payload["collapse" + str(i)] = f
-
-        payload["url"] = self.url
+        _add_payload(self, payload)
 
         if not self.start_timestamp or self.end_timestamp:
             self.use_page = True
@@ -221,12 +202,4 @@ class Cdx:
                     properties["length"],
                 ) = prop_values
 
-                yield CdxSnapshot(
-                    properties["urlkey"],
-                    properties["timestamp"],
-                    properties["original"],
-                    properties["mimetype"],
-                    properties["statuscode"],
-                    properties["digest"],
-                    properties["length"],
-                )
+                yield CdxSnapshot(properties)

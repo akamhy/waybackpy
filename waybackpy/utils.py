@@ -11,6 +11,30 @@ quote = requests.utils.quote
 default_user_agent = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
 
+def _add_payload(self, payload):
+    if self.start_timestamp:
+        payload["from"] = self.start_timestamp
+
+    if self.end_timestamp:
+        payload["to"] = self.end_timestamp
+
+    if self.gzip != True:
+        payload["gzip"] = "false"
+
+    if self.match_type:
+        payload["matchType"] = self.match_type
+
+    if self.filters and len(self.filters) > 0:
+        for i, f in enumerate(self.filters):
+            payload["filter" + str(i)] = f
+
+    if self.collapses and len(self.collapses) > 0:
+        for i, f in enumerate(self.collapses):
+            payload["collapse" + str(i)] = f
+
+    payload["url"] = self.url
+
+
 def _ts(timestamp, data):
     """
     Get timestamp of last fetched archive.
@@ -96,18 +120,12 @@ def _check_filters(filters):
             key = match.group(1)
             val = match.group(2)
 
-
         except Exception:
             e = "Filter '%s' not following the cdx filter syntax." % f
             raise WaybackError(e)
 
 
 def _cleaned_url(url):
-    print(1)
-    """
-    Remove EOL
-    replace " " with "_"
-    """
     return str(url).strip().replace(" ", "%20")
 
 
@@ -258,7 +276,6 @@ def _get_response(
     )
     s.mount("https://", HTTPAdapter(max_retries=retries))
     url = _full_url(endpoint, params)
-    print(url)
     try:
         if not return_full_url:
             return s.get(url, headers=headers)
