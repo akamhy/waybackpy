@@ -298,16 +298,10 @@ class Url:
         url_list = []
 
         if subdomain:
-            url = "*.%s/*" % _cleaned_url(self.url)
+            cdx = Cdx(_cleaned_url(self.url), user_agent=self.user_agent, start_timestamp=start_timestamp, end_timestamp=end_timestamp, match_type="domain")
         else:
-            url = "%s/*" % _cleaned_url(self.url)
+            cdx = Cdx(_cleaned_url(self.url), user_agent=self.user_agent, start_timestamp=start_timestamp, end_timestamp=end_timestamp, match_type="host")
 
-        cdx = Cdx(
-            url,
-            user_agent=self.user_agent,
-            start_timestamp=start_timestamp,
-            end_timestamp=end_timestamp,
-        )
         snapshots = cdx.snapshots()
 
         url_list = []

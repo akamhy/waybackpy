@@ -3,10 +3,12 @@ from datetime import datetime
 
 class CdxSnapshot:
     """
-    This class helps to handle the Cdx Snapshots easily.
+    This class helps to use the Cdx Snapshots easily.
 
-    What the raw data looks like:
+    Raw Snapshot data looks like:
     org,archive)/ 20080126045828 http://github.com text/html 200 Q4YULN754FHV2U6Q5JUT6Q2P57WEWNNY 1415
+
+    properties is a dict containg all of the 7 cdx snapshot properties.
     """
 
     def __init__(self, properties):
