@@ -19,7 +19,7 @@ setup(
     author=about["__author__"],
     author_email=about["__author_email__"],
     url=about["__url__"],
-    download_url="https://github.com/akamhy/waybackpy/archive/2.3.3.tar.gz",
+    download_url="https://github.com/akamhy/waybackpy/archive/2.4.0.tar.gz",
     keywords=[
         "Archive It",
         "Archive Website",
