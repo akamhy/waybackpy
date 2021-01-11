@@ -11,6 +11,7 @@ from .utils import (
     _url_check,
     _cleaned_url,
     _ts,
+    _unix_ts_to_wayback_ts,
 )
 
 
@@ -165,7 +166,7 @@ class Url:
 
         return response.content.decode(encoding.replace("text/html", "UTF-8", 1))
 
-    def near(self, year=None, month=None, day=None, hour=None, minute=None):
+    def near(self, year=None, month=None, day=None, hour=None, minute=None, unix_timestamp=None):
         """
         Wayback Machine can have many archives of a webpage,
         sometimes we want archive close to a specific time.
@@ -187,14 +188,18 @@ class Url:
 
         And finally return self.
         """
-        now = datetime.utcnow().timetuple()
-        timestamp = _wayback_timestamp(
-            year=year if year else now.tm_year,
-            month=month if month else now.tm_mon,
-            day=day if day else now.tm_mday,
-            hour=hour if hour else now.tm_hour,
-            minute=minute if minute else now.tm_min,
-        )
+
+        if unix_timestamp:
+            timestamp = _unix_ts_to_wayback_ts(unix_timestamp)
+        else:
+            now = datetime.utcnow().timetuple()
+            timestamp = _wayback_timestamp(
+                year=year if year else now.tm_year,
+                month=month if month else now.tm_mon,
+                day=day if day else now.tm_mday,
+                hour=hour if hour else now.tm_hour,
+                minute=minute if minute else now.tm_min,
+            )
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": self.user_agent}
