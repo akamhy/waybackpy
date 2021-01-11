@@ -166,7 +166,15 @@ class Url:
 
         return response.content.decode(encoding.replace("text/html", "UTF-8", 1))
 
-    def near(self, year=None, month=None, day=None, hour=None, minute=None, unix_timestamp=None):
+    def near(
+        self,
+        year=None,
+        month=None,
+        day=None,
+        hour=None,
+        minute=None,
+        unix_timestamp=None,
+    ):
         """
         Wayback Machine can have many archives of a webpage,
         sometimes we want archive close to a specific time.

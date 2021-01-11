@@ -12,7 +12,8 @@ default_user_agent = "waybackpy python package - https://github.com/akamhy/wayba
 
 
 def _unix_ts_to_wayback_ts(unix_ts):
-    return datetime.utcfromtimestamp(int(unix_ts)).strftime('%Y%m%d%H%M%S')
+    return datetime.utcfromtimestamp(int(unix_ts)).strftime("%Y%m%d%H%M%S")
+
 
 def _add_payload(self, payload):
     if self.start_timestamp:

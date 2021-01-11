@@ -17,27 +17,27 @@ class Cdx:
     def __init__(
         self,
         url,
-        user_agent=default_user_agent,
+        user_agent=None,
         start_timestamp=None,
         end_timestamp=None,
         filters=[],
         match_type=None,
-        gzip=True,
+        gzip=None,
         collapses=[],
-        limit=10000,
+        limit=None,
     ):
         self.url = str(url).strip()
-        self.user_agent = str(user_agent)
+        self.user_agent = str(user_agent) if user_agent else default_user_agent
         self.start_timestamp = str(start_timestamp) if start_timestamp else None
         self.end_timestamp = str(end_timestamp) if end_timestamp else None
         self.filters = filters
         _check_filters(self.filters)
         self.match_type = str(match_type).strip() if match_type else None
         _check_match_type(self.match_type, self.url)
-        self.gzip = gzip
+        self.gzip = gzip if gzip else True
         self.collapses = collapses
         _check_collapses(self.collapses)
-        self.limit = limit
+        self.limit = limit if limit else 5000
         self.last_api_request_url = None
         self.use_page = False
 
@@ -87,7 +87,7 @@ class Cdx:
         if use_page == True:
 
             total_pages = _get_total_pages(self.url, self.user_agent)
-
+            blank_pages = 0
             for i in range(total_pages):
                 payload["page"] = str(i)
                 url, res = _get_response(
@@ -95,8 +95,14 @@ class Cdx:
                 )
 
                 self.last_api_request_url = url
+                text = res.text
+                if len(text) == 0:
+                    blank_pages += 1
 
-                yield res.text
+                if blank_pages >= 2:
+                    break
+
+                yield text
         else:
 
             payload["showResumeKey"] = "true"
