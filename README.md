@@ -33,6 +33,16 @@ Install directly from GitHub:
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
+### Supported Features
+
+  - Archive webpage
+  - Retrieve all archives of a webpage/domain
+  - Retrieve archive close to a date or timestamp
+  - Retrieve all archives which have a particular prefix
+  - Get source code of the archive easily
+  - CDX API support
+
+
 ### Usage
 
 #### As a Python package
