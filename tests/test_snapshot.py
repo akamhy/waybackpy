@@ -26,7 +26,15 @@ def test_CdxSnapshot():
     assert properties["statuscode"] == snapshot.statuscode
     assert properties["digest"] == snapshot.digest
     assert properties["length"] == snapshot.length
-    assert datetime.strptime(properties["timestamp"], "%Y%m%d%H%M%S") == snapshot.datetime_timestamp
-    archive_url = "https://web.archive.org/web/" + properties["timestamp"] + "/" + properties["original"]
+    assert (
+        datetime.strptime(properties["timestamp"], "%Y%m%d%H%M%S")
+        == snapshot.datetime_timestamp
+    )
+    archive_url = (
+        "https://web.archive.org/web/"
+        + properties["timestamp"]
+        + "/"
+        + properties["original"]
+    )
     assert archive_url == snapshot.archive_url
-    assert archive_url == str(snapshot)
+    assert sample_input == str(snapshot)

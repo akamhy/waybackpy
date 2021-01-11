@@ -298,9 +298,23 @@ class Url:
         url_list = []
 
         if subdomain:
-            cdx = Cdx(_cleaned_url(self.url), user_agent=self.user_agent, start_timestamp=start_timestamp, end_timestamp=end_timestamp, match_type="domain", collapses=["urlkey"])
+            cdx = Cdx(
+                _cleaned_url(self.url),
+                user_agent=self.user_agent,
+                start_timestamp=start_timestamp,
+                end_timestamp=end_timestamp,
+                match_type="domain",
+                collapses=["urlkey"],
+            )
         else:
-            cdx = Cdx(_cleaned_url(self.url), user_agent=self.user_agent, start_timestamp=start_timestamp, end_timestamp=end_timestamp, match_type="host", collapses=["urlkey"])
+            cdx = Cdx(
+                _cleaned_url(self.url),
+                user_agent=self.user_agent,
+                start_timestamp=start_timestamp,
+                end_timestamp=end_timestamp,
+                match_type="host",
+                collapses=["urlkey"],
+            )
 
         snapshots = cdx.snapshots()
 

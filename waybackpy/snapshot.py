@@ -25,4 +25,12 @@ class CdxSnapshot:
         )
 
     def __str__(self):
-        return self.archive_url
+        return ("%s %s %s %s %s %s %s") % (
+            self.urlkey,
+            self.timestamp,
+            self.original,
+            self.mimetype,
+            self.statuscode,
+            self.digest,
+            self.length,
+        )
