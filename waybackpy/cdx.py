@@ -83,10 +83,10 @@ class Cdx:
         """
 
         endpoint = "https://web.archive.org/cdx/search/cdx"
-
-        if use_page == True:
-
-            total_pages = _get_total_pages(self.url, self.user_agent)
+        total_pages = _get_total_pages(self.url, self.user_agent)
+        #If we only have two or less pages of archives then we care for accuracy
+        # pagination API can be lagged sometimes
+        if use_page == True and total_pages >= 2:
             blank_pages = 0
             for i in range(total_pages):
                 payload["page"] = str(i)
