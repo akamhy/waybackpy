@@ -144,12 +144,17 @@ class Url:
 
     def get(self, url="", user_agent="", encoding=""):
         """
-        Return the source code of the supplied URL.
+        Return the source code of the last archived URL,
+        if no URL is passed to this method.
+
         If encoding is not supplied, it is auto-detected
          from the response itself by requests package.
         """
 
-        if not url:
+        if not url and self._archive_url:
+            url = self._archive_url
+
+        elif not url and not self._archive_url:
             url = _cleaned_url(self.url)
 
         if not user_agent:
