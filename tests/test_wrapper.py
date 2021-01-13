@@ -41,16 +41,6 @@ def test_save():
     with pytest.raises(Exception):
         url2 = "ha ha ha ha"
         Url(url2, user_agent)
-#     url3 = "http://www.archive.is/faq.html"
-
-#     with pytest.raises(Exception):
-#         target = Url(
-#             url3,
-#             "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) "
-#             "AppleWebKit/533.20.25 (KHTML, like Gecko) Version/5.0.4 "
-#             "Safari/533.20.27",
-#         )
-#         target.save()
 
 
 def test_near():

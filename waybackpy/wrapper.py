@@ -129,15 +129,16 @@ class Url:
         And to get the archive URL we are required to read the
         header of the API response.
 
-        _get_response() takes care of the get requests. It uses requests
-        package.
+        _get_response() takes care of the get requests.
 
         _archive_url_parser() parses the archive from the header.
 
         """
         request_url = "https://web.archive.org/save/" + _cleaned_url(self.url)
         headers = {"User-Agent": self.user_agent}
-        response = _get_response(request_url, params=None, headers=headers)
+        response = _get_response(
+            request_url, params=None, headers=headers, backoff_factor=2
+        )
         self._archive_url = "https://" + _archive_url_parser(response.headers, self.url)
         self.timestamp = datetime.utcnow()
         return self

@@ -252,7 +252,12 @@ def _wayback_timestamp(**kwargs):
 
 
 def _get_response(
-    endpoint, params=None, headers=None, retries=5, return_full_url=False
+    endpoint,
+    params=None,
+    headers=None,
+    return_full_url=False,
+    retries=5,
+    backoff_factor=0.5,
 ):
     """
     This function is used make get request.
@@ -276,7 +281,9 @@ def _get_response(
     # By https://stackoverflow.com/users/401467/datashaman
     s = requests.Session()
     retries = Retry(
-        total=retries, backoff_factor=0.5, status_forcelist=[500, 502, 503, 504]
+        total=retries,
+        backoff_factor=backoff_factor,
+        status_forcelist=[500, 502, 503, 504],
     )
     s.mount("https://", HTTPAdapter(max_retries=retries))
     url = _full_url(endpoint, params)
