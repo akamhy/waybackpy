@@ -194,8 +194,11 @@ class Cdx:
                 properties_len = len(properties)
                 if prop_values_len != properties_len:
                     raise WaybackError(
-                        "Snapshot returned by Cdx API has %s properties instead of expected %s properties.\nInvolved Snapshot : %s"
-                        % (prop_values_len, properties_len, snapshot)
+                        "Snapshot returned by Cdx API has {prop_values_len} properties instead of expected {properties_len} properties.\nInvolved Snapshot : {snapshot}".format(
+                            prop_values_len=prop_values_len,
+                            properties_len=properties_len,
+                            snapshot=snapshot,
+                        )
                     )
 
                 (

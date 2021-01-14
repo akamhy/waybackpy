@@ -20,13 +20,14 @@ def _save(obj):
         if "No archive URL found in the API response" in e:
             return (
                 "\n[waybackpy] Can not save/archive your link.\n[waybackpy] This "
-                "could happen because either your waybackpy (%s) is likely out of "
+                "could happen because either your waybackpy ({version}) is likely out of "
                 "date or Wayback Machine is malfunctioning.\n[waybackpy] Visit "
                 "https://github.com/akamhy/waybackpy for the latest version of "
-                "waybackpy.\n[waybackpy] API response Header :\n%s"
-                % (__version__, header)
+                "waybackpy.\n[waybackpy] API response Header :\n{header}".format(
+                    version=__version__, header=header
+                )
             )
-        return WaybackError(err)
+        raise WaybackError(err)
 
 
 def _archive_url(obj):
@@ -45,11 +46,13 @@ def no_archive_handler(e, obj):
         if "github.com/akamhy/waybackpy" in ua:
             ua = "YOUR_USER_AGENT_HERE"
         return (
-            "\n[Waybackpy] Can not find archive for '%s'.\n[Waybackpy] You can"
+            "\n[Waybackpy] Can not find archive for '{url}'.\n[Waybackpy] You can"
             " save the URL using the following command:\n[Waybackpy] waybackpy --"
-            'user_agent "%s" --url "%s" --save' % (url, ua, url)
+            'user_agent "{user_agent}" --url "{url}" --save'.format(
+                url=url, user_agent=ua
+            )
         )
-    return WaybackError(e)
+    raise WaybackError(e)
 
 
 def _oldest(obj):
@@ -96,12 +99,16 @@ def _save_urls_on_file(input_list, live_url_count):
         random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
     )
 
-    file_name = "%s-%d-urls-%s.txt" % (domain, live_url_count, uid)
+    file_name = "{domain}-{live_url_count}-urls-{uid}.txt".format(
+        domain=domain, live_url_count=live_url_count, uid=uid
+    )
     file_content = "\n".join(input_list)
     file_path = os.path.join(os.getcwd(), file_name)
     with open(file_path, "w+") as f:
         f.write(file_content)
-    return "%s\n\n'%s' saved in current working directory" % (file_content, file_name)
+    return "{file_content}\n\n'{file_name}' saved in current working directory".format(
+        file_content=file_content, file_name=file_name
+    )
 
 
 def _known_urls(obj, args):
@@ -147,12 +154,11 @@ def _get(obj, args):
 
 def args_handler(args):
     if args.version:
-        return "waybackpy version %s" % __version__
+        return "waybackpy version {version}".format(version=__version__)
 
     if not args.url:
-        return (
-            "waybackpy %s \nSee 'waybackpy --help' for help using this tool."
-            % __version__
+        return "waybackpy {version} \nSee 'waybackpy --help' for help using this tool.".format(
+            version=__version__
         )
 
     obj = Url(args.url)

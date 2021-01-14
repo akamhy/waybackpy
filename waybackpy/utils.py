@@ -71,10 +71,10 @@ def _check_match_type(match_type, url):
     legal_match_type = ["exact", "prefix", "host", "domain"]
 
     if match_type not in legal_match_type:
-        raise WaybackError(
-            "%s is not an allowed match type.\nUse one from 'exact', 'prefix', 'host' or 'domain'"
-            % match_type
+        exc_message = "{match_type} is not an allowed match type.\nUse one from 'exact', 'prefix', 'host' or 'domain'".format(
+            match_type=match_type
         )
+        raise WaybackError(exc_message)
 
 
 def _check_collapses(collapses):
@@ -85,11 +85,11 @@ def _check_collapses(collapses):
     if len(collapses) == 0:
         return
 
-    for c in collapses:
+    for collapse in collapses:
         try:
             match = re.search(
                 r"(urlkey|timestamp|original|mimetype|statuscode|digest|length)(:?[0-9]{1,99})?",
-                c,
+                collapse,
             )
             field = match.group(1)
 
@@ -98,15 +98,17 @@ def _check_collapses(collapses):
                 N = match.group(2)
 
             if N:
-                if not (field + N == c):
+                if not (field + N == collapse):
                     raise Exception
             else:
-                if not (field == c):
+                if not (field == collapse):
                     raise Exception
 
         except Exception:
-            e = "collapse argument '%s' is not following the cdx collapse syntax." % c
-            raise WaybackError(e)
+            exc_message = "collapse argument '{collapse}' is not following the cdx collapse syntax.".format(
+                collapse=collapse
+            )
+            raise WaybackError(exc_message)
 
 
 def _check_filters(filters):
@@ -114,19 +116,23 @@ def _check_filters(filters):
         raise WaybackError("filters must be a list.")
 
     # [!]field:regex
-    for f in filters:
+    for filter in filters:
         try:
             match = re.search(
                 r"(\!?(?:urlkey|timestamp|original|mimetype|statuscode|digest|length)):(.*)",
-                f,
+                filter,
             )
 
             key = match.group(1)
             val = match.group(2)
 
         except Exception:
-            e = "Filter '%s' not following the cdx filter syntax." % f
-            raise WaybackError(e)
+            exc_message = (
+                "Filter '{filter}' not following the cdx filter syntax.".format(
+                    filter=filter
+                )
+            )
+            raise WaybackError(exc_message)
 
 
 def _cleaned_url(url):
@@ -143,7 +149,8 @@ def _url_check(url):
     """
 
     if "." not in url:
-        raise URLError("'%s' is not a vaild URL." % url)
+        exc_message = "'{url}' is not a vaild URL.".format(url=url)
+        raise URLError(exc_message)
 
 
 def _full_url(endpoint, params):
@@ -154,7 +161,9 @@ def _full_url(endpoint, params):
             key = "filter" if key.startswith("filter") else key
             key = "collapse" if key.startswith("collapse") else key
             amp = "" if full_url.endswith("?") else "&"
-            full_url = full_url + amp + "%s=%s" % (key, quote(str(val)))
+            full_url = (
+                full_url + amp + "{key}={val}".format(key=key, val=quote(str(val)))
+            )
     return full_url
 
 
@@ -166,7 +175,9 @@ def _get_total_pages(url, user_agent):
     This func returns number of pages of archives (type int).
     """
     total_pages_url = (
-        "https://web.archive.org/cdx/search/cdx?url=%s&showNumPages=true" % url
+        "https://web.archive.org/cdx/search/cdx?url={url}&showNumPages=true".format(
+            url=url
+        )
     )
     headers = {"User-Agent": user_agent}
     return int((_get_response(total_pages_url, headers=headers).text).strip())
@@ -217,10 +228,12 @@ def _archive_url_parser(header, url):
 
     raise WaybackError(
         "No archive URL found in the API response. "
-        "If '%s' can be accessed via your web browser then either "
-        "this version of waybackpy (%s) is out of date or WayBack Machine is malfunctioning. Visit "
+        "If '{url}' can be accessed via your web browser then either "
+        "this version of waybackpy ({version}) is out of date or WayBack Machine is malfunctioning. Visit "
         "'https://github.com/akamhy/waybackpy' for the latest version "
-        "of waybackpy.\nHeader:\n%s" % (url, __version__, str(header))
+        "of waybackpy.\nHeader:\n{header}".format(
+            url=url, version=__version__, header=header
+        )
     )
 
 
@@ -292,6 +305,7 @@ def _get_response(
             return s.get(url, headers=headers)
         return (url, s.get(url, headers=headers))
     except Exception as e:
-        exc = WaybackError("Error while retrieving %s" % url)
+        exc_message = "Error while retrieving {url}".format(url=url)
+        exc = WaybackError(exc_message)
         exc.__cause__ = e
         raise exc

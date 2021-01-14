@@ -25,12 +25,12 @@ class CdxSnapshot:
         )
 
     def __str__(self):
-        return ("%s %s %s %s %s %s %s") % (
-            self.urlkey,
-            self.timestamp,
-            self.original,
-            self.mimetype,
-            self.statuscode,
-            self.digest,
-            self.length,
+        return "{urlkey} {timestamp} {original} {mimetype} {statuscode} {digest} {length}".format(
+            urlkey=self.urlkey,
+            timestamp=self.timestamp,
+            original=self.original,
+            mimetype=self.mimetype,
+            statuscode=self.statuscode,
+            digest=self.digest,
+            length=self.length,
         )

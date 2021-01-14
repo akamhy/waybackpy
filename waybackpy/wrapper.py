@@ -26,7 +26,9 @@ class Url:
         self._alive_url_list = []
 
     def __repr__(self):
-        return "waybackpy.Url(url=%s, user_agent=%s)" % (self.url, self.user_agent)
+        return "waybackpy.Url(url={url}, user_agent={user_agent})".format(
+            url=self.url, user_agent=self.user_agent
+        )
 
     def __str__(self):
         """
@@ -43,7 +45,7 @@ class Url:
 
         if not self._archive_url:
             self._archive_url = self.archive_url
-        return "%s" % self._archive_url
+        return "{archive_url}".format(archive_url=self._archive_url)
 
     def __len__(self):
         """
@@ -87,7 +89,7 @@ class Url:
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": self.user_agent}
-        payload = {"url": "%s" % _cleaned_url(self.url)}
+        payload = {"url": "{url}".format(url=_cleaned_url(self.url))}
         response = _get_response(endpoint, params=payload, headers=headers)
         return response.json()
 
@@ -217,15 +219,19 @@ class Url:
 
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": self.user_agent}
-        payload = {"url": "%s" % _cleaned_url(self.url), "timestamp": timestamp}
+        payload = {
+            "url": "{url}".format(url=_cleaned_url(self.url)),
+            "timestamp": timestamp,
+        }
         response = _get_response(endpoint, params=payload, headers=headers)
         data = response.json()
 
         if not data["archived_snapshots"]:
             raise WaybackError(
-                "Can not find archive for '%s' try later or use wayback.Url(url, user_agent).save() "
-                "to create a new archive.\nAPI response:\n%s"
-                % (_cleaned_url(self.url), response.text)
+                "Can not find archive for '{url}' try later or use wayback.Url(url, user_agent).save() "
+                "to create a new archive.\nAPI response:\n{text}".format(
+                    url=_cleaned_url(self.url), text=response.text
+                )
             )
         archive_url = data["archived_snapshots"]["closest"]["url"]
         archive_url = archive_url.replace(
