@@ -129,7 +129,4 @@ def test_total_archives():
 def test_known_urls():
 
     target = Url("akamhy.github.io", user_agent)
-    assert len(target.known_urls(alive=True, subdomain=False)) > 2
-
-    target = Url("akamhy.github.io", user_agent)
     assert len(target.known_urls()) > 3

@@ -120,11 +120,7 @@ def _known_urls(obj, args):
     if args.subdomain:
         subdomain = True
 
-    alive = False
-    if args.alive:
-        alive = True
-
-    url_list = obj.known_urls(alive=alive, subdomain=subdomain)
+    url_list = obj.known_urls(subdomain=subdomain)
     total_urls = len(url_list)
 
     if total_urls > 0:
@@ -267,8 +263,6 @@ def add_knownUrlArg(knownUrlArg):
     )
     help_text = "Use with '--known_urls' to include known URLs for subdomains."
     knownUrlArg.add_argument("--subdomain", "-sub", action="store_true", help=help_text)
-    help_text = "Only include live URLs. Will not inlclude dead links."
-    knownUrlArg.add_argument("--alive", "-a", action="store_true", help=help_text)
 
 
 def add_nearArg(nearArg):

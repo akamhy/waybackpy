@@ -11,6 +11,12 @@ quote = requests.utils.quote
 default_user_agent = "waybackpy python package - https://github.com/akamhy/waybackpy"
 
 
+def _latest_version(package_name, headers):
+    endpoint = "https://pypi.org/pypi/" + package_name + "/json"
+    json = _get_response(endpoint, headers=headers).json()
+    return json["info"]["version"]
+
+
 def _unix_ts_to_wayback_ts(unix_ts):
     return datetime.utcfromtimestamp(int(unix_ts)).strftime("%Y%m%d%H%M%S")
 
@@ -183,7 +189,7 @@ def _get_total_pages(url, user_agent):
     return int((_get_response(total_pages_url, headers=headers).text).strip())
 
 
-def _archive_url_parser(header, url):
+def _archive_url_parser(header, url, latest_version=__version__):
     """
     The wayback machine's save API doesn't
     return JSON response, we are required
@@ -226,15 +232,25 @@ def _archive_url_parser(header, url):
     if m:
         return m.group(1)
 
-    raise WaybackError(
-        "No archive URL found in the API response. "
-        "If '{url}' can be accessed via your web browser then either "
-        "this version of waybackpy ({version}) is out of date or WayBack Machine is malfunctioning. Visit "
-        "'https://github.com/akamhy/waybackpy' for the latest version "
-        "of waybackpy.\nHeader:\n{header}".format(
-            url=url, version=__version__, header=header
+    if __version__ == latest_version:
+        exc_message = (
+            "No archive URL found in the API response. "
+            "If '{url}' can be accessed via your web browser then either "
+            "Wayback Machine is malfunctioning or it refused to archive your URL."
+            "\nHeader:\n{header}".format(url=url, header=header)
         )
-    )
+    else:
+        exc_message = (
+            "No archive URL found in the API response. "
+            "If '{url}' can be accessed via your web browser then either "
+            "this version of waybackpy ({version}) is out of date or WayBack "
+            "Machine is malfunctioning. Visit 'https://github.com/akamhy/waybackpy' "
+            "for the latest version of waybackpy.\nHeader:\n{header}".format(
+                url=url, version=__version__, header=header
+            )
+        )
+
+    raise WaybackError(exc_message)
 
 
 def _wayback_timestamp(**kwargs):
@@ -292,20 +308,27 @@ def _get_response(
 
     # From https://stackoverflow.com/a/35504626
     # By https://stackoverflow.com/users/401467/datashaman
+
     s = requests.Session()
+
     retries = Retry(
         total=retries,
         backoff_factor=backoff_factor,
         status_forcelist=[500, 502, 503, 504],
     )
+
     s.mount("https://", HTTPAdapter(max_retries=retries))
+
     url = _full_url(endpoint, params)
+
     try:
         if not return_full_url:
             return s.get(url, headers=headers)
         return (url, s.get(url, headers=headers))
     except Exception as e:
-        exc_message = "Error while retrieving {url}".format(url=url)
+        exc_message = "Error while retrieving {url}.\n{reason}".format(
+            url=url, reason=str(e)
+        )
         exc = WaybackError(exc_message)
         exc.__cause__ = e
         raise exc

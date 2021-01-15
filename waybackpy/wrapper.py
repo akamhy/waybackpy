@@ -12,6 +12,7 @@ from .utils import (
     _cleaned_url,
     _ts,
     _unix_ts_to_wayback_ts,
+    _latest_version,
 )
 
 
@@ -23,7 +24,7 @@ class Url:
         self._archive_url = None
         self.timestamp = None
         self._JSON = None
-        self._alive_url_list = []
+        self.latest_version = None
 
     def __repr__(self):
         return "waybackpy.Url(url={url}, user_agent={user_agent})".format(
@@ -141,7 +142,11 @@ class Url:
         response = _get_response(
             request_url, params=None, headers=headers, backoff_factor=2
         )
-        self._archive_url = "https://" + _archive_url_parser(response.headers, self.url)
+        if not self.latest_version:
+            self.latest_version = _latest_version("waybackpy", headers=headers)
+        self._archive_url = "https://" + _archive_url_parser(
+            response.headers, self.url, self.latest_version
+        )
         self.timestamp = datetime.utcnow()
         return self
 
@@ -291,26 +296,7 @@ class Url:
             i = i + 1
         return i
 
-    def live_urls_finder(self, url):
-        """
-        This method is used to check if supplied url
-        is >= 400.
-        """
-
-        try:
-            response_code = requests.get(url).status_code
-        except Exception:
-            return  # we don't care if Exception
-
-        # 200s are OK and 300s are usually redirects, if you don't want redirects replace 400 with 300
-        if response_code >= 400:
-            return
-
-        self._alive_url_list.append(url)
-
-    def known_urls(
-        self, alive=False, subdomain=False, start_timestamp=None, end_timestamp=None
-    ):
+    def known_urls(self, subdomain=False, start_timestamp=None, end_timestamp=None):
         """
         Returns list of URLs known to exist for given domain name
         because these URLs were crawled by WayBack Machine spider.
@@ -346,11 +332,5 @@ class Url:
         url_list = []
         for snapshot in snapshots:
             url_list.append(snapshot.original)
-
-        # Remove all deadURLs from url_list if alive=True
-        if alive:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                executor.map(self.live_urls_finder, url_list)
-            url_list = self._alive_url_list
 
         return url_list
