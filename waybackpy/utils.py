@@ -1,4 +1,5 @@
 import re
+import time
 import requests
 from .exceptions import WaybackError, URLError
 from datetime import datetime
@@ -189,7 +190,7 @@ def _get_total_pages(url, user_agent):
     return int((_get_response(total_pages_url, headers=headers).text).strip())
 
 
-def _archive_url_parser(header, url, latest_version=__version__):
+def _archive_url_parser(header, url, latest_version=__version__, instance=None):
     """
     The wayback machine's save API doesn't
     return JSON response, we are required
@@ -211,9 +212,39 @@ def _archive_url_parser(header, url, latest_version=__version__):
 
     If we found the archive URL we return it.
 
+    Return format:
+
+    web.archive.org/web/<TIMESTAMP>/<URL>
+
     And if we couldn't find it, we raise
     WaybackError with an error message.
     """
+
+    if "save redirected" in header:
+        time.sleep(60)  # makeup for archive time
+
+        now = datetime.utcnow().timetuple()
+        timestamp = _wayback_timestamp(
+            year=now.tm_year,
+            month=now.tm_mon,
+            day=now.tm_mday,
+            hour=now.tm_hour,
+            minute=now.tm_min,
+        )
+
+        return_str = "web.archive.org/web/{timestamp}/{url}".format(
+            timestamp=timestamp, url=url
+        )
+        url = "https://" + return_str
+
+        headers = {"User-Agent": instance.user_agent}
+
+        res = _get_response(url, headers=headers)
+
+        if res.status_code < 400:
+            return "web.archive.org/web/{timestamp}/{url}".format(
+                timestamp=timestamp, url=url
+            )
 
     # Regex1
     m = re.search(r"Content-Location: (/web/[0-9]{14}/.*)", str(header))
@@ -231,6 +262,24 @@ def _archive_url_parser(header, url, latest_version=__version__):
     m = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
     if m:
         return m.group(1)
+
+    if instance:
+        newest_archive = None
+        try:
+            newest_archive = instance.newest()
+        except Exception as e:
+            pass  # We don't care as this is a save request
+
+        if newest_archive:
+            minutes_old = (
+                datetime.utcnow() - newest_archive.timestamp
+            ).total_seconds() / 60.0
+
+            if minutes_old <= 30:
+                archive_url = newest_archive.archive_url
+                m = re.search(r"web\.archive\.org/web/[0-9]{14}/.*", archive_url)
+                if m:
+                    return m.group(0)
 
     if __version__ == latest_version:
         exc_message = (
@@ -287,6 +336,7 @@ def _get_response(
     return_full_url=False,
     retries=5,
     backoff_factor=0.5,
+    no_raise_on_redirects=False,
 ):
     """
     This function is used make get request.
@@ -326,8 +376,12 @@ def _get_response(
             return s.get(url, headers=headers)
         return (url, s.get(url, headers=headers))
     except Exception as e:
+        reason = str(e)
+        if no_raise_on_redirects:
+            if "Exceeded 30 redirects" in reason:
+                return
         exc_message = "Error while retrieving {url}.\n{reason}".format(
-            url=url, reason=str(e)
+            url=url, reason=reason
         )
         exc = WaybackError(exc_message)
         exc.__cause__ = e

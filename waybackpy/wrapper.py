@@ -139,13 +139,26 @@ class Url:
         """
         request_url = "https://web.archive.org/save/" + _cleaned_url(self.url)
         headers = {"User-Agent": self.user_agent}
+
         response = _get_response(
-            request_url, params=None, headers=headers, backoff_factor=2
+            request_url,
+            params=None,
+            headers=headers,
+            backoff_factor=2,
+            no_raise_on_redirects=True,
         )
+
         if not self.latest_version:
             self.latest_version = _latest_version("waybackpy", headers=headers)
+        if response:
+            res_headers = response.headers
+        else:
+            res_headers = "save redirected"
         self._archive_url = "https://" + _archive_url_parser(
-            response.headers, self.url, self.latest_version
+            res_headers,
+            self.url,
+            latest_version=self.latest_version,
+            instance=self,
         )
         self.timestamp = datetime.utcnow()
         return self
