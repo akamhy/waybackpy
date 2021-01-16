@@ -23,6 +23,7 @@ class Url:
         self.timestamp = None
         self._JSON = None
         self.latest_version = None
+        self.cached_save = False
 
     def __repr__(self):
         return "waybackpy.Url(url={url}, user_agent={user_agent})".format(

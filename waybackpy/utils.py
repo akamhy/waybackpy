@@ -22,28 +22,28 @@ def _unix_ts_to_wayback_ts(unix_ts):
     return datetime.utcfromtimestamp(int(unix_ts)).strftime("%Y%m%d%H%M%S")
 
 
-def _add_payload(self, payload):
-    if self.start_timestamp:
-        payload["from"] = self.start_timestamp
+def _add_payload(instance, payload):
+    if instance.start_timestamp:
+        payload["from"] = instance.start_timestamp
 
-    if self.end_timestamp:
-        payload["to"] = self.end_timestamp
+    if instance.end_timestamp:
+        payload["to"] = instance.end_timestamp
 
-    if self.gzip != True:
+    if instance.gzip != True:
         payload["gzip"] = "false"
 
-    if self.match_type:
-        payload["matchType"] = self.match_type
+    if instance.match_type:
+        payload["matchType"] = instance.match_type
 
-    if self.filters and len(self.filters) > 0:
-        for i, f in enumerate(self.filters):
+    if instance.filters and len(instance.filters) > 0:
+        for i, f in enumerate(instance.filters):
             payload["filter" + str(i)] = f
 
-    if self.collapses and len(self.collapses) > 0:
-        for i, f in enumerate(self.collapses):
+    if instance.collapses and len(instance.collapses) > 0:
+        for i, f in enumerate(instance.collapses):
             payload["collapse" + str(i)] = f
 
-    payload["url"] = self.url
+    payload["url"] = instance.url
 
 
 def _ts(timestamp, data):
@@ -220,7 +220,7 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
     WaybackError with an error message.
     """
 
-    if "save redirected" in header:
+    if "save redirected" in header and instance:
         time.sleep(60)  # makeup for archive time
 
         now = datetime.utcnow().timetuple()
@@ -279,6 +279,7 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
                 archive_url = newest_archive.archive_url
                 m = re.search(r"web\.archive\.org/web/[0-9]{14}/.*", archive_url)
                 if m:
+                    instance.cached_save = True
                     return m.group(0)
 
     if __version__ == latest_version:
