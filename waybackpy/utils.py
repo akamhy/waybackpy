@@ -123,11 +123,11 @@ def _check_filters(filters):
         raise WaybackError("filters must be a list.")
 
     # [!]field:regex
-    for filter in filters:
+    for _filter in filters:
         try:
             match = re.search(
                 r"(\!?(?:urlkey|timestamp|original|mimetype|statuscode|digest|length)):(.*)",
-                filter,
+                _filter,
             )
 
             key = match.group(1)
@@ -135,8 +135,8 @@ def _check_filters(filters):
 
         except Exception:
             exc_message = (
-                "Filter '{filter}' not following the cdx filter syntax.".format(
-                    filter=filter
+                "Filter '{_filter}' not following the cdx filter syntax.".format(
+                    _filter=_filter
                 )
             )
             raise WaybackError(exc_message)
@@ -267,7 +267,7 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
         newest_archive = None
         try:
             newest_archive = instance.newest()
-        except Exception as e:
+        except WaybackError:
             pass  # We don't care as this is a save request
 
         if newest_archive:

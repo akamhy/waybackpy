@@ -95,8 +95,9 @@ def _save_urls_on_file(input_list, live_url_count):
     if m:
         domain = m.group(1)
 
+    sys_random = random.SystemRandom()
     uid = "".join(
-        random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
+        sys_random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
     )
 
     file_name = "{domain}-{live_url_count}-urls-{uid}.txt".format(
