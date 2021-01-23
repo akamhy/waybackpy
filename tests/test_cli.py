@@ -12,23 +12,6 @@ from waybackpy.__version__ import __version__
 
 
 def test_save():
-    args = argparse.Namespace(
-        user_agent=None,
-        url="https://pypi.org/user/akamhy/",
-        total=False,
-        version=False,
-        oldest=False,
-        save=True,
-        json=False,
-        archive_url=False,
-        newest=False,
-        near=False,
-        subdomain=False,
-        known_urls=False,
-        get=None,
-    )
-    reply = cli.args_handler(args)
-    assert "pypi.org/user/akamhy" in str(reply)
 
     args = argparse.Namespace(
         user_agent=None,
