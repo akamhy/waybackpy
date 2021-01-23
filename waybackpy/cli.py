@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import json
 import random
 import string
 import argparse
@@ -35,7 +36,7 @@ def _archive_url(obj):
 
 
 def _json(obj):
-    return obj.JSON
+    return json.dumps(obj.JSON)
 
 
 def no_archive_handler(e, obj):
