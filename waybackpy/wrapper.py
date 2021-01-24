@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timedelta
 from .exceptions import WaybackError
 from .cdx import Cdx
