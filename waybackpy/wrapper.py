@@ -159,7 +159,18 @@ class Url:
             latest_version=self.latest_version,
             instance=self,
         )
-        self.timestamp = datetime.utcnow()
+
+        m = re.search(r"https?://web.archive.org/web/([0-9]{14})/http", archive_url)
+        str_ts = m.group(1)
+        ts = datetime.strptime(str_ts, "%Y%m%d%H%M%S")
+        now = datetime.utcnow()
+        total_seconds = int((now - ts).total_seconds())
+
+        if total_seconds > 60 * 3:
+            self.cached_save = True
+
+        self.timestamp = ts
+
         return self
 
     def get(self, url="", user_agent="", encoding=""):
