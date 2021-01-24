@@ -90,14 +90,14 @@ https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_
 $ waybackpy --total --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent"
 1904
 
-$ waybackpy --known_urls --url akamhy.github.io --user_agent "my-unique-user-agent"
+$ waybackpy --known_urls --url akamhy.github.io --user_agent "my-unique-user-agent" --file
 https://akamhy.github.io
 https://akamhy.github.io/assets/js/scale.fix.js
 https://akamhy.github.io/favicon.ico
 https://akamhy.github.io/robots.txt
 https://akamhy.github.io/waybackpy/
 
-'akamhy.github.io-10-urls-m2a24y.txt' saved in current working directory
+'akamhy.github.io-urls-iftor2.txt' saved in current working directory
 ```
 > Full CLI documentation can be found at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
