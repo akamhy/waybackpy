@@ -17,26 +17,6 @@ def test_url_check():
         Url(broken_url, user_agent)
 
 
-def test_save():
-
-    url_list = [
-        "en.wikipedia.org",
-        "akamhy.github.io",
-        "www.wiktionary.org",
-        "www.w3schools.com",
-        "youtube.com",
-    ]
-    x = random.randint(0, len(url_list) - 1)
-    url1 = url_list[x]
-    target = Url(
-        url1,
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/36.0.1944.0 Safari/537.36",
-    )
-    archived_url1 = str(target.save())
-    assert url1 in archived_url1
-
-
 def test_near():
     with pytest.raises(Exception):
         NeverArchivedUrl = (

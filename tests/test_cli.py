@@ -18,6 +18,7 @@ def test_save():
         url="https://hfjfjfjfyu6r6rfjvj.fjhgjhfjgvjm",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=True,
         json=False,
@@ -38,6 +39,7 @@ def test_json():
         url="https://pypi.org/user/akamhy/",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=True,
@@ -58,6 +60,7 @@ def test_archive_url():
         url="https://pypi.org/user/akamhy/",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -78,6 +81,7 @@ def test_oldest():
         url="https://pypi.org/user/akamhy/",
         total=False,
         version=False,
+        file=False,
         oldest=True,
         save=False,
         json=False,
@@ -100,6 +104,7 @@ def test_oldest():
         url=url,
         total=False,
         version=False,
+        file=False,
         oldest=True,
         save=False,
         json=False,
@@ -121,6 +126,7 @@ def test_newest():
         url="https://pypi.org/user/akamhy/",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -143,6 +149,7 @@ def test_newest():
         url=url,
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -164,6 +171,7 @@ def test_total_archives():
         url="https://pypi.org/user/akamhy/",
         total=True,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -185,6 +193,7 @@ def test_known_urls():
         url="https://www.keybr.com",
         total=False,
         version=False,
+        file=True,
         oldest=False,
         save=False,
         json=False,
@@ -198,25 +207,6 @@ def test_known_urls():
     reply = cli.args_handler(args)
     assert "keybr" in str(reply)
 
-    args = argparse.Namespace(
-        user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
-    (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9",
-        url="https://akfyfufyjcujfufu6576r76r6amhy.gitd6r67r6u6hub.yfjyfjio",
-        total=False,
-        version=False,
-        oldest=False,
-        save=False,
-        json=False,
-        archive_url=False,
-        newest=False,
-        near=False,
-        subdomain=True,
-        known_urls=True,
-        get=None,
-    )
-    reply = cli.args_handler(args)
-    assert "No known URLs found" in str(reply)
-
 
 def test_near():
     args = argparse.Namespace(
@@ -225,6 +215,7 @@ def test_near():
         url="https://pypi.org/user/akamhy/",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -252,6 +243,7 @@ def test_near():
         url=url,
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -278,6 +270,7 @@ def test_get():
         url="https://github.com/akamhy",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -297,6 +290,7 @@ def test_get():
         url="https://github.com/akamhy/waybackpy",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -316,6 +310,7 @@ def test_get():
         url="https://akamhy.github.io/waybackpy/",
         total=False,
         version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,
@@ -335,25 +330,7 @@ def test_get():
         url="https://pypi.org/user/akamhy/",
         total=False,
         version=False,
-        oldest=False,
-        save=False,
-        json=False,
-        archive_url=False,
-        newest=False,
-        near=False,
-        subdomain=False,
-        known_urls=False,
-        get="save",
-    )
-    reply = cli.args_handler(args)
-    assert "waybackpy" in str(reply)
-
-    args = argparse.Namespace(
-        user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/600.8.9 \
-    (KHTML, like Gecko) Version/8.0.8 Safari/600.8.9",
-        url="https://pypi.org/user/akamhy/",
-        total=False,
-        version=False,
+        file=False,
         oldest=False,
         save=False,
         json=False,

@@ -89,28 +89,40 @@ def _near(obj, args):
         return no_archive_handler(e, obj)
 
 
-def _save_urls_on_file(input_list, live_url_count):
-    m = re.search("https?://([A-Za-z_0-9.-]+).*", input_list[0])
-
-    domain = "domain-unknown"
-    if m:
-        domain = m.group(1)
-
+def _save_urls_on_file(url_gen):
+    domain = None
     sys_random = random.SystemRandom()
     uid = "".join(
         sys_random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
     )
+    url_count = 0
 
-    file_name = "{domain}-{live_url_count}-urls-{uid}.txt".format(
-        domain=domain, live_url_count=live_url_count, uid=uid
-    )
-    file_content = "\n".join(input_list)
-    file_path = os.path.join(os.getcwd(), file_name)
-    with open(file_path, "w+") as f:
-        f.write(file_content)
-    return "{file_content}\n\n'{file_name}' saved in current working directory".format(
-        file_content=file_content, file_name=file_name
-    )
+    for url in url_gen:
+        url_count += 1
+        if not domain:
+            m = re.search("https?://([A-Za-z_0-9.-]+).*", url)
+
+            domain = "domain-unknown"
+
+            if m:
+                domain = m.group(1)
+
+            file_name = "{domain}-urls-{uid}.txt".format(domain=domain, uid=uid)
+            file_path = os.path.join(os.getcwd(), file_name)
+            if not os.path.isfile(file_path):
+                open(file_path, "w+").close()
+
+        with open(file_path, "a") as f:
+            f.write("{url}\n".format(url=url))
+
+        print(url)
+
+    if url_count > 0:
+        return "\n\n'{file_name}' saved in current working directory".format(
+            file_name=file_name
+        )
+    else:
+        return "No known URLs found. Please try a diffrent input!"
 
 
 def _known_urls(obj, args):
@@ -118,17 +130,16 @@ def _known_urls(obj, args):
     Known urls for a domain.
     """
 
-    subdomain = False
-    if args.subdomain:
-        subdomain = True
+    subdomain = True if args.subdomain else False
 
-    url_list = obj.known_urls(subdomain=subdomain)
-    total_urls = len(url_list)
+    url_gen = obj.known_urls(subdomain=subdomain)
 
-    if total_urls > 0:
-        return _save_urls_on_file(url_list, total_urls)
-
-    return "No known URLs found. Please try a diffrent domain!"
+    if args.file:
+        return _save_urls_on_file(url_gen)
+    else:
+        for url in url_gen:
+            print(url)
+        return "\n"
 
 
 def _get(obj, args):
@@ -265,6 +276,12 @@ def add_knownUrlArg(knownUrlArg):
     )
     help_text = "Use with '--known_urls' to include known URLs for subdomains."
     knownUrlArg.add_argument("--subdomain", "-sub", action="store_true", help=help_text)
+    knownUrlArg.add_argument(
+        "--file",
+        "-f",
+        action="store_true",
+        help="Save the URLs in file at current directory.",
+    )
 
 
 def add_nearArg(nearArg):
