@@ -161,7 +161,7 @@ class Url:
             instance=self,
         )
 
-        m = re.search(r"https?://web.archive.org/web/([0-9]{14})/http", archive_url)
+        m = re.search(r"https?://web.archive.org/web/([0-9]{14})/http", self._archive_url)
         str_ts = m.group(1)
         ts = datetime.strptime(str_ts, "%Y%m%d%H%M%S")
         now = datetime.utcnow()
