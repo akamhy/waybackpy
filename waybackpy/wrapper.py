@@ -308,41 +308,40 @@ class Url:
             i = i + 1
         return i
 
-    def known_urls(self, subdomain=False, start_timestamp=None, end_timestamp=None):
+    def known_urls(
+        self,
+        subdomain=False,
+        host=False,
+        start_timestamp=None,
+        end_timestamp=None,
+        match_type="prefix",
+    ):
         """
-        Returns list of URLs known to exist for given domain name
-        because these URLs were crawled by WayBack Machine spider.
-        Useful for pen-testing.
+        Yields list of URLs known to exist for given input.
+        Defaults to input URL as prefix.
+
+        This method is kept for compatibility, use the Cdx class instead.
+        This method itself depends on Cdx.
+
+         Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
+         https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
         """
-
-        # Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
-        # https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
-
-        url_list = []
 
         if subdomain:
-            cdx = Cdx(
-                _cleaned_url(self.url),
-                user_agent=self.user_agent,
-                start_timestamp=start_timestamp,
-                end_timestamp=end_timestamp,
-                match_type="domain",
-                collapses=["urlkey"],
-            )
-        else:
-            cdx = Cdx(
-                _cleaned_url(self.url),
-                user_agent=self.user_agent,
-                start_timestamp=start_timestamp,
-                end_timestamp=end_timestamp,
-                match_type="host",
-                collapses=["urlkey"],
-            )
+            match_type = "domain"
+        if host:
+            match_type = "host"
+
+        cdx = Cdx(
+            _cleaned_url(self.url),
+            user_agent=self.user_agent,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp,
+            match_type=match_type,
+            collapses=["urlkey"],
+        )
 
         snapshots = cdx.snapshots()
 
-        url_list = []
         for snapshot in snapshots:
-            url_list.append(snapshot.original)
-
-        return url_list
+            yield (snapshot.original)
