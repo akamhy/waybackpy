@@ -33,29 +33,17 @@ class Url:
         )
 
     def __str__(self):
-        """
-        Output when print() is used on <class 'waybackpy.wrapper.Url'>
-        This should print an archive URL.
-
-        We check if self._archive_url is not None.
-        If not None, good. We return string of self._archive_url.
-
-        If self._archive_url is None, it means we ain't used any method that
-        sets self._archive_url, we now set self._archive_url to self.archive_url
-        and return it.
-        """
-
         if not self._archive_url:
             self._archive_url = self.archive_url
+
         return "{archive_url}".format(archive_url=self._archive_url)
 
     def __len__(self):
-        """
-        Why do we have len here?
+        """Number of days between today and the date of archive based on the timestamp
 
-        Applying len() on <class 'waybackpy.wrapper.Url'>
-        will calculate the number of days between today and
-        the archive timestamp.
+        len() of waybackpy.wrapper.Url should return
+        the number of days between today and the
+        archive timestamp.
 
         Can be applied on return values of near and its
         childs (e.g. oldest) and if applied on waybackpy.Url()
@@ -102,7 +90,7 @@ class Url:
         But if near, oldest, newest were used before
         then it returns the same archive again.
 
-        We cache archive in self._archive_url
+        We cache the archive in self._archive_url
         """
 
         if self._archive_url:
@@ -332,14 +320,35 @@ class Url:
         match_type="prefix",
     ):
         """
+        Parameters
+        ----------
+
+        self : waybackpy.wrapper.Url
+            The instance itself
+
+        subdomain : bool
+            If True fetch subdomain URLs along with the host URLs.
+
+        host : bool
+            Only fetch host URLs.
+
+        start_timestamp : str
+            1 to 14 digit string of numbers, you are not required to
+            pass a full 14 digit timestamp.
+
+        end_timestamp : str
+            1 to 14 digit string of numbers, you are not required to
+            pass a full 14 digit timestamp.
+
+        match_type : str
+            One of  (exact, prefix, host and domain)
+
         Yields list of URLs known to exist for given input.
         Defaults to input URL as prefix.
 
-        This method is kept for compatibility, use the Cdx class instead.
-        This method itself depends on Cdx.
-
-         Idea by Mohammed Diaa (https://github.com/mhmdiaa) from:
-         https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
+        Based on:
+        https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
+        By Mohammed Diaa (https://github.com/mhmdiaa)
         """
 
         if subdomain:
@@ -356,7 +365,5 @@ class Url:
             collapses=["urlkey"],
         )
 
-        snapshots = cdx.snapshots()
-
-        for snapshot in snapshots:
+        for snapshot in cdx.snapshots():
             yield (snapshot.original)
