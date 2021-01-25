@@ -85,12 +85,12 @@ class Url:
 
     @property
     def archive_url(self):
-        """
-        Returns any random archive for the instance.
-        But if near, oldest, newest were used before
-        then it returns the same archive again.
+        """Return the string form of the Url object.
 
-        We cache the archive in self._archive_url
+        Parameters
+        ----------
+        self : waybackpy.wrapper.Url
+            The instance itself.
         """
 
         if self._archive_url:
@@ -110,11 +110,24 @@ class Url:
 
     @property
     def _timestamp(self):
-        """Sets the value of self.timestamp if still not set."""
+        """Sets the value of self.timestamp if still not set.
+
+        Parameters
+        ----------
+        self : waybackpy.wrapper.Url
+            The instance itself.
+
+        """
         return _timestamp_manager(self.timestamp, self.JSON)
 
     def save(self):
-        """
+        """Saves/Archive the URL.
+
+        Parameters
+        ----------
+        self : waybackpy.wrapper.Url
+            The instance itself.
+
         To save a webpage on WayBack machine we
         need to send get request to https://web.archive.org/save/
 
@@ -204,6 +217,29 @@ class Url:
         unix_timestamp=None,
     ):
         """
+        Parameters
+        ----------
+        self : waybackpy.wrapper.Url
+            The instance itself.
+
+        year : int
+            Archive close to year
+
+        month : int
+            Archive close to month
+
+        day : int
+            Archive close to day
+
+        hour : int
+            Archive close to hour
+
+        minute : int
+            Archive close to minute
+
+        unix_timestamp : str, float or int
+            Archive close to this unix_timestamp
+
         Wayback Machine can have many archives of a webpage,
         sometimes we want archive close to a specific time.
 
@@ -276,6 +312,7 @@ class Url:
 
         We simply pass the year in near() and return it.
         """
+
         return self.near(year=year)
 
     def newest(self):
@@ -287,10 +324,26 @@ class Url:
         Due to Wayback Machine database lag, this may not always be the
         most recent archive.
         """
+
         return self.near()
 
     def total_archives(self, start_timestamp=None, end_timestamp=None):
-        """
+        """Returns the total number of archives for an URL
+
+        Parameters
+        ----------
+        self : waybackpy.wrapper.Url
+            The instance itself
+
+        start_timestamp : str
+            1 to 14 digit string of numbers, you are not required to
+            pass a full 14 digit timestamp.
+
+        end_timestamp : str
+            1 to 14 digit string of numbers, you are not required to
+            pass a full 14 digit timestamp.
+
+
         A webpage can have multiple archives on the wayback machine
         If someone wants to count the total number of archives of a
         webpage on wayback machine they can use this method.
@@ -319,7 +372,8 @@ class Url:
         end_timestamp=None,
         match_type="prefix",
     ):
-        """
+        """Yields known_urls URLs from the CDX API.
+
         Parameters
         ----------
 
