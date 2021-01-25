@@ -13,16 +13,58 @@ default_user_agent = "waybackpy python package - https://github.com/akamhy/wayba
 
 
 def _latest_version(package_name, headers):
+    """Returns the latest version of package_name.
+
+    Parameters
+    ----------
+    package_name : str
+        The name of the python package
+
+    headers : dict
+        Headers that will be used while making get requests
+
+    Return type is str
+
+    Use API <https://pypi.org/pypi/> to get the latest version of
+    waybackpy, but can be used to get latest version of any package
+    on PyPi.
+    """
+
     endpoint = "https://pypi.org/pypi/" + package_name + "/json"
     json = _get_response(endpoint, headers=headers).json()
     return json["info"]["version"]
 
 
-def _unix_ts_to_wayback_ts(unix_ts):
-    return datetime.utcfromtimestamp(int(unix_ts)).strftime("%Y%m%d%H%M%S")
+def _unix_ts_to_wayback_ts(unix_timestamp):
+    """Returns unix timestamp converted to datetime.datetime
+
+    Parameters
+    ----------
+    unix_timestamp : str, int or float
+        Unix-timestamp that needs to be converted to datetime.datetime
+
+    Converts and returns input unix_timestamp to datetime.datetime object.
+    Does not matter if unix_timestamp is str, float or int.
+    """
+
+    return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
 
 
 def _add_payload(instance, payload):
+    """Adds payload from instance that can be used to make get requests.
+
+    Parameters
+    ----------
+    instance : waybackpy.cdx.Cdx
+        instance of the Cdx class
+
+    payload : dict
+        A dict onto which we need to add keys and values based on instance.
+
+    instance is object of Cdx class and it contains the data required to fill
+    the payload dictionary.
+    """
+
     if instance.start_timestamp:
         payload["from"] = instance.start_timestamp
 
@@ -143,6 +185,9 @@ def _check_filters(filters):
 
 
 def _cleaned_url(url):
+    """Sanatize the url
+    Remove and replace illegal whitespace characters from the URL.
+    """
     return str(url).strip().replace(" ", "%20")
 
 
@@ -195,13 +240,11 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
     The wayback machine's save API doesn't
     return JSON response, we are required
     to read the header of the API response
-    and look for the archive URL.
+    and find the archive URL.
 
-    This method has some regexen (or regexes)
-    that search for archive url in header.
-
-    This method is used when you try to
-    save a webpage on wayback machine.
+    This method has some regular expressions
+    that are used to search for the archive url
+    in the response header of Save API.
 
     Two cases are possible:
     1) Either we find the archive url in
@@ -213,7 +256,6 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
     If we found the archive URL we return it.
 
     Return format:
-
     web.archive.org/web/<TIMESTAMP>/<URL>
 
     And if we couldn't find it, we raise
@@ -304,9 +346,8 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
 
 
 def _wayback_timestamp(**kwargs):
-    """
-    Wayback Machine archive URLs
-    have a timestamp in them.
+    """Returns a valid waybackpy timestamp.
+
 
     The standard archive URL format is
     https://web.archive.org/web/20191214041711/https://www.youtube.com
@@ -316,11 +357,13 @@ def _wayback_timestamp(**kwargs):
     2 ) timestamp (20191214041711)
     3 ) https://www.youtube.com, the original URL
 
-    The near method takes year, month, day, hour and minute
-    as Arguments, their type is int.
+    The near method of Url class in wrapper.py takes year, month, day, hour
+    and minute as arguments, their type is int.
 
     This method takes those integers and converts it to
     wayback machine timestamp and returns it.
+
+    zfill(2) adds 1 zero in front of single digit days, months hour etc.
 
     Return format is string.
     """
@@ -339,16 +382,37 @@ def _get_response(
     backoff_factor=0.5,
     no_raise_on_redirects=False,
 ):
-    """
-    This function is used make get request.
-    We use the requests package to make the
-    requests.
+    """Makes get requests.
+
+    Parameters
+    ----------
+    endpoint : str
+        The API endpoint.
+
+    params : dict
+        The get request parameters. (default is None)
+
+    headers : dict
+        Headers for the get request. (default is None)
+
+    return_full_url : bool
+        Determines whether the call went full url returned along with the
+        response. (default is False)
+
+    retries : int
+        Maximum number of retries for the get request. (default is 5)
+
+    backoff_factor : float
+        The factor by which we determine the next retry time after wait.
+        https://urllib3.readthedocs.io/en/latest/reference/urllib3.util.html
+        (default is 0.5)
+
+    no_raise_on_redirects : bool
+        If maximum 30(default for requests) times redirected than instead of
+        exceptions return. (default is False)
 
 
-    We try five times and if it fails it raises
-    WaybackError exception.
-
-    You can handles WaybackError by importing:
+    To handle WaybackError:
     from waybackpy.exceptions import WaybackError
 
     try:
