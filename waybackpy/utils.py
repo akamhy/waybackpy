@@ -439,15 +439,17 @@ def _wayback_timestamp(**kwargs):
     2 ) timestamp (20191214041711)
     3 ) https://www.youtube.com, the original URL
 
+
     The near method of Url class in wrapper.py takes year, month, day, hour
     and minute as arguments, their type is int.
 
     This method takes those integers and converts it to
     wayback machine timestamp and returns it.
 
+
     zfill(2) adds 1 zero in front of single digit days, months hour etc.
 
-    Return format is string.
+    Return type is string.
     """
 
     return "".join(

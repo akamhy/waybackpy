@@ -11,6 +11,7 @@ from .utils import (
 )
 
 # TODO : Threading support for pagination API. It's designed for Threading.
+# TODO : Add get method here if type is Vaild HTML, SVG other but not - or warc. Test it.
 
 
 class Cdx:
@@ -42,7 +43,22 @@ class Cdx:
         self.use_page = False
 
     def cdx_api_manager(self, payload, headers, use_page=False):
-        """
+        """Act as button, we can choose between the normal API and pagination API.
+
+        Parameters
+        ----------
+        self : waybackpy.cdx.Cdx
+            The instance itself
+
+        payload : dict
+            Get request parameters name value pairs
+
+        headers : dict
+            The headers for making the GET request.
+
+        use_page : bool
+            If True use pagination API else use normal resume key based API.
+
         We have two options to get the snapshots, we use this
         method to make a selection between pagination API and
         the normal one with Resumption Key, sequential querying
@@ -141,7 +157,7 @@ class Cdx:
     def snapshots(self):
         """
         This function yeilds snapshots encapsulated
-        in CdxSnapshot for more usability.
+        in CdxSnapshot for increased usability.
 
         All the get request values are set if the conditions match
 
@@ -188,10 +204,9 @@ class Cdx:
 
                 prop_values = snapshot.split(" ")
 
-                # Making sure that we get the same number of
-                # property values as the number of properties
                 prop_values_len = len(prop_values)
                 properties_len = len(properties)
+
                 if prop_values_len != properties_len:
                     raise WaybackError(
                         "Snapshot returned by Cdx API has {prop_values_len} properties instead of expected {properties_len} properties.\nInvolved Snapshot : {snapshot}".format(
