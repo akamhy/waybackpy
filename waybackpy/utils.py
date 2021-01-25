@@ -1,12 +1,13 @@
 import re
 import time
 import requests
-from .exceptions import WaybackError, URLError
 from datetime import datetime
+
+from .exceptions import WaybackError, URLError
+from .__version__ import __version__
 
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
-from .__version__ import __version__
 
 quote = requests.utils.quote
 default_user_agent = "waybackpy python package - https://github.com/akamhy/waybackpy"
@@ -35,7 +36,7 @@ def _latest_version(package_name, headers):
     return json["info"]["version"]
 
 
-def _unix_ts_to_wayback_ts(unix_timestamp):
+def _unix_timestamp_to_wayback_timestamp(unix_timestamp):
     """Returns unix timestamp converted to datetime.datetime
 
     Parameters
@@ -85,18 +86,27 @@ def _add_payload(instance, payload):
         for i, f in enumerate(instance.collapses):
             payload["collapse" + str(i)] = f
 
+    # Don't need to return anything as it's dictionary.
     payload["url"] = instance.url
 
 
-def _ts(timestamp, data):
-    """
-    Get timestamp of last fetched archive.
-    If used before fetching any archive, will
-    use whatever self.JSON returns.
+def _timestamp_manager(timestamp, data):
+    """Returns the timestamp.
 
-    self.timestamp is None implies that
-    self.JSON will return any archive's JSON
-    that wayback machine provides it.
+    Parameters
+    ----------
+    timestamp : datetime.datetime
+        datetime object
+
+    data : dict
+        A python dictionary, which is loaded JSON os the availability API.
+
+    Return type:
+        datetime.datetime
+
+     If timestamp is not None then sets the value to timestamp itself.
+     If timestamp is None the returns the value from the last fetched API data.
+     If not timestamp and can not read the archived_snapshots form data return datetime.max
     """
 
     if timestamp:

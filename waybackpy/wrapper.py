@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+
 from .exceptions import WaybackError
 from .cdx import Cdx
 from .utils import (
@@ -9,8 +10,8 @@ from .utils import (
     default_user_agent,
     _url_check,
     _cleaned_url,
-    _ts,
-    _unix_ts_to_wayback_ts,
+    _timestamp_manager,
+    _unix_timestamp_to_wayback_timestamp,
     _latest_version,
 )
 
@@ -121,8 +122,8 @@ class Url:
 
     @property
     def _timestamp(self):
-        self.timestamp = _ts(self.timestamp, self.JSON)
-        return self.timestamp
+        """Sets the value of self.timestamp if still not set."""
+        return _timestamp_manager(self.timestamp, self.JSON)
 
     def save(self):
         """
@@ -237,7 +238,7 @@ class Url:
         """
 
         if unix_timestamp:
-            timestamp = _unix_ts_to_wayback_ts(unix_timestamp)
+            timestamp = _unix_timestamp_to_wayback_timestamp(unix_timestamp)
         else:
             now = datetime.utcnow().timetuple()
             timestamp = _wayback_timestamp(
