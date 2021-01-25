@@ -31,9 +31,10 @@ def _latest_version(package_name, headers):
     on PyPi.
     """
 
-    endpoint = "https://pypi.org/pypi/" + package_name + "/json"
-    json = _get_response(endpoint, headers=headers).json()
-    return json["info"]["version"]
+    request_url = "https://pypi.org/pypi/" + package_name + "/json"
+    response = _get_response(request_url, headers=headers)
+    data = response.json()
+    return data["info"]["version"]
 
 
 def _unix_timestamp_to_wayback_timestamp(unix_timestamp):
@@ -121,6 +122,21 @@ def _timestamp_manager(timestamp, data):
 
 
 def _check_match_type(match_type, url):
+    """Checks the validity of match_type parameter of the CDX GET requests.
+
+    Parameters
+    ----------
+    match_type : list
+        list  that may contain any or all from  ["exact", "prefix", "host", "domain"]
+        See https://github.com/akamhy/waybackpy/wiki/Python-package-docs#url-match-scope
+
+    url : str
+        The URL used to create the waybackpy Url object.
+
+    If not vaild match_type raise Exception.
+
+    """
+
     if not match_type:
         return
 
@@ -137,6 +153,19 @@ def _check_match_type(match_type, url):
 
 
 def _check_collapses(collapses):
+    """Checks the validity of collapse parameter of the CDX GET request.
+
+    One or more field or field:N to 'collapses=[]' where
+    field is one of (urlkey, timestamp, original, mimetype, statuscode,
+    digest and length) and N is the first N characters of field to test.
+
+    Parameters
+    ----------
+    collapses : list
+
+    If not vaild collapses raise Exception.
+
+    """
 
     if not isinstance(collapses, list):
         raise WaybackError("collapses must be a list.")
@@ -171,12 +200,26 @@ def _check_collapses(collapses):
 
 
 def _check_filters(filters):
+    """Checks the validity of filter parameter of the CDX GET request.
+
+    Any number of filter params of the following form may be specified:
+        filters=["[!]field:regex"] may be specified..
+
+    Parameters
+    ----------
+    filters : list
+
+    If not vaild filters raise Exception.
+
+    """
+
     if not isinstance(filters, list):
         raise WaybackError("filters must be a list.")
 
     # [!]field:regex
     for _filter in filters:
         try:
+
             match = re.search(
                 r"(\!?(?:urlkey|timestamp|original|mimetype|statuscode|digest|length)):(.*)",
                 _filter,
@@ -186,8 +229,9 @@ def _check_filters(filters):
             val = match.group(2)
 
         except Exception:
+
             exc_message = (
-                "Filter '{_filter}' not following the cdx filter syntax.".format(
+                "Filter '{_filter}' is not following the cdx filter syntax.".format(
                     _filter=_filter
                 )
             )
@@ -216,16 +260,29 @@ def _url_check(url):
 
 
 def _full_url(endpoint, params):
-    full_url = endpoint
-    if params:
-        full_url = endpoint if endpoint.endswith("?") else (endpoint + "?")
-        for key, val in params.items():
-            key = "filter" if key.startswith("filter") else key
-            key = "collapse" if key.startswith("collapse") else key
-            amp = "" if full_url.endswith("?") else "&"
-            full_url = (
-                full_url + amp + "{key}={val}".format(key=key, val=quote(str(val)))
-            )
+    """API endpoint + GET parameters = full_url
+
+    Parameters
+    ----------
+    endpoint : str
+        The API endpoint
+
+    params : dict
+        Dictionary that has name-value pairs.
+
+    Return type is str
+
+    """
+
+    if not params:
+        return endpoint
+
+    full_url = endpoint if endpoint.endswith("?") else (endpoint + "?")
+    for key, val in params.items():
+        key = "filter" if key.startswith("filter") else key
+        key = "collapse" if key.startswith("collapse") else key
+        amp = "" if full_url.endswith("?") else "&"
+        full_url = full_url + amp + "{key}={val}".format(key=key, val=quote(str(val)))
     return full_url
 
 
@@ -246,7 +303,23 @@ def _get_total_pages(url, user_agent):
 
 
 def _archive_url_parser(header, url, latest_version=__version__, instance=None):
-    """
+    """Returns the archive after parsing it from the response header.
+
+    Parameters
+    ----------
+    header : str
+        The response header of WayBack Machine's Save API
+
+    url : str
+        The input url, the one used to created the Url object.
+
+    latest_version : str
+        The latest version of waybackpy (default is __version__)
+
+    instance : waybackpy.wrapper.Url
+        Instance of Url class
+
+
     The wayback machine's save API doesn't
     return JSON response, we are required
     to read the header of the API response
@@ -358,7 +431,6 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
 def _wayback_timestamp(**kwargs):
     """Returns a valid waybackpy timestamp.
 
-
     The standard archive URL format is
     https://web.archive.org/web/20191214041711/https://www.youtube.com
 
@@ -444,20 +516,28 @@ def _get_response(
 
     s.mount("https://", HTTPAdapter(max_retries=retries))
 
+    # The URL with parameters required for the get request
     url = _full_url(endpoint, params)
 
     try:
+
         if not return_full_url:
             return s.get(url, headers=headers)
+
         return (url, s.get(url, headers=headers))
+
     except Exception as e:
+
         reason = str(e)
+
         if no_raise_on_redirects:
             if "Exceeded 30 redirects" in reason:
                 return
+
         exc_message = "Error while retrieving {url}.\n{reason}".format(
             url=url, reason=reason
         )
+
         exc = WaybackError(exc_message)
         exc.__cause__ = e
         raise exc
