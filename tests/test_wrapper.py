@@ -1,8 +1,4 @@
-import sys
 import pytest
-import random
-import requests
-from datetime import datetime
 
 from waybackpy.wrapper import Url
 

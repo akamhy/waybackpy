@@ -14,14 +14,14 @@ from waybackpy.utils import (
     _check_match_type,
     _check_collapses,
     _check_filters,
-    _ts,
+    _timestamp_manager,
 )
 
 
-def test_ts():
+def test_timestamp_manager():
     timestamp = True
     data = {}
-    assert _ts(timestamp, data)
+    assert _timestamp_manager(timestamp, data)
 
     data = """
     {"archived_snapshots": {"closest": {"timestamp": "20210109155628", "available": true, "status": "200", "url": "http://web.archive.org/web/20210109155628/https://www.google.com/"}}, "url": "https://www.google.com/"}
@@ -61,10 +61,10 @@ def test_check_collapses():
 
 
 def test_check_match_type():
-    assert None == _check_match_type(None, "url")
+    assert _check_match_type(None, "url") is None
     match_type = "exact"
     url = "test_url"
-    assert None == _check_match_type(match_type, url)
+    assert _check_match_type(match_type, url) is None
 
     url = "has * in it"
     with pytest.raises(WaybackError):
@@ -82,7 +82,7 @@ def test_cleaned_url():
 
 def test_url_check():
     good_url = "https://akamhy.github.io"
-    assert None == _url_check(good_url)
+    assert _url_check(good_url) is None
 
     bad_url = "https://github-com"
     with pytest.raises(URLError):

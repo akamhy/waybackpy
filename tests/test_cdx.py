@@ -79,7 +79,7 @@ def test_all_cdx():
     c = 0
     for snapshot in snapshots:
         c += 1
-        if c > 30_529:  # deafult limit is 10k
+        if c > 30529:  # deafult limit is 10k
             break
 
     url = "https://github.com/*"
@@ -89,5 +89,5 @@ def test_all_cdx():
 
     for snapshot in snapshots:
         c += 1
-        if c > 100_529:
+        if c > 100529:
             break
