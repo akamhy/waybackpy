@@ -17,6 +17,78 @@ from .utils import (
 
 
 class Url:
+    """
+
+    Attributes
+    ----------
+    url : str
+        The input URL, wayback machine API operations are performed
+        on this URL after sanatizing it.
+
+    user_agent : str
+        The user_agent used while making the GET requests to the
+        Wayback machine APIs
+
+    _archive_url : str
+        Caches the last fetched archive.
+
+    timestamp : datetime.datetime
+        timestamp of the archive URL as datetime object for
+        greater usability
+
+    _JSON : dict
+        Caches the last fetched availability API data
+
+    latest_version : str
+        The latest version of waybackpy on PyPi
+
+    cached_save : bool
+        Flag to check if WayBack machine returned a cached
+        archive instead of creating a new archive. WayBack
+        machine allows only one 1 archive for an URL in
+        30 minutes. If the archive returned by WayBack machine
+        is older than 3 minutes than this flag is set to True
+
+    Methods turned properties
+    ----------
+    JSON : dict
+        JSON response of availability API as dictionary / loaded JSON
+
+    archive_url : str
+        Return the archive url, returns str
+
+    _timestamp : datetime.datetime
+        Sets the value of self.timestamp if still not set
+
+    Methods
+    -------
+    save()
+        Archives the URL on WayBack machine
+
+    get(url="", user_agent="", encoding="")
+        Gets the source of archive url, can also be used to get source
+        of any URL if passed into it.
+
+    near(year=None, month=None, day=None, hour=None, minute=None, unix_timestamp=None)
+        Wayback Machine can have many archives for a URL/webpage, sometimes we want
+        archive close to a specific time.
+        This method takes year, month, day, hour, minute and unix_timestamp as input.
+
+    oldest(year=1994)
+        The oldest archive of an URL.
+
+    newest()
+        The newest archive of an URL
+
+    total_archives(start_timestamp=None, end_timestamp=None)
+        total number of archives of an URL, the timeframe can be confined by
+        start_timestamp and end_timestamp
+
+    known_urls(subdomain=False, host=False, start_timestamp=None, end_timestamp=None, match_type="prefix")
+        Known URLs for an URL, subdomain, URL as prefix etc.
+
+    """
+
     def __init__(self, url, user_agent=default_user_agent):
         self.url = url
         self.user_agent = str(user_agent)
@@ -65,32 +137,30 @@ class Url:
 
     @property
     def JSON(self):
-        """
-        If the end user has used near() or its childs like oldest, newest
-        and archive_url then the JSON response of these are cached in self._JSON
+        """Returns JSON response of availability API as dictionary / loaded JSON
 
-        If we find that self._JSON is not None we return it.
-        else we get the response of 'https://archive.org/wayback/available?url=YOUR-URL'
-        and return it.
+        return type : dict
         """
 
+        # If user used the near method or any method that depends on near, we
+        # are certain that we have a loaded dictionary cached in self._JSON.
+        # Return the loaded JSON data.
         if self._JSON:
             return self._JSON
 
+        # If no cached data found, get data and return + cache it.
         endpoint = "https://archive.org/wayback/available"
         headers = {"User-Agent": self.user_agent}
         payload = {"url": "{url}".format(url=_cleaned_url(self.url))}
         response = _get_response(endpoint, params=payload, headers=headers)
-        return response.json()
+        self._JSON = response.json()
+        return self._JSON
 
     @property
     def archive_url(self):
-        """Return the string form of the Url object.
+        """Return the archive url.
 
-        Parameters
-        ----------
-        self : waybackpy.wrapper.Url
-            The instance itself.
+        return type : str
         """
 
         if self._archive_url:
@@ -112,21 +182,13 @@ class Url:
     def _timestamp(self):
         """Sets the value of self.timestamp if still not set.
 
-        Parameters
-        ----------
-        self : waybackpy.wrapper.Url
-            The instance itself.
+        Return type : datetime.datetime
 
         """
         return _timestamp_manager(self.timestamp, self.JSON)
 
     def save(self):
         """Saves/Archive the URL.
-
-        Parameters
-        ----------
-        self : waybackpy.wrapper.Url
-            The instance itself.
 
         To save a webpage on WayBack machine we
         need to send get request to https://web.archive.org/save/
@@ -137,6 +199,8 @@ class Url:
         _get_response() takes care of the get requests.
 
         _archive_url_parser() parses the archive from the header.
+
+        return type : waybackpy.wrapper.Url
 
         """
         request_url = "https://web.archive.org/save/" + _cleaned_url(self.url)
@@ -179,9 +243,22 @@ class Url:
         return self
 
     def get(self, url="", user_agent="", encoding=""):
-        """
-        Return the source code of the last archived URL,
-        if no URL is passed to this method.
+        """GET the source of archive or any other URL.
+
+        url : str, waybackpy.wrapper.Url
+            The method will return the source code of
+            this URL instead of last fetched archive.
+
+        user_agent : str
+            The user_agent for GET request to API
+
+        encoding : str
+            If user is using any other encoding that
+            can't be detected by response.encoding
+
+        Return the source code of the last fetched
+        archive URL if no URL is passed to this method
+        else it returns the source code of url passed.
 
         If encoding is not supplied, it is auto-detected
          from the response itself by requests package.
@@ -219,8 +296,6 @@ class Url:
         """
         Parameters
         ----------
-        self : waybackpy.wrapper.Url
-            The instance itself.
 
         year : int
             Archive close to year
@@ -316,13 +391,14 @@ class Url:
         return self.near(year=year)
 
     def newest(self):
-        """
-        Return the newest Wayback Machine archive available for this URL.
+        """Return the newest Wayback Machine archive available.
 
-        We return the output of self.near() as it deafults to current utc time.
+        We return the return value of self.near() as it deafults to current UTC time.
 
         Due to Wayback Machine database lag, this may not always be the
         most recent archive.
+
+        return type : waybackpy.wrapper.Url
         """
 
         return self.near()
@@ -332,9 +408,6 @@ class Url:
 
         Parameters
         ----------
-        self : waybackpy.wrapper.Url
-            The instance itself
-
         start_timestamp : str
             1 to 14 digit string of numbers, you are not required to
             pass a full 14 digit timestamp.
@@ -344,13 +417,15 @@ class Url:
             pass a full 14 digit timestamp.
 
 
+        return type : int
+
+
         A webpage can have multiple archives on the wayback machine
         If someone wants to count the total number of archives of a
         webpage on wayback machine they can use this method.
 
         Returns the total number of Wayback Machine archives for the URL.
 
-        Return type in integer.
         """
 
         cdx = Cdx(
@@ -359,6 +434,8 @@ class Url:
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
         )
+
+        # cdx.snapshots() is generator not list.
         i = 0
         for _ in cdx.snapshots():
             i = i + 1
@@ -377,9 +454,6 @@ class Url:
         Parameters
         ----------
 
-        self : waybackpy.wrapper.Url
-            The instance itself
-
         subdomain : bool
             If True fetch subdomain URLs along with the host URLs.
 
@@ -396,6 +470,8 @@ class Url:
 
         match_type : str
             One of  (exact, prefix, host and domain)
+
+        return type : waybackpy.snapshot.CdxSnapshot
 
         Yields list of URLs known to exist for given input.
         Defaults to input URL as prefix.

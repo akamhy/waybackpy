@@ -5,8 +5,7 @@ import random
 import string
 import argparse
 
-sys.path.append("..")
-import waybackpy.cli as cli  # noqa: E402
+import waybackpy.cli as cli
 from waybackpy.wrapper import Url  # noqa: E402
 from waybackpy.__version__ import __version__
 

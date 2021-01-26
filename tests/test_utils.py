@@ -61,10 +61,10 @@ def test_check_collapses():
 
 
 def test_check_match_type():
-    assert None == _check_match_type(None, "url")
+    assert _check_match_type(None, "url") is None
     match_type = "exact"
     url = "test_url"
-    assert None == _check_match_type(match_type, url)
+    assert _check_match_type(match_type, url) is None
 
     url = "has * in it"
     with pytest.raises(WaybackError):
@@ -82,7 +82,7 @@ def test_cleaned_url():
 
 def test_url_check():
     good_url = "https://akamhy.github.io"
-    assert None == _url_check(good_url)
+    assert _url_check(good_url) is None
 
     bad_url = "https://github-com"
     with pytest.raises(URLError):
