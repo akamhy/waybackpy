@@ -3,7 +3,7 @@ import time
 import requests
 from datetime import datetime
 
-from .exceptions import WaybackError, URLError
+from .exceptions import WaybackError, URLError, RedirectSaveError
 from .__version__ import __version__
 
 from urllib3.util.retry import Retry
@@ -414,6 +414,13 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
             "Wayback Machine is malfunctioning or it refused to archive your URL."
             "\nHeader:\n{header}".format(url=url, header=header)
         )
+
+        if "save redirected" == header.strip():
+            raise RedirectSaveError(
+                "URL cannot be archived by wayback machine as it is a redirect.\nHeader:\n{header}".format(
+                    header=header
+                )
+            )
     else:
         exc_message = (
             "No archive URL found in the API response. "
