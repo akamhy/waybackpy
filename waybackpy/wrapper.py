@@ -225,6 +225,7 @@ class Url:
             self.url,
             latest_version=self.latest_version,
             instance=self,
+            response=response,
         )
 
         m = re.search(

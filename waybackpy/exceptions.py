@@ -13,6 +13,13 @@ class WaybackError(Exception):
     """
 
 
+class RedirectSaveError(WaybackError):
+    """
+    Raised when the original URL is redirected and the
+    redirect URL is archived but not the original URL.
+    """
+
+
 class URLError(Exception):
     """
     Raised when malformed URLs are passed as arguments.

@@ -29,6 +29,8 @@ def _save(obj):
                     version=__version__, header=header
                 )
             )
+        if "URL cannot be archived by wayback machine as it is a redirect" in e:
+            return ("URL cannot be archived by wayback machine as it is a redirect")
         raise WaybackError(err)
 
 
