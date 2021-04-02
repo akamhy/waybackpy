@@ -302,7 +302,9 @@ def _get_total_pages(url, user_agent):
     return int((_get_response(total_pages_url, headers=headers).text).strip())
 
 
-def _archive_url_parser(header, url, latest_version=__version__, instance=None):
+def _archive_url_parser(
+    header, url, latest_version=__version__, instance=None, response=None
+):
     """Returns the archive after parsing it from the response header.
 
     Parameters
@@ -387,6 +389,16 @@ def _archive_url_parser(header, url, latest_version=__version__, instance=None):
     m = re.search(r"X-Cache-Key:\shttps(.*)[A-Z]{2}", str(header))
     if m:
         return m.group(1)
+
+    if response:
+        if response.url:
+            if "web.archive.org/web" in response.url:
+                m = re.search(
+                    r"web\.archive\.org/web/(?:[0-9]*?)/(?:.*)$",
+                    str(response.url).strip(),
+                )
+                if m:
+                    return m.group(0)
 
     if instance:
         newest_archive = None
