@@ -29,7 +29,7 @@ def test_save():
         get=None,
     )
     reply = cli.args_handler(args)
-    assert "could happen because either your waybackpy" in str(reply)
+    assert "could happen because either your waybackpy" or "cannot be archived by wayback machine as it is a redirect" in str(reply)
 
 
 def test_json():
