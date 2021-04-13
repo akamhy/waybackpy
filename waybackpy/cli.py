@@ -314,7 +314,7 @@ def parse_args(argv):
     add_getArg(parser.add_argument_group("Get source code"))
     add_knownUrlArg(
         parser.add_argument_group(
-            "URLs known and archived to Waybcak Machine for the site."
+            "URLs known and archived to Wayback Machine for the site."
         )
     )
     add_nearArg(parser.add_argument_group("Archive close to time specified"))
