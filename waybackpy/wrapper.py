@@ -228,6 +228,13 @@ class Url:
             response=response,
         )
 
+        if response.status_code == 509:
+            raise WaybackError(
+                "Can not save '{url}'. You have probably reached the limit of active sessions. Try later.".format(
+                    url=_cleaned_url(self.url), text=response.text
+                )
+            )
+
         m = re.search(
             r"https?://web.archive.org/web/([0-9]{14})/http", self._archive_url
         )
