@@ -230,7 +230,8 @@ class Url:
 
         if response.status_code == 509:
             raise WaybackError(
-                "Can not save '{url}'. You have probably reached the limit of active sessions. Try later.".format(
+                "Can not save '{url}'. You have probably reached the limit of active "
+                "sessions. Try later.".format(
                     url=_cleaned_url(self.url), text=response.text
                 )
             )
