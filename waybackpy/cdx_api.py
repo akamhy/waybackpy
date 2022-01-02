@@ -1,20 +1,17 @@
-from .snapshot import CdxSnapshot
 from .exceptions import WaybackError
-from .utils import (
-    _get_total_pages,
-    _get_response,
-    default_user_agent,
-    _check_filters,
-    _check_collapses,
-    _check_match_type,
-    _add_payload,
+from .cdx_snapshot import CDXSnapshot
+from .cdx_utils import (
+    get_total_pages,
+    get_response,
+    check_filters,
+    check_collapses,
+    check_match_type,
 )
 
-# TODO : Threading support for pagination API. It's designed for Threading.
-# TODO : Add get method here if type is Vaild HTML, SVG other but not - or warc. Test it.
+from .utils import DEFAULT_USER_AGENT
 
 
-class Cdx:
+class WaybackMachineCDXServerAPI:
     def __init__(
         self,
         url,
@@ -27,87 +24,34 @@ class Cdx:
         collapses=[],
         limit=None,
     ):
-        self.url = str(url).strip()
-        self.user_agent = str(user_agent) if user_agent else default_user_agent
+        self.url = str(url).strip().replace(" ", "%20")
+        self.user_agent = str(user_agent) if user_agent else DEFAULT_USER_AGENT
         self.start_timestamp = str(start_timestamp) if start_timestamp else None
         self.end_timestamp = str(end_timestamp) if end_timestamp else None
         self.filters = filters
-        _check_filters(self.filters)
+        check_filters(self.filters)
         self.match_type = str(match_type).strip() if match_type else None
-        _check_match_type(self.match_type, self.url)
+        check_match_type(self.match_type, self.url)
         self.gzip = gzip if gzip else True
         self.collapses = collapses
-        _check_collapses(self.collapses)
+        check_collapses(self.collapses)
         self.limit = limit if limit else 5000
         self.last_api_request_url = None
         self.use_page = False
+        self.endpoint = "https://web.archive.org/cdx/search/cdx"
 
     def cdx_api_manager(self, payload, headers, use_page=False):
-        """Act as button, we can choose between the normal API and pagination API.
 
-        Parameters
-        ----------
-        self : waybackpy.cdx.Cdx
-            The instance itself
-
-        payload : dict
-            Get request parameters name value pairs
-
-        headers : dict
-            The headers for making the GET request.
-
-        use_page : bool
-            If True use pagination API else use normal resume key based API.
-
-        We have two options to get the snapshots, we use this
-        method to make a selection between pagination API and
-        the normal one with Resumption Key, sequential querying
-        of CDX data. For very large querying (for example domain query),
-        it may be useful to perform queries in parallel and also estimate
-        the total size of the query.
-
-        read more about the pagination API at:
-        https://web.archive.org/web/20201228063237/https://github.com/internetarchive/wayback/blob/master/wayback-cdx-server/README.md#pagination-api
-
-        if use_page is false if will use the normal sequential query API,
-        else use the pagination API.
-
-        two mutually exclusive cases possible:
-
-        1) pagination API is selected
-
-            a) get the total number of pages to read, using _get_total_pages()
-
-            b) then we use a for loop to get all the pages and yield the response text
-
-        2) normal sequential query API is selected.
-
-            a) get use showResumeKey=true to ask the API to add a query resumption key
-               at the bottom of response
-
-            b) check if the page has more than 3 lines, if not return the text
-
-            c) if it has atleast three lines, we check the second last line for zero length.
-
-            d) if the second last line has length zero than we assume that the last line contains
-               the resumption key, we set the resumeKey and remove the resumeKey from text
-
-            e) if the second line has non zero length we return the text as there will no resumption key
-
-            f) if we find the resumption key we set the "more" variable status to True which is always set
-               to False on each iteration. If more is not True the iteration stops and function returns.
-        """
-
-        endpoint = "https://web.archive.org/cdx/search/cdx"
-        total_pages = _get_total_pages(self.url, self.user_agent)
+        total_pages = get_total_pages(self.url, self.user_agent)
         # If we only have two or less pages of archives then we care for accuracy
         # pagination API can be lagged sometimes
         if use_page == True and total_pages >= 2:
             blank_pages = 0
             for i in range(total_pages):
                 payload["page"] = str(i)
-                url, res = _get_response(
-                    endpoint, params=payload, headers=headers, return_full_url=True
+
+                url, res = get_response(
+                    self.endpoint, params=payload, headers=headers, return_full_url=True
                 )
 
                 self.last_api_request_url = url
@@ -131,8 +75,8 @@ class Cdx:
                 if resumeKey:
                     payload["resumeKey"] = resumeKey
 
-                url, res = _get_response(
-                    endpoint, params=payload, headers=headers, return_full_url=True
+                url, res = get_response(
+                    self.endpoint, params=payload, headers=headers, return_full_url=True
                 )
 
                 self.last_api_request_url = url
@@ -154,23 +98,35 @@ class Cdx:
 
                 yield text
 
+    def add_payload(self, payload):
+        if self.start_timestamp:
+            payload["from"] = self.start_timestamp
+
+        if self.end_timestamp:
+            payload["to"] = self.end_timestamp
+
+        if self.gzip != True:
+            payload["gzip"] = "false"
+
+        if self.match_type:
+            payload["matchType"] = self.match_type
+
+        if self.filters and len(self.filters) > 0:
+            for i, f in enumerate(self.filters):
+                payload["filter" + str(i)] = f
+
+        if self.collapses and len(self.collapses) > 0:
+            for i, f in enumerate(self.collapses):
+                payload["collapse" + str(i)] = f
+
+        # Don't need to return anything as it's dictionary.
+        payload["url"] = self.url
+
     def snapshots(self):
-        """
-        This function yeilds snapshots encapsulated
-        in CdxSnapshot for increased usability.
-
-        All the get request values are set if the conditions match
-
-        And we use logic that if someone's only inputs don't have any
-        of [start_timestamp, end_timestamp] and don't use any collapses
-        then we use the pagination API as it returns archives starting
-        from the first archive and the recent most archive will be on
-        the last page.
-        """
         payload = {}
         headers = {"User-Agent": self.user_agent}
 
-        _add_payload(self, payload)
+        self.add_payload(payload)
 
         if not self.start_timestamp or self.end_timestamp:
             self.use_page = True
@@ -226,4 +182,4 @@ class Cdx:
                     properties["length"],
                 ) = prop_values
 
-                yield CdxSnapshot(properties)
+                yield CDXSnapshot(properties)

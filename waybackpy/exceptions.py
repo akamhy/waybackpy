@@ -24,3 +24,15 @@ class URLError(Exception):
     """
     Raised when malformed URLs are passed as arguments.
     """
+
+
+class MaximumRetriesExceeded(WaybackError):
+    """
+    MaximumRetriesExceeded
+    """
+
+
+class MaximumSaveRetriesExceeded(MaximumRetriesExceeded):
+    """
+    MaximumSaveRetriesExceeded
+    """

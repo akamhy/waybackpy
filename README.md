@@ -6,17 +6,6 @@
 
 </div>
 
-<p align="center">
-<a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
-<a href="https://github.com/akamhy/waybackpy/actions?query=workflow%3ACI"><img alt="Build Status" src="https://github.com/akamhy/waybackpy/workflows/CI/badge.svg"></a>
-<a href="https://www.codacy.com/manual/akamhy/waybackpy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=akamhy/waybackpy&amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/255459cede9341e39436ec8866d3fb65"></a>
-<a href="https://codecov.io/gh/akamhy/waybackpy"><img alt="codecov" src="https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg"></a>
-<a href="https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md"><img alt="Contributions Welcome" src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square"></a>
-<a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
-<a href="https://github.com/akamhy/waybackpy/commits/master"><img alt="GitHub lastest commit" src="https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square"></a>
-<a href="#"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square"></a>
-</p>
-
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Installation
@@ -33,14 +22,14 @@ Install directly from GitHub:
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
-### Supported Features
+### Supported APIs
+ Wayback Machine has 3 client side APIs.
 
-  - Archive webpage
-  - Retrieve all archives of a webpage/domain
-  - Retrieve archive close to a date or timestamp
-  - Retrieve all archives which have a particular prefix
-  - Get source code of the archive easily
-  - CDX API support
+  - Save API
+  - Availability API
+  - CDX API
+
+All three of these can be accessed by waybackpy.
 
 
 ### Usage
@@ -86,9 +75,6 @@ https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Human
 
 $ waybackpy --newest --url "https://en.wikipedia.org/wiki/Remote_sensing" --user_agent "my-unique-user-agent"
 https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_sensing
-
-$ waybackpy --total --url "https://en.wikipedia.org/wiki/Linux_kernel" --user_agent "my-unique-user-agent"
-1904
 
 $ waybackpy --known_urls --url akamhy.github.io --user_agent "my-unique-user-agent" --file
 https://akamhy.github.io
