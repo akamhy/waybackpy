@@ -96,4 +96,4 @@ class WaybackMachineAvailabilityAPI:
             )
 
         self.payload["timestamp"] = timestamp
-        return self.json()
+        return self
