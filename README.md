@@ -2,13 +2,33 @@
 
 <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
 
-<h2>Python package & CLI tool that interfaces with the Wayback Machine API</h2>
+<h3>Python package & CLI tool that interfaces with the Wayback Machine API</h3>
 
 </div>
 
+<p align="center">
+<a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
+<a href="https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md"><img alt="Contributions Welcome" src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square"></a>
+<a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
+<a href="https://github.com/akamhy/waybackpy/commits/master"><img alt="GitHub lastest commit" src="https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square"></a>
+<a href="#"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square"></a>
+</p>
+
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
-### Installation
+## ⭐️ Introduction
+Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-python-package.html) and a CLI tool that interfaces with the Wayback Machine API.
+
+ Wayback Machine has 3 client side APIs.
+
+  - Save API
+  - Availability API
+  - CDX API
+
+All three of these can be accessed by waybackpy.
+
+
+### 🏗 Installation
 
 Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
 
@@ -22,14 +42,13 @@ Install directly from GitHub:
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
-### Supported APIs
- Wayback Machine has 3 client side APIs.
+### Docker Image
+Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
 
-  - Save API
-  - Availability API
-  - CDX API
+Docker image is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI). 
 
-All three of these can be accessed by waybackpy.
+RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
+
 
 
 ### Usage
