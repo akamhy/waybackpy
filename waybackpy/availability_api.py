@@ -31,9 +31,15 @@ class WaybackMachineAvailabilityAPI:
         self.headers = {"User-Agent": self.user_agent}
         self.payload = {"url": "{url}".format(url=self.url)}
         self.endpoint = "https://archive.org/wayback/available"
+        self.JSON = None
 
     def unix_timestamp_to_wayback_timestamp(self, unix_timestamp):
         return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
+
+    def __str__(self):
+        if not self.JSON:
+            return None
+        return self.archive_url
 
     def json(self):
         self.request_url = full_url(self.endpoint, self.payload)
