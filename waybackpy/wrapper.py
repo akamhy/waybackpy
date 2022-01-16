@@ -9,9 +9,15 @@ class Url:
     def __init__(self, url, user_agent=DEFAULT_USER_AGENT):
         self.url = url
         self.user_agent = str(user_agent)
+        self.archive_url = None
         self.wayback_machine_availability_api = WaybackMachineAvailabilityAPI(
             self.url, user_agent=self.user_agent
         )
+
+    def __str__(self):
+        if not self.archive_url:
+            self.newest()
+        return self.archive_url
 
     def save(self):
         self.wayback_machine_save_api = WaybackMachineSaveAPI(
