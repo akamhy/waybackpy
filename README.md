@@ -80,8 +80,7 @@ datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
 >>> wayback.newest().archive_url
 'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 ```
-> Full Python package documentation can be found at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
-
+> Documentation at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
 
 
 #### As a CLI tool
@@ -94,23 +93,10 @@ https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Human
 
 $ waybackpy --newest --url "https://en.wikipedia.org/wiki/Remote_sensing" --user_agent "my-unique-user-agent"
 https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_sensing
-
-$ waybackpy --known_urls --url akamhy.github.io --user_agent "my-unique-user-agent" --file
-https://akamhy.github.io
-https://akamhy.github.io/assets/js/scale.fix.js
-https://akamhy.github.io/favicon.ico
-https://akamhy.github.io/robots.txt
-https://akamhy.github.io/waybackpy/
-
-'akamhy.github.io-urls-iftor2.txt' saved in current working directory
 ```
-> Full CLI documentation can be found at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
+> CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
-## License
+### 🛡 License
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
-Released under the MIT License. See
-[license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
-
-
------------------------------------------------------------------------------------------------------------------------------------------------
+Released under the MIT License. See [license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
