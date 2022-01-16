@@ -3,6 +3,7 @@ from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
 from .utils import DEFAULT_USER_AGENT
 from .exceptions import WaybackError
+from datetime import datetime, timedelta
 
 
 class Url:
@@ -18,6 +19,19 @@ class Url:
         if not self.archive_url:
             self.newest()
         return self.archive_url
+
+    def __len__(self):
+        td_max = timedelta(
+            days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
+        )
+
+        if not self.timestamp:
+            self.oldest()
+
+        if self.timestamp == datetime.max:
+            return td_max.days
+
+        return (datetime.utcnow() - self.timestamp).days
 
     def save(self):
         self.wayback_machine_save_api = WaybackMachineSaveAPI(
