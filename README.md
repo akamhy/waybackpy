@@ -58,9 +58,16 @@ RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
 ##### Save API aka SavePageNow
 ```python
 >>> from waybackpy import WaybackMachineSaveAPI
->>> 
->>> url = "https://en.wikipedia.org/wiki/Multivariable_calculus"
+>>> url = "https://github.com"
 >>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+>>> 
+>>> save_api = WaybackMachineSaveAPI(url, user_agent)
+>>> save_api.save()
+https://web.archive.org/web/20220118125249/https://github.com/
+>>> save_api.cached_save
+False
+>>> save_api.timestamp()
+datetime.datetime(2022, 1, 18, 12, 52, 49)
 ```
 
 ##### Availability API
@@ -82,32 +89,13 @@ https://web.archive.org/web/20220118150444/https://www.google.com/
 https://web.archive.org/web/20101010101708/http://www.google.com/
 ```
 
+##### CDX API aka CDXServerAPI
 ```python
->>> import waybackpy
-
->>> url = "https://en.wikipedia.org/wiki/Multivariable_calculus"
+>>> from waybackpy import WaybackMachineCDXServerAPI
+>>> url = "https://github.com"
 >>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
-
->>> wayback = waybackpy.Url(url, user_agent)
-
->>> archive = wayback.save()
->>> archive.archive_url
-'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
-
->>> archive.timestamp
-datetime.datetime(2021, 1, 4, 17, 35, 12, 691741)
-
->>> oldest_archive = wayback.oldest()
->>> oldest_archive.archive_url
-'https://web.archive.org/web/20050422130129/http://en.wikipedia.org:80/wiki/Multivariable_calculus'
-
->>> archive_close_to_2010_feb = wayback.near(year=2010, month=2)
->>> archive_close_to_2010_feb.archive_url
-'https://web.archive.org/web/20100215001541/http://en.wikipedia.org:80/wiki/Multivariable_calculus'
-
->>> wayback.newest().archive_url
-'https://web.archive.org/web/20210104173410/https://en.wikipedia.org/wiki/Multivariable_calculus'
 ```
+
 > Documentation at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
 
 
