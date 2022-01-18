@@ -277,7 +277,16 @@ def main(
             with open(file_path, "a") as f:
                 f.write("{url}\n".format(url=url))
 
-            print(url)
+            click.echo(url)
+
+        if url_count > 0:
+            click.echo(
+                "\n\n'{file_name}' saved in current working directory".format(
+                    file_name=file_name
+                )
+            )
+        else:
+            click.echo("No known URLs found. Please try a diffrent input!")
 
     if known_urls:
         wayback = Url(url, user_agent)
