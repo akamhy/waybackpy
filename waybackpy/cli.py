@@ -1,10 +1,15 @@
 import click
+import re
+import os
 import json as JSON
+import random
+import string
 from .__version__ import __version__
 from .utils import DEFAULT_USER_AGENT
 from .cdx_api import WaybackMachineCDXServerAPI
 from .save_api import WaybackMachineSaveAPI
 from .availability_api import WaybackMachineAvailabilityAPI
+from .wrapper import Url
 
 
 @click.command()
@@ -68,6 +73,28 @@ from .availability_api import WaybackMachineAvailabilityAPI
     help="Spit out the headers data for save_api commands.",
 )
 @click.option(
+    "-ku",
+    "--known-urls",
+    "--known_urls",
+    default=False,
+    is_flag=True,
+    help="List known URLs. Uses CDX API.",
+)
+@click.option(
+    "-sub",
+    "--subdomain",
+    default=False,
+    is_flag=True,
+    help="Use with '--known_urls' to include known URLs for subdomains.",
+)
+@click.option(
+    "-f",
+    "--file",
+    default=False,
+    is_flag=True,
+    help="Use with '--known_urls' to save the URLs in file at current directory.",
+)
+@click.option(
     "-c",
     "--cdx",
     default=False,
@@ -128,6 +155,9 @@ def main(
     minute,
     save,
     headers,
+    known_urls,
+    subdomain,
+    file,
     cdx,
     start_timestamp,
     end_timestamp,
@@ -220,6 +250,44 @@ def main(
             click.echo("Save API headers:")
             click.echo(save_api.headers)
         return
+
+    def save_urls_on_file(url_gen):
+        domain = None
+        sys_random = random.SystemRandom()
+        uid = "".join(
+            sys_random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
+        )
+        url_count = 0
+
+        for url in url_gen:
+            url_count += 1
+            if not domain:
+                match = re.search("https?://([A-Za-z_0-9.-]+).*", url)
+
+                domain = "domain-unknown"
+
+                if match:
+                    domain = match.group(1)
+
+                file_name = "{domain}-urls-{uid}.txt".format(domain=domain, uid=uid)
+                file_path = os.path.join(os.getcwd(), file_name)
+                if not os.path.isfile(file_path):
+                    open(file_path, "w+").close()
+
+            with open(file_path, "a") as f:
+                f.write("{url}\n".format(url=url))
+
+            print(url)
+
+    if known_urls:
+        wayback = Url(url, user_agent)
+        url_gen = wayback.known_urls(subdomain=subdomain)
+
+        if file:
+            return save_urls_on_file(url_gen)
+        else:
+            for url in url_gen:
+                click.echo(url)
 
     if cdx:
         filters = list(filters)
