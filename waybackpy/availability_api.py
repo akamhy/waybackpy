@@ -36,6 +36,9 @@ class WaybackMachineAvailabilityAPI:
     def unix_timestamp_to_wayback_timestamp(self, unix_timestamp):
         return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
 
+    def __repr__(self):
+        return str(self)  # self.__str__()
+
     def __str__(self):
         if not self.JSON:
             return None
