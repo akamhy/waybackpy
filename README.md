@@ -54,6 +54,34 @@ RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
 ### Usage
 
 #### As a Python package
+
+##### Save API aka SavePageNow
+```python
+>>> from waybackpy import WaybackMachineSaveAPI
+>>> 
+>>> url = "https://en.wikipedia.org/wiki/Multivariable_calculus"
+>>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+```
+
+##### Availability API
+```python
+>>> from waybackpy import WaybackMachineAvailabilityAPI
+>>> 
+>>> url = "https://google.com"
+>>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+>>> 
+>>> availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
+>>> 
+>>> availability_api.oldest()
+https://web.archive.org/web/19981111184551/http://google.com:80/
+>>> 
+>>> availability_api.newest()
+https://web.archive.org/web/20220118150444/https://www.google.com/
+>>> 
+>>> availability_api.near(year=2010, month=10, day=10, hour=10)
+https://web.archive.org/web/20101010101708/http://www.google.com/
+```
+
 ```python
 >>> import waybackpy
 
