@@ -42,7 +42,7 @@ Install directly from GitHub:
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
-### Docker Image
+### 🐳 Docker Image
 Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
 
 Docker image is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI). 
