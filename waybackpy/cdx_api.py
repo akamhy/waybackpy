@@ -12,6 +12,10 @@ from .utils import DEFAULT_USER_AGENT
 
 
 class WaybackMachineCDXServerAPI:
+    """
+    Class that interfaces the CDX server API of the Wayback Machine.
+    """
+
     def __init__(
         self,
         url,
@@ -45,7 +49,7 @@ class WaybackMachineCDXServerAPI:
         total_pages = get_total_pages(self.url, self.user_agent)
         # If we only have two or less pages of archives then we care for accuracy
         # pagination API can be lagged sometimes
-        if use_page == True and total_pages >= 2:
+        if use_page is True and total_pages >= 2:
             blank_pages = 0
             for i in range(total_pages):
                 payload["page"] = str(i)
@@ -105,7 +109,7 @@ class WaybackMachineCDXServerAPI:
         if self.end_timestamp:
             payload["to"] = self.end_timestamp
 
-        if self.gzip != True:
+        if self.gzip is not True:
             payload["gzip"] = "false"
 
         if self.match_type:
@@ -165,10 +169,14 @@ class WaybackMachineCDXServerAPI:
 
                 if prop_values_len != properties_len:
                     raise WaybackError(
-                        "Snapshot returned by Cdx API has {prop_values_len} properties instead of expected {properties_len} properties.\nInvolved Snapshot : {snapshot}".format(
-                            prop_values_len=prop_values_len,
-                            properties_len=properties_len,
-                            snapshot=snapshot,
+                        "Snapshot returned by Cdx API has {prop_values_len} properties".format(
+                            prop_values_len=prop_values_len
+                        )
+                        + " instead of expected {properties_len} ".format(
+                            properties_len=properties_len
+                        )
+                        + "properties.\nProblematic Snapshot : {snapshot}".format(
+                            snapshot=snapshot
                         )
                     )
 
