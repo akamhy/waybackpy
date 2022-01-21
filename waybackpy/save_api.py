@@ -85,7 +85,7 @@ class WaybackMachineSaveAPI:
 
     def timestamp(self):
         m = re.search(
-            r"https?://web.archive.org/web/([0-9]{14})/http", self._archive_url
+            r"https?://web\.archive.org/web/([0-9]{14})/http", self._archive_url
         )
         string_timestamp = m.group(1)
         timestamp = datetime.strptime(string_timestamp, "%Y%m%d%H%M%S")
