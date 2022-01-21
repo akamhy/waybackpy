@@ -8,10 +8,14 @@ about = {}
 with open(os.path.join(os.path.dirname(__file__), "waybackpy", "__version__.py")) as f:
     exec(f.read(), about)
 
+version = str(about["__version__"])
+
+download_url = f"https://github.com/akamhy/waybackpy/archive/{version}.tar.gz"
+
 setup(
     name=about["__title__"],
     packages=["waybackpy"],
-    version=about["__version__"],
+    version=version,
     description=about["__description__"],
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -19,11 +23,17 @@ setup(
     author=about["__author__"],
     author_email=about["__author_email__"],
     url=about["__url__"],
-    download_url="https://github.com/akamhy/waybackpy/archive/3.0.0.tar.gz",
+    download_url=download_url,
     keywords=[
         "Archive Website",
         "Wayback Machine",
         "Internet Archive",
+        "Wayback Machine CLI",
+        "Wayback Machine Python",
+        "Internet Archiving",
+        "Availability API",
+        "CDX API",
+        "savepagenow",
     ],
     install_requires=["requests", "click"],
     python_requires=">=3.4",
