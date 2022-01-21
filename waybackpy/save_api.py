@@ -31,6 +31,11 @@ class WaybackMachineSaveAPI:
 
     @property
     def archive_url(self):
+        """
+        Returns the archive URL is already cached by _archive_url
+        else invoke the save method to save the archive which returns the
+        archive thus we return the methods return value.
+        """
 
         if self._archive_url:
             return self._archive_url
@@ -38,7 +43,21 @@ class WaybackMachineSaveAPI:
             return self.save()
 
     def get_save_request_headers(self):
+        """
+        Creates a session and tries 'retries' number of times to
+        retrieve the archive.
 
+        If successful in getting the response, sets the headers, status_code
+        and response_url attributes.
+
+        The archive is usually in the headers but it can also be the response URL
+        as the Wayback Machine redirects to the archive after a successful capture
+        of the webpage.
+
+        Wayback Machine's save API is known
+        to be very unreliable thus if it fails first check opening
+        the response URL yourself in the browser.
+        """
         session = requests.Session()
         retries = Retry(
             total=self.total_save_retries,
@@ -52,6 +71,11 @@ class WaybackMachineSaveAPI:
         self.response_url = self.response.url
 
     def archive_url_parser(self):
+        """
+        Three regexen (like oxen?) are used to search for the
+        archive URL in the headers and finally look in the response URL
+        for the archive URL.
+        """
 
         regex1 = r"Content-Location: (/web/[0-9]{14}/.*)"
         match = re.search(regex1, str(self.headers))
@@ -77,6 +101,14 @@ class WaybackMachineSaveAPI:
                     return "https://" + match.group(0)
 
     def sleep(self, tries):
+        """
+        Ensure that the we wait some time before succesive retries so that we
+        don't waste the retries before the page is even captured by the Wayback
+        Machine crawlers also ensures that we are not putting too much load on
+        the Wayback Machine's save API.
+
+        If tries are multiple of 3 sleep 10 seconds else sleep 5 seconds.
+        """
 
         sleep_seconds = 5
         if tries % 3 == 0:
@@ -84,6 +116,18 @@ class WaybackMachineSaveAPI:
         time.sleep(sleep_seconds)
 
     def timestamp(self):
+        """
+        Read the timestamp off the archive URL and convert the Wayback Machine
+        timestamp to datetime object.
+
+        Also check if the time on archive is URL and compare it to instance birth
+        time.
+
+        If time on the archive is older than the instance creation time set the cached_save
+        to True else set it to False. The flag can be used to check if the Wayback Machine
+        didn't serve a Cached URL. It is quite common for the Wayback Machine to serve
+        cached archive if last archive was captured before last 45 minutes.
+        """
         m = re.search(
             r"https?://web\.archive.org/web/([0-9]{14})/http", self._archive_url
         )
@@ -101,6 +145,13 @@ class WaybackMachineSaveAPI:
         return timestamp
 
     def save(self):
+        """
+        Calls the SavePageNow API of the Wayback Machine with required parameters
+        and headers to save the URL.
+
+        Raises MaximumSaveRetriesExceeded is maximum retries are exhausted but still
+        we were unable to retrieve the archive from the Wayback Machine.
+        """
 
         saved_archive = None
         tries = 0
@@ -111,8 +162,9 @@ class WaybackMachineSaveAPI:
 
             if tries >= self.max_tries:
                 raise MaximumSaveRetriesExceeded(
-                    "Tried %s times but failed to save and return the archive for %s.\nResponse URL:\n%s \nResponse Header:\n%s\n"
-                    % (str(tries), self.url, self.response_url, str(self.headers)),
+                    "Tried %s times but failed to save and retrieve the" % str(tries)
+                    + " archive for %s.\nResponse URL:\n%s \nResponse Header:\n%s\n"
+                    % (self.url, self.response_url, str(self.headers)),
                 )
 
             if not saved_archive:
