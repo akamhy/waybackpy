@@ -2,8 +2,18 @@ from .save_api import WaybackMachineSaveAPI
 from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
 from .utils import DEFAULT_USER_AGENT
-from .exceptions import WaybackError
 from datetime import datetime, timedelta
+
+"""
+The class Url is not recommended to be used anymore, instead use the
+WaybackMachineSaveAPI, WaybackMachineAvailabilityAPI and WaybackMachineCDXServerAPI
+classes.
+
+The only reason it is still in the code is just backwards compatibility.
+
+If you are using the Url class, you can later probably update the code as this
+class should probably be deleted after after 2024-01-01.
+"""
 
 
 class Url:
