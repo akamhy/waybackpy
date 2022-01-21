@@ -51,7 +51,7 @@ RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
 
 
 
-### Usage
+### 🚀 Usage
 
 #### As a Python package
 
@@ -118,8 +118,9 @@ https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_
 $ waybackpy --oldest --url "https://en.wikipedia.org/wiki/Humanoid" --user_agent "my-unique-user-agent"
 https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid
 
-$ waybackpy --newest --url "https://en.wikipedia.org/wiki/Remote_sensing" --user_agent "my-unique-user-agent"
-https://web.archive.org/web/20201221130522/https://en.wikipedia.org/wiki/Remote_sensing
+$ waybackpy --url google.com --user_agent "my-unique-user-agent" --near --year 2008 --month 8 --day 8
+Archive URL:
+https://web.archive.org/web/20080808014003/http://www.google.com:80/
 ```
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
