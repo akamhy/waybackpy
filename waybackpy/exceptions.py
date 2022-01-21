@@ -10,6 +10,8 @@ class WaybackError(Exception):
     Raised when Waybackpy can not return what you asked for.
      1) Wayback Machine API Service is unreachable/down.
      2) You passed illegal arguments.
+
+     All other exceptions are inherited from this class.
     """
 
 

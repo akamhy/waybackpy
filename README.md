@@ -2,13 +2,12 @@
 
 <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
 
-<h3>Python package & CLI tool that interfaces with the Wayback Machine API</h3>
+<h3>A Python package & CLI tool that interfaces with the Wayback Machine API</h3>
 
 </div>
 
 <p align="center">
 <a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
-<a href="https://github.com/akamhy/waybackpy/blob/master/CONTRIBUTING.md"><img alt="Contributions Welcome" src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&color=0059b3&style=flat-square"></a>
 <a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
 <a href="https://github.com/akamhy/waybackpy/commits/master"><img alt="GitHub lastest commit" src="https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square"></a>
 <a href="#"><img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/waybackpy?style=flat-square"></a>
@@ -17,26 +16,26 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
 ## ⭐️ Introduction
-Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-python-package.html) and a CLI tool that interfaces with the Wayback Machine API.
+Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-python-package.html) and a [CLI](https://www.w3schools.com/whatis/whatis_cli.asp) tool that interfaces with the [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API.
 
- Wayback Machine has 3 client side APIs.
+ Wayback Machine has 3 client side [API](https://www.redhat.com/en/topics/api/what-are-application-programming-interfaces)s.
 
-  - Save API
-  - Availability API
-  - CDX API
+  - [Save API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#save-api)
+  - [Availability API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#availability-api)
+  - [CDX API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#cdx-api)
 
-All three of these can be accessed by waybackpy.
+These three APIs can be accessed via the waybackpy either by importing it in a script or from the CLI.
 
 
 ### 🏗 Installation
 
-Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)):
+Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), from [PyPI](https://pypi.org/) (recommended):
 
 ```bash
 pip install waybackpy
 ```
 
-Install directly from GitHub:
+Install directly from [this git repository](https://github.com/akamhy/waybackpy) (NOT recommended):
 
 ```bash
 pip install git+https://github.com/akamhy/waybackpy.git
@@ -45,10 +44,9 @@ pip install git+https://github.com/akamhy/waybackpy.git
 ### 🐳 Docker Image
 Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
 
-Docker image is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI). 
+[Docker image](https://searchitoperations.techtarget.com/definition/Docker-image) is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI).
 
 RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
-
 
 
 ### 🚀 Usage
@@ -60,7 +58,7 @@ RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
 >>> from waybackpy import WaybackMachineSaveAPI
 >>> url = "https://github.com"
 >>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
->>> 
+>>>
 >>> save_api = WaybackMachineSaveAPI(url, user_agent)
 >>> save_api.save()
 https://web.archive.org/web/20220118125249/https://github.com/
@@ -73,18 +71,18 @@ datetime.datetime(2022, 1, 18, 12, 52, 49)
 ##### Availability API
 ```python
 >>> from waybackpy import WaybackMachineAvailabilityAPI
->>> 
+>>>
 >>> url = "https://google.com"
 >>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
->>> 
+>>>
 >>> availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
->>> 
+>>>
 >>> availability_api.oldest()
 https://web.archive.org/web/19981111184551/http://google.com:80/
->>> 
+>>>
 >>> availability_api.newest()
 https://web.archive.org/web/20220118150444/https://www.google.com/
->>> 
+>>>
 >>> availability_api.near(year=2010, month=10, day=10, hour=10)
 https://web.archive.org/web/20101010101708/http://www.google.com/
 ```
@@ -97,7 +95,7 @@ https://web.archive.org/web/20101010101708/http://www.google.com/
 >>> cdx = WaybackMachineCDXServerAPI(url, user_agent, start_timestamp=2016, end_timestamp=2017)
 >>> for item in cdx.snapshots():
 ...     print(item.archive_url)
-... 
+...
 https://web.archive.org/web/20160110011047/http://pypi.org/
 https://web.archive.org/web/20160305104847/http://pypi.org/
 .
@@ -107,18 +105,40 @@ https://web.archive.org/web/20171127171549/https://pypi.org/
 https://web.archive.org/web/20171206002737/http://pypi.org:80/
 ```
 
-> Documentation at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
+> Documentation is at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
 
 
 #### As a CLI tool
+
+Saving a webpage:
 ```bash
-$ waybackpy --save --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent"
-https://web.archive.org/web/20200719062108/https://en.wikipedia.org/wiki/Social_media
+waybackpy --save --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent"
+```
+```bash
+Archive URL:
+https://web.archive.org/web/20220121193801/https://en.wikipedia.org/wiki/Social_media
+Cached save:
+False
+```
 
-$ waybackpy --oldest --url "https://en.wikipedia.org/wiki/Humanoid" --user_agent "my-unique-user-agent"
+
+Retriving the oldest archive and also printing the JSON response of the availability API:
+```bash
+waybackpy --oldest --json --url "https://en.wikipedia.org/wiki/Humanoid" --user_agent "my-unique-user-agent"
+```
+```bash
+Archive URL:
 https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid
+JSON response:
+{"url": "https://en.wikipedia.org/wiki/Humanoid", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid", "timestamp": "20040415020811"}}, "timestamp": "199401212126"}
+```
 
-$ waybackpy --url google.com --user_agent "my-unique-user-agent" --near --year 2008 --month 8 --day 8
+
+Archive close to a time, minute level precision is supported:
+```bash
+waybackpy --url google.com --user_agent "my-unique-user-agent" --near --year 2008 --month 8 --day 8
+```
+```bash
 Archive URL:
 https://web.archive.org/web/20080808014003/http://www.google.com:80/
 ```
@@ -126,5 +146,7 @@ https://web.archive.org/web/20080808014003/http://www.google.com:80/
 
 ### 🛡 License
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
+
+Copyright (c) 2020-2022 Akash Mahanty Et al.
 
 Released under the MIT License. See [license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
