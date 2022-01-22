@@ -7,6 +7,7 @@
 </div>
 
 <p align="center">
+<a href="https://github.com/akamhy/waybackpy/actions?query=workflow%3ATests"><img alt="Unit Tests" src="https://github.com/akamhy/waybackpy/workflows/Tests/badge.svg"></a>
 <a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
 <a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
 <a href="https://github.com/akamhy/waybackpy/commits/master"><img alt="GitHub lastest commit" src="https://img.shields.io/github/last-commit/akamhy/waybackpy?color=blue&style=flat-square"></a>

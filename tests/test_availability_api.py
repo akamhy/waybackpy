@@ -30,7 +30,7 @@ def test_oldest():
     oldest_timestamp = oldest.timestamp()
     assert abs(oldest_timestamp - now) > timedelta(days=8400)  # More than 20 years
     assert availability_api.JSON["archived_snapshots"]["closest"]["available"] is True
-    assert "http://google.com" in repr(oldest)
+    assert repr(oldest).find("google.com") != -1
     assert "1998" in str(oldest)
 
 
