@@ -1,4 +1,8 @@
 click
 requests
 pytest
+pytest-cov
+codecov
 flake8
+mypy
+black
