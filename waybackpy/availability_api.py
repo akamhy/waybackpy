@@ -1,7 +1,12 @@
 import time
+import json
 import requests
 from datetime import datetime
 from .utils import DEFAULT_USER_AGENT
+from .exceptions import (
+    ArchiveNotInAvailabilityAPIResponse,
+    InvalidJSONInAvailabilityAPIResponse,
+)
 
 
 class WaybackMachineAvailabilityAPI:
@@ -34,8 +39,13 @@ class WaybackMachineAvailabilityAPI:
         String representation of the class. If atleast one API call was successfully
         made then return the archive URL as a string. Else returns None.
         """
+
+        # String must not return anything other than a string object
+        # So, if some asks for string repr before making the API requests
+        # just return ""
         if not self.JSON:
-            return None
+            return ""
+
         return self.archive_url
 
     def json(self):
@@ -46,7 +56,13 @@ class WaybackMachineAvailabilityAPI:
         self.response = requests.get(
             self.endpoint, params=self.payload, headers=self.headers
         )
-        self.JSON = self.response.json()
+        try:
+            self.JSON = self.response.json()
+        except json.decoder.JSONDecodeError:
+            raise InvalidJSONInAvailabilityAPIResponse(
+                "Response data:\n{text}".format(text=self.response.text)
+            )
+
         return self.JSON
 
     def timestamp(self):
@@ -76,8 +92,21 @@ class WaybackMachineAvailabilityAPI:
         """
         data = self.JSON
 
-        if not data["archived_snapshots"]:
-            archive_url = None
+        # If the user didn't used oldest, newest or near but tries to access the
+        # archive_url attribute then, we assume they are fine with any archive
+        # and invoke the oldest archive function.
+        if not data:
+            self.oldest()
+
+        # If data is still not none then probably there are no
+        # archive for the requested URL.
+        if not data or not data["archived_snapshots"]:
+            raise ArchiveNotInAvailabilityAPIResponse(
+                "Archive not found in the availability "
+                + "API response, maybe the URL you requested does not have any "
+                + "archive yet. You may retry after some time or archive the webpage now."
+                + "\nResponse data:\n{response}".format(response=self.response.text)
+            )
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]
             archive_url = archive_url.replace(

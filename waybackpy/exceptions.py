@@ -38,3 +38,15 @@ class MaximumSaveRetriesExceeded(MaximumRetriesExceeded):
     """
     MaximumSaveRetriesExceeded
     """
+
+
+class ArchiveNotInAvailabilityAPIResponse(WaybackError):
+    """
+    Could not parse the archive in the JSON response of the availability API.
+    """
+
+
+class InvalidJSONInAvailabilityAPIResponse(WaybackError):
+    """
+    availability api returned invalid JSON
+    """
