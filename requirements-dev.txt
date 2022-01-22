@@ -1,3 +1,4 @@
 click
 requests
 pytest
+flake8
