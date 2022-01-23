@@ -66,9 +66,12 @@ class WaybackMachineSaveAPI:
         )
         session.mount("https://", HTTPAdapter(max_retries=retries))
         self.response = session.get(self.request_url, headers=self.request_headers)
-        self.headers = self.response.headers
+        self.headers = (
+            self.response.headers
+        )  # <class 'requests.structures.CaseInsensitiveDict'>
         self.status_code = self.response.status_code
         self.response_url = self.response.url
+        session.close()
 
     def archive_url_parser(self):
         """
