@@ -11,19 +11,20 @@ from waybackpy.exceptions import (
 
 now = datetime.utcnow()
 url = "https://google.com"
-user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
 
 rndstr = lambda n: "".join(
     random.choice(string.ascii_uppercase + string.digits) for _ in range(n)
 )
-
-availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
 
 
 def test_oldest():
     """
     Test the oldest archive of Google.com and also checks the attributes.
     """
+    url = "http://google.com"
+    user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
+    availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
     oldest = availability_api.oldest()
     oldest_archive_url = oldest.archive_url
     assert "1998" in oldest_archive_url
@@ -39,9 +40,15 @@ def test_newest():
     Assuming that the recent most Google Archive was made no more earlier than
     last one day which is 86400 seconds.
     """
+    url = "https://www.youtube.com/"
+    user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101 Firefox/96.0"
+    availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
     newest = availability_api.newest()
     newest_timestamp = newest.timestamp()
-    assert abs(newest_timestamp - now) < timedelta(seconds=86400)
+    # betting in favor that latest youtube archive was not before the last 3 days
+    # high tarffic sites like youtube are archived mnay times a day, so seems
+    # very reasonable to me.
+    assert abs(newest_timestamp - now) < timedelta(seconds=86400 * 3)
 
 
 def test_invalid_json():
@@ -64,7 +71,7 @@ def test_no_archive():
     """
     with pytest.raises(ArchiveNotInAvailabilityAPIResponse):
         availability_api = WaybackMachineAvailabilityAPI(
-            url="https://%s.com" % rndstr(30), user_agent=user_agent
+            url="https://%s.cn" % rndstr(30), user_agent=user_agent
         )
         archive_url = availability_api.archive_url
 
@@ -77,7 +84,7 @@ def test_no_api_call_str_repr():
     str() must not return None so we return ""
     """
     availability_api = WaybackMachineAvailabilityAPI(
-        url="https://%s.com" % rndstr(30), user_agent=user_agent
+        url="https://%s.gov" % rndstr(30), user_agent=user_agent
     )
     assert "" == str(availability_api)
 
@@ -88,6 +95,6 @@ def test_no_call_timestamp():
     the datetime.max as a default value.
     """
     availability_api = WaybackMachineAvailabilityAPI(
-        url="https://%s.com" % rndstr(30), user_agent=user_agent
+        url="https://%s.in" % rndstr(30), user_agent=user_agent
     )
     assert datetime.max == availability_api.timestamp()

@@ -14,12 +14,16 @@ class WaybackMachineAvailabilityAPI:
     Class that interfaces the availability API of the Wayback Machine.
     """
 
-    def __init__(self, url, user_agent=DEFAULT_USER_AGENT):
+    def __init__(self, url, user_agent=DEFAULT_USER_AGENT, max_tries=3):
         self.url = str(url).strip().replace(" ", "%20")
         self.user_agent = user_agent
         self.headers = {"User-Agent": self.user_agent}
         self.payload = {"url": "{url}".format(url=self.url)}
         self.endpoint = "https://archive.org/wayback/available"
+        self.max_tries = max_tries
+        self.tries = 0
+        self.last_api_call_unix_time = int(time.time())
+        self.api_call_time_gap = 5
         self.JSON = None
 
     def unix_timestamp_to_wayback_timestamp(self, unix_timestamp):
@@ -53,9 +57,17 @@ class WaybackMachineAvailabilityAPI:
         Makes the API call to the availability API can set the JSON response
         to the JSON attribute of the instance and also returns the JSON attribute.
         """
+        time_diff = int(time.time()) - self.last_api_call_unix_time
+        sleep_time = self.api_call_time_gap - time_diff
+
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+
         self.response = requests.get(
             self.endpoint, params=self.payload, headers=self.headers
         )
+        self.last_api_call_unix_time = int(time.time())
+        self.tries += 1
         try:
             self.JSON = self.response.json()
         except json.decoder.JSONDecodeError:
@@ -101,12 +113,22 @@ class WaybackMachineAvailabilityAPI:
         # If data is still not none then probably there are no
         # archive for the requested URL.
         if not data or not data["archived_snapshots"]:
-            raise ArchiveNotInAvailabilityAPIResponse(
-                "Archive not found in the availability "
-                + "API response, maybe the URL you requested does not have any "
-                + "archive yet. You may retry after some time or archive the webpage now."
-                + "\nResponse data:\n{response}".format(response=self.response.text)
-            )
+            while (self.tries < self.max_tries) and (
+                not data or not data["archived_snapshots"]
+            ):
+                self.json()  # It makes a new API call
+                data = self.JSON  # json() updated the value of JSON attribute
+
+            # Even if after we exhausted teh max_tries, then we give up and
+            # raise exception.
+
+            if not data or not data["archived_snapshots"]:
+                raise ArchiveNotInAvailabilityAPIResponse(
+                    "Archive not found in the availability "
+                    + "API response, the URL you requested may not have any "
+                    + "archives yet. You may retry after some time or archive the webpage now."
+                    + "\nResponse data:\n{response}".format(response=self.response.text)
+                )
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]
             archive_url = archive_url.replace(
