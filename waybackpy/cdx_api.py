@@ -6,6 +6,7 @@ from .cdx_utils import (
     check_filters,
     check_collapses,
     check_match_type,
+    full_url,
 )
 
 from .utils import DEFAULT_USER_AGENT
@@ -19,17 +20,18 @@ class WaybackMachineCDXServerAPI:
     def __init__(
         self,
         url,
-        user_agent=None,
-        start_timestamp=None,
-        end_timestamp=None,
+        user_agent=DEFAULT_USER_AGENT,
+        start_timestamp=None,  # from, can not use from as it's a keyword
+        end_timestamp=None,  # to, not using to as can not use from
         filters=[],
         match_type=None,
         gzip=None,
         collapses=[],
         limit=None,
+        max_tries=3,
     ):
         self.url = str(url).strip().replace(" ", "%20")
-        self.user_agent = str(user_agent) if user_agent else DEFAULT_USER_AGENT
+        self.user_agent = user_agent
         self.start_timestamp = str(start_timestamp) if start_timestamp else None
         self.end_timestamp = str(end_timestamp) if end_timestamp else None
         self.filters = filters
@@ -40,6 +42,7 @@ class WaybackMachineCDXServerAPI:
         self.collapses = collapses
         check_collapses(self.collapses)
         self.limit = limit if limit else 5000
+        self.max_tries = max_tries
         self.last_api_request_url = None
         self.use_page = False
         self.endpoint = "https://web.archive.org/cdx/search/cdx"
@@ -47,16 +50,15 @@ class WaybackMachineCDXServerAPI:
     def cdx_api_manager(self, payload, headers, use_page=False):
 
         total_pages = get_total_pages(self.url, self.user_agent)
-        # If we only have two or less pages of archives then we care for accuracy
-        # pagination API can be lagged sometimes
+        # If we only have two or less pages of archives then we care for more accuracy
+        # pagination API is lagged sometimes
         if use_page is True and total_pages >= 2:
             blank_pages = 0
             for i in range(total_pages):
                 payload["page"] = str(i)
 
-                url, res = get_response(
-                    self.endpoint, params=payload, headers=headers, return_full_url=True
-                )
+                url = full_url(endpoint, params)
+                res = get_response(url, headers=headers)
 
                 self.last_api_request_url = url
                 text = res.text
@@ -79,9 +81,8 @@ class WaybackMachineCDXServerAPI:
                 if resumeKey:
                     payload["resumeKey"] = resumeKey
 
-                url, res = get_response(
-                    self.endpoint, params=payload, headers=headers, return_full_url=True
-                )
+                url = full_url(endpoint, params)
+                res = get_response(url, headers=headers)
 
                 self.last_api_request_url = url
 
