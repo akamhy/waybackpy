@@ -10,7 +10,7 @@ from waybackpy.exceptions import (
 )
 
 now = datetime.utcnow()
-url = "https://google.com"
+url = "https://example.com/"
 user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
 
 rndstr = lambda n: "".join(
@@ -22,17 +22,17 @@ def test_oldest():
     """
     Test the oldest archive of Google.com and also checks the attributes.
     """
-    url = "http://google.com"
+    url = "https://example.com/"
     user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
     availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
     oldest = availability_api.oldest()
     oldest_archive_url = oldest.archive_url
-    assert "1998" in oldest_archive_url
+    assert "2002" in oldest_archive_url
     oldest_timestamp = oldest.timestamp()
-    assert abs(oldest_timestamp - now) > timedelta(days=8400)  # More than 20 years
+    assert abs(oldest_timestamp - now) > timedelta(days=7000)  # More than 19 years
     assert availability_api.JSON["archived_snapshots"]["closest"]["available"] is True
-    assert repr(oldest).find("google.com") != -1
-    assert "1998" in str(oldest)
+    assert repr(oldest).find("example.com") != -1
+    assert "2002" in str(oldest)
 
 
 def test_newest():
