@@ -3,16 +3,16 @@ import requests
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 from .exceptions import WaybackError
+from .utils import DEFAULT_USER_AGENT
 
 
-def get_total_pages(url, user_agent):
-    request_url = (
-        "https://web.archive.org/cdx/search/cdx?url={url}&showNumPages=true".format(
-            url=url
-        )
-    )
+def get_total_pages(url, user_agent=DEFAULT_USER_AGENT):
+    endpoint = "https://web.archive.org/cdx/search/cdx?"
+    payload = {"showNumPages": "true", "url": str(url)}
     headers = {"User-Agent": user_agent}
-    return int((requests.get(request_url, headers=headers).text).strip())
+    request_url = full_url(endpoint, params=payload)
+    response = get_response(request_url, headers=headers)
+    return int(response.text.strip())
 
 
 def full_url(endpoint, params):
@@ -32,47 +32,29 @@ def full_url(endpoint, params):
 
 
 def get_response(
-    endpoint,
-    params=None,
+    url,
     headers=None,
-    return_full_url=False,
     retries=5,
     backoff_factor=0.5,
     no_raise_on_redirects=False,
 ):
-
-    s = requests.Session()
-
+    session = requests.Session()
     retries = Retry(
         total=retries,
         backoff_factor=backoff_factor,
         status_forcelist=[500, 502, 503, 504],
     )
-
-    s.mount("https://", HTTPAdapter(max_retries=retries))
-
-    # The URL with parameters required for the get request
-    url = full_url(endpoint, params)
+    session.mount("https://", HTTPAdapter(max_retries=retries))
 
     try:
-
-        if not return_full_url:
-            return s.get(url, headers=headers)
-
-        return (url, s.get(url, headers=headers))
-
+        response = session.get(url, headers=headers)
+        session.close()
+        return response
     except Exception as e:
-
         reason = str(e)
-
-        if no_raise_on_redirects:
-            if "Exceeded 30 redirects" in reason:
-                return
-
         exc_message = "Error while retrieving {url}.\n{reason}".format(
             url=url, reason=reason
         )
-
         exc = WaybackError(exc_message)
         exc.__cause__ = e
         raise exc
@@ -91,8 +73,8 @@ def check_filters(filters):
                 _filter,
             )
 
-            key = match.group(1)
-            val = match.group(2)
+            match.group(1)
+            match.group(2)
 
         except Exception:
 
@@ -118,19 +100,9 @@ def check_collapses(collapses):
                 r"(urlkey|timestamp|original|mimetype|statuscode|digest|length)(:?[0-9]{1,99})?",
                 collapse,
             )
-            field = match.group(1)
-
-            N = None
+            match.group(1)
             if 2 == len(match.groups()):
-                N = match.group(2)
-
-            if N:
-                if not (field + N == collapse):
-                    raise Exception
-            else:
-                if not (field == collapse):
-                    raise Exception
-
+                match.group(2)
         except Exception:
             exc_message = "collapse argument '{collapse}' is not following the cdx collapse syntax.".format(
                 collapse=collapse
@@ -143,7 +115,9 @@ def check_match_type(match_type, url):
         return
 
     if "*" in url:
-        raise WaybackError("Can not use wildcard with match_type argument")
+        raise WaybackError(
+            "Can not use wildcard in the URL along with the match_type arguments."
+        )
 
     legal_match_type = ["exact", "prefix", "host", "domain"]
 
