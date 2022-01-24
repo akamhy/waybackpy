@@ -5,14 +5,16 @@ from .utils import DEFAULT_USER_AGENT
 from datetime import datetime, timedelta
 
 """
-The class Url is not recommended to be used anymore, instead use the
-WaybackMachineSaveAPI, WaybackMachineAvailabilityAPI and WaybackMachineCDXServerAPI
-classes.
+The Url class is not recommended to be used anymore, instead use the
+WaybackMachineSaveAPI, WaybackMachineAvailabilityAPI and WaybackMachineCDXServerAPI.
 
-The only reason it is still in the code is just backwards compatibility.
+The reason it is still in the code is backwards compatibility with 2.x.x versions.
 
-If you are using the Url class, you can later probably update the code as this
-class should probably be deleted after after 2024-01-01.
+If were are using the Url before the update to version 3.x.x, your code should still be
+working fine and there is no hurry to update the interface but is recommended that you
+do not use the Url class for new code as it would be removed after 2025 also the first
+3.x.x versions was released in January 2022 and three years are more than enough to update
+the older interface code.
 """
 
 
