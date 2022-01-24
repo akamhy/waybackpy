@@ -57,7 +57,7 @@ class WaybackMachineCDXServerAPI:
             for i in range(total_pages):
                 payload["page"] = str(i)
 
-                url = full_url(endpoint, params)
+                url = full_url(self.endpoint, params=payload)
                 res = get_response(url, headers=headers)
 
                 self.last_api_request_url = url
@@ -81,7 +81,7 @@ class WaybackMachineCDXServerAPI:
                 if resumeKey:
                     payload["resumeKey"] = resumeKey
 
-                url = full_url(endpoint, params)
+                url = full_url(self.endpoint, params=payload)
                 res = get_response(url, headers=headers)
 
                 self.last_api_request_url = url
