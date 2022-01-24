@@ -2,6 +2,14 @@ from datetime import datetime
 
 
 class CDXSnapshot:
+    """
+    Class for the CDX snapshot lines returned by the CDX API,
+    Each valid line of the CDX API is casted to an CDXSnapshot object
+    by the CDX API interface.
+    This provides the end-user the ease of using the data as attributes
+    of the CDXSnapshot.
+    """
+
     def __init__(self, properties):
         self.urlkey = properties["urlkey"]
         self.timestamp = properties["timestamp"]
