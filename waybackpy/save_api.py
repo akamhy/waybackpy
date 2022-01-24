@@ -93,7 +93,7 @@ class WaybackMachineSaveAPI:
         regex3 = r"X-Cache-Key:\shttps(.*)[A-Z]{2}"
         match = re.search(regex3, str(self.headers))
         if match:
-            return "https://" + match.group(1)
+            return "https" + match.group(1)
 
         if self.response_url:
             self.response_url = self.response_url.strip()
@@ -156,7 +156,7 @@ class WaybackMachineSaveAPI:
         we were unable to retrieve the archive from the Wayback Machine.
         """
 
-        saved_archive = None
+        self.saved_archive = None
         tries = 0
 
         while True:
@@ -170,17 +170,17 @@ class WaybackMachineSaveAPI:
                     % (self.url, self.response_url, str(self.headers)),
                 )
 
-            if not saved_archive:
+            if not self.saved_archive:
 
                 if tries > 1:
                     self.sleep(tries)
 
                 self.get_save_request_headers()
-                saved_archive = self.archive_url_parser()
+                self.saved_archive = self.archive_url_parser()
 
-                if not saved_archive:
+                if not self.saved_archive:
                     continue
                 else:
-                    self._archive_url = saved_archive
+                    self._archive_url = self.saved_archive
                     self.timestamp()
-                    return saved_archive
+                    return self.saved_archive
