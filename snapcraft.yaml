@@ -1,0 +1,23 @@
+name: waybackpy
+summary: Wayback Machine API interface and a command-line tool
+description: |
+      Waybackpy is a CLI tool that interfaces with the Wayback Machine APIs.
+      Wayback Machine has three client side public APIs, Save API, 
+      Availability API and CDX API. These three APIs can be accessed via 
+      the waybackpy from the terminal.
+version: git
+grade: stable
+confinement: strict
+base: core20
+architectures:
+  - build-on: [arm64, armhf, amd64]
+
+apps:
+  waybackpy:
+    command: bin/waybackpy
+    plugs: [home, network, network-bind, removable-media]
+
+parts:
+  waybackpy:
+    plugin: python
+    source: https://github.com/akamhy/waybackpy.git
