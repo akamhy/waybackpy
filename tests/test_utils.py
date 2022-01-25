@@ -7,7 +7,3 @@ def test_default_user_agent():
         DEFAULT_USER_AGENT
         == "waybackpy %s - https://github.com/akamhy/waybackpy" % __version__
     )
-
-
-def test_latest_version():
-    assert __version__ == latest_version(package_name="waybackpy")
