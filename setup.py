@@ -1,21 +1,20 @@
 import os.path
 from setuptools import setup
 
-with open(
-    os.path.join(os.path.dirname(__file__), "README.md"), encoding="utf-8"),
-as f:
+readme_path = os.path.join(os.path.dirname(__file__), "README.md")
+with open(readme_path, encoding="utf-8") as f:
     long_description = f.read()
 
 about = {}
-with open(
-    os.path.join(os.path.dirname(__file__), "waybackpy", "__version__.py"),
-    encoding="utf-8")
-as f:
+version_path = os.path.join(os.path.dirname(__file__), "waybackpy", "__version__.py")
+with open(version_path, encoding="utf-8") as f:
     exec(f.read(), about)
 
 version = str(about["__version__"])
 
-download_url = "https://github.com/akamhy/waybackpy/archive/{version}.tar.gz".format(version=version)
+download_url = "https://github.com/akamhy/waybackpy/archive/{version}.tar.gz".format(
+    version=version
+)
 
 setup(
     name=about["__title__"],
