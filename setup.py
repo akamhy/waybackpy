@@ -15,7 +15,7 @@ as f:
 
 version = str(about["__version__"])
 
-download_url = f"https://github.com/akamhy/waybackpy/archive/{version}.tar.gz"
+download_url = "https://github.com/akamhy/waybackpy/archive/{version}.tar.gz".format(version=version)
 
 setup(
     name=about["__title__"],
