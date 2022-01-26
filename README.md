@@ -40,7 +40,9 @@ pip install waybackpy
 
 **Using [conda](https://en.wikipedia.org/wiki/Conda_(package_manager)), from [conda-forge](https://conda-forge.org/) (recommended)**:
 
-See also [waybackpy feedstock](https://github.com/conda-forge/waybackpy-feedstock).
+See also [waybackpy feedstock](https://github.com/conda-forge/waybackpy-feedstock), maintainers are [@rafaelrdealmeida](https://github.com/rafaelrdealmeida/),
+ [@labriunesp](https://github.com/labriunesp/)
+ and [@akamhy](https://github.com/akamhy/).
 
 ```bash
 conda install waybackpy
