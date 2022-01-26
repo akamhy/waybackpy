@@ -170,16 +170,14 @@ def main(
 ):
     """
     \b
-                     _                _
-                    | |              | |
+                         _                _
+                        | |              | |
     __      ____ _ _   _| |__   __ _  ___| | ___ __  _   _
     \ \ /\ / / _` | | | | '_ \ / _` |/ __| |/ / '_ \| | | |
      \ V  V / (_| | |_| | |_) | (_| | (__|   <| |_) | |_| |
       \_/\_/ \__,_|\__, |_.__/ \__,_|\___|_|\_\ .__/ \__, |
                     __/ |                     | |     __/ |
                    |___/                      |_|    |___/
-
-
 
     Python package & CLI tool that interfaces the Wayback Machine APIs
 
@@ -192,6 +190,7 @@ def main(
     waybackpy - CLI usage(Demo video): https://asciinema.org/a/464367
 
     Documentation: https://github.com/akamhy/waybackpy/wiki/CLI-docs
+
     """
 
     if version:
