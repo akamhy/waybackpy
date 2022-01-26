@@ -112,38 +112,11 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 #### As a CLI tool
 
-Saving a webpage:
-```bash
-waybackpy --save --url "https://en.wikipedia.org/wiki/Social_media" --user_agent "my-unique-user-agent"
-```
-```bash
-Archive URL:
-https://web.archive.org/web/20220121193801/https://en.wikipedia.org/wiki/Social_media
-Cached save:
-False
-```
+Demo video:
+
+[![asciicast](https://asciinema.org/a/464367.svg)](https://asciinema.org/a/464367)
 
 
-Retriving the oldest archive and also printing the JSON response of the availability API:
-```bash
-waybackpy --oldest --json --url "https://en.wikipedia.org/wiki/Humanoid" --user_agent "my-unique-user-agent"
-```
-```bash
-Archive URL:
-https://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid
-JSON response:
-{"url": "https://en.wikipedia.org/wiki/Humanoid", "archived_snapshots": {"closest": {"status": "200", "available": true, "url": "http://web.archive.org/web/20040415020811/http://en.wikipedia.org:80/wiki/Humanoid", "timestamp": "20040415020811"}}, "timestamp": "199401212126"}
-```
-
-
-Archive close to a time, minute level precision is supported:
-```bash
-waybackpy --url google.com --user_agent "my-unique-user-agent" --near --year 2008 --month 8 --day 8
-```
-```bash
-Archive URL:
-https://web.archive.org/web/20080808014003/http://www.google.com:80/
-```
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
 ### 🛡 License
