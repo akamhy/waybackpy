@@ -31,17 +31,28 @@ These three APIs can be accessed via the waybackpy either by importing it in a s
 
 ### 🏗 Installation
 
-Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), from [PyPI](https://pypi.org/) (recommended):
+**Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), from [PyPI](https://pypi.org/) (recommended)**:
 
 ```bash
 pip install waybackpy
 ```
 
-Install directly from [this git repository](https://github.com/akamhy/waybackpy) (NOT recommended):
+
+**Using [conda](https://en.wikipedia.org/wiki/Conda_(package_manager)), from [conda-forge](https://conda-forge.org/) (recommended)**:
+
+See also [waybackpy feedstock](https://github.com/conda-forge/waybackpy-feedstock).
+
+```bash
+conda install waybackpy
+```
+
+
+**Install directly from [this git repository](https://github.com/akamhy/waybackpy) (NOT recommended)**:
 
 ```bash
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
+
 
 ### 🐳 Docker Image
 Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
@@ -112,10 +123,9 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 #### As a CLI tool
 
-Demo video:
+Demo video on [asciinema.org](https://asciinema.org), you can copy the text from video:
 
 [![asciicast](https://asciinema.org/a/464367.svg)](https://asciinema.org/a/464367)
-
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
