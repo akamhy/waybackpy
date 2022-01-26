@@ -169,7 +169,7 @@ def main(
     cdx_print,
 ):
     """
-
+    \b
                      _                _
                     | |              | |
     __      ____ _ _   _| |__   __ _  ___| | ___ __  _   _
@@ -180,18 +180,18 @@ def main(
                    |___/                      |_|    |___/
 
 
-    waybackpy : Python package & CLI tool that interfaces the Wayback Machine API
+
+    Python package & CLI tool that interfaces the Wayback Machine APIs
 
     Released under the MIT License.
-    License @ https://github.com/akamhy/waybackpy/blob/master/LICENSE
 
-    Copyright (c) 2020 waybackpy contributors. Contributors list @
-    https://github.com/akamhy/waybackpy/graphs/contributors
+    License: https://github.com/akamhy/waybackpy/blob/master/LICENSE
 
-    https://github.com/akamhy/waybackpy
+    Repository: https://github.com/akamhy/waybackpy
 
-    https://pypi.org/project/waybackpy
+    waybackpy - CLI usage(Demo video): https://asciinema.org/a/464367
 
+    Documentation: https://github.com/akamhy/waybackpy/wiki/CLI-docs
     """
 
     if version:
