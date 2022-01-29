@@ -23,6 +23,7 @@ class Url:
         self.url = url
         self.user_agent = str(user_agent)
         self.archive_url = None
+        self.timestamp = None
         self.wayback_machine_availability_api = WaybackMachineAvailabilityAPI(
             self.url, user_agent=self.user_agent
         )
