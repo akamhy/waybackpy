@@ -3,6 +3,7 @@ import re
 import os
 import json as JSON
 import random
+import requests
 import string
 from .__version__ import __version__
 from .utils import DEFAULT_USER_AGENT
@@ -21,10 +22,11 @@ from .wrapper import Url
     "--user-agent",
     "--user_agent",
     default=DEFAULT_USER_AGENT,
-    help="User agent, default user agent is '%s' " % DEFAULT_USER_AGENT,
+    help="User agent, default value is '%s'." % DEFAULT_USER_AGENT,
 )
+@click.option("-v", "--version", is_flag=True, default=False, help="waybackpy version.")
 @click.option(
-    "-v", "--version", is_flag=True, default=False, help="Print waybackpy version."
+    "-l", "--license", is_flag=True, default=False, help="license of Waybackpy."
 )
 @click.option(
     "-n",
@@ -34,24 +36,28 @@ from .wrapper import Url
     "--archive-url",
     default=False,
     is_flag=True,
-    help="Fetch the newest archive of the specified URL",
+    help="Retrieve the newest archive of URL.",
 )
 @click.option(
     "-o",
     "--oldest",
     default=False,
     is_flag=True,
-    help="Fetch the oldest archive of the specified URL",
+    help="Retrieve the oldest archive of URL.",
 )
 @click.option(
     "-j",
     "--json",
     default=False,
     is_flag=True,
-    help="Spit out the JSON data for availability_api commands.",
+    help="JSON data returned by the availability API.",
 )
 @click.option(
-    "-N", "--near", default=False, is_flag=True, help="Archive near specified time."
+    "-N",
+    "--near",
+    default=False,
+    is_flag=True,
+    help="Archive close to a specified time.",
 )
 @click.option("-Y", "--year", type=click.IntRange(1994, 9999), help="Year in integer.")
 @click.option("-M", "--month", type=click.IntRange(1, 12), help="Month in integer.")
@@ -70,7 +76,7 @@ from .wrapper import Url
     "--headers",
     default=False,
     is_flag=True,
-    help="Spit out the headers data for save_api commands.",
+    help="Headers data of the SavePageNow API.",
 )
 @click.option(
     "-ku",
@@ -99,51 +105,66 @@ from .wrapper import Url
     "--cdx",
     default=False,
     is_flag=True,
-    help="Spit out the headers data for save_api commands.",
+    help="Flag for using CDX API.",
 )
 @click.option(
     "-st",
     "--start-timestamp",
     "--start_timestamp",
+    help="Start timestamp for CDX API in yyyyMMddhhmmss format.",
 )
 @click.option(
     "-et",
     "--end-timestamp",
     "--end_timestamp",
+    help="End timestamp for CDX API in yyyyMMddhhmmss format.",
 )
 @click.option(
     "-f",
-    "--filters",
+    "--filter",
     multiple=True,
+    help="Filter on a specific field or all the CDX fields.",
 )
 @click.option(
     "-mt",
     "--match-type",
     "--match_type",
+    help="The default behavior is to return matches for an exact URL. "
+    + "However, the CDX server can also return results matching a certain prefix, "
+    + "a certain host, or all sub-hosts by using the match_type",
 )
 @click.option(
     "-gz",
     "--gzip",
+    help="To disable gzip compression pass false as argument to this parameter. "
+    + "The default behavior is gzip compression enabled.",
 )
 @click.option(
     "-c",
-    "--collapses",
+    "--collapse",
     multiple=True,
+    help="Filtering or 'collapse' results based on a field, or a substring of a field.",
 )
 @click.option(
     "-l",
     "--limit",
+    help="Number of maximum record that CDX API is asked to return per API call, "
+    + "default value is 500 records.",
 )
 @click.option(
     "-cp",
     "--cdx-print",
     "--cdx_print",
     multiple=True,
+    help="Print only certain fields of the CDX API response, "
+    + "if this parameter is not used then the plain text response of the CDX API "
+    + "will be printed.",
 )
 def main(
     url,
     user_agent,
     version,
+    license,
     newest,
     oldest,
     json,
@@ -161,15 +182,14 @@ def main(
     cdx,
     start_timestamp,
     end_timestamp,
-    filters,
+    filter,
     match_type,
     gzip,
-    collapses,
+    collapse,
     limit,
     cdx_print,
 ):
-    """
-    \b
+    """\b
                          _                _
                         | |              | |
     __      ____ _ _   _| |__   __ _  ___| | ___ __  _   _
@@ -181,15 +201,13 @@ def main(
 
     Python package & CLI tool that interfaces the Wayback Machine APIs
 
-    Released under the MIT License.
-
-    License: https://github.com/akamhy/waybackpy/blob/master/LICENSE
-
     Repository: https://github.com/akamhy/waybackpy
+
+    Documentation: https://github.com/akamhy/waybackpy/wiki/CLI-docs
 
     waybackpy - CLI usage(Demo video): https://asciinema.org/a/464367
 
-    Documentation: https://github.com/akamhy/waybackpy/wiki/CLI-docs
+    Released under the MIT License. Use the flag --license for license.
 
     """
 
@@ -197,8 +215,31 @@ def main(
         click.echo("waybackpy version %s" % __version__)
         return
 
+    if license:
+        click.echo(
+            requests.get(
+                url="https://raw.githubusercontent.com/akamhy/waybackpy/master/LICENSE"
+            ).text
+        )
+        return
+
     if not url:
-        click.echo("No URL detected. Please pass an URL.")
+        click.echo("No URL detected. Please provide an URL.")
+        return
+
+    if (
+        url
+        and not version
+        and not oldest
+        and not newest
+        and not near
+        and not save
+        and not known_urls
+        and not cdx
+    ):
+        click.echo(
+            "Only URL passed, but did not specify what to do with the URL. Use --help flag for help using waybackpy."
+        )
         return
 
     def echo_availability_api(availability_api_instance):
@@ -300,8 +341,8 @@ def main(
                 click.echo(url)
 
     if cdx:
-        filters = list(filters)
-        collapses = list(collapses)
+        filters = list(filter)
+        collapses = list(collapse)
         cdx_print = list(cdx_print)
 
         cdx_api = WaybackMachineCDXServerAPI(
@@ -323,23 +364,34 @@ def main(
                 click.echo(snapshot)
             else:
                 output_string = ""
-                if "urlkey" or "url-key" or "url_key" in cdx_print:
+                if any(val in cdx_print for val in ["urlkey", "url-key", "url_key"]):
                     output_string = output_string + snapshot.urlkey + " "
-                if "timestamp" or "time-stamp" or "time_stamp" in cdx_print:
+                if any(
+                    val in cdx_print
+                    for val in ["timestamp", "time-stamp", "time_stamp"]
+                ):
                     output_string = output_string + snapshot.timestamp + " "
                 if "original" in cdx_print:
                     output_string = output_string + snapshot.original + " "
                 if "original" in cdx_print:
                     output_string = output_string + snapshot.original + " "
-                if "mimetype" or "mime-type" or "mime_type" in cdx_print:
+                if any(
+                    val in cdx_print for val in ["mimetype", "mime-type", "mime_type"]
+                ):
                     output_string = output_string + snapshot.mimetype + " "
-                if "statuscode" or "status-code" or "status_code" in cdx_print:
+                if any(
+                    val in cdx_print
+                    for val in ["statuscode", "status-code", "status_code"]
+                ):
                     output_string = output_string + snapshot.statuscode + " "
                 if "digest" in cdx_print:
                     output_string = output_string + snapshot.digest + " "
                 if "length" in cdx_print:
                     output_string = output_string + snapshot.length + " "
-                if "archiveurl" or "archive-url" or "archive_url" in cdx_print:
+                if any(
+                    val in cdx_print
+                    for val in ["archiveurl", "archive-url", "archive_url"]
+                ):
                     output_string = output_string + snapshot.archive_url + " "
                 click.echo(output_string)
 
