@@ -373,8 +373,6 @@ def main(
                     output_string = output_string + snapshot.timestamp + " "
                 if "original" in cdx_print:
                     output_string = output_string + snapshot.original + " "
-                if "original" in cdx_print:
-                    output_string = output_string + snapshot.original + " "
                 if any(
                     val in cdx_print for val in ["mimetype", "mime-type", "mime_type"]
                 ):
