@@ -4,7 +4,10 @@ from waybackpy.cdx_snapshot import CDXSnapshot
 
 
 def test_CDXSnapshot() -> None:
-    sample_input = "org,archive)/ 20080126045828 http://github.com text/html 200 Q4YULN754FHV2U6Q5JUT6Q2P57WEWNNY 1415"
+    sample_input = (
+        "org,archive)/ 20080126045828 http://github.com "
+        "text/html 200 Q4YULN754FHV2U6Q5JUT6Q2P57WEWNNY 1415"
+    )
     prop_values = sample_input.split(" ")
     properties = {}
     (

@@ -177,8 +177,8 @@ class WaybackMachineCDXServerAPI(object):
 
                 if prop_values_len != properties_len:
                     raise WaybackError(
-                        f"Snapshot returned by Cdx API has {prop_values_len} properties "
-                        f"instead of expected {properties_len} properties.\n"
+                        f"Snapshot returned by Cdx API has {prop_values_len} "
+                        f"properties instead of expected {properties_len} properties.\n"
                         f"Problematic Snapshot: {snapshot}"
                     )
 

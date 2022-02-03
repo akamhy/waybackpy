@@ -241,7 +241,8 @@ def main(
         and not cdx
     ):
         click.echo(
-            "Only URL passed, but did not specify what to do with the URL. Use --help flag for help using waybackpy."
+            "Only URL passed, but did not specify what to do with the URL. "
+            "Use --help flag for help using waybackpy."
         )
         return
 

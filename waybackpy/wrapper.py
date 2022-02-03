@@ -15,8 +15,8 @@ The reason it is still in the code is backwards compatibility with 2.x.x version
 If were are using the Url before the update to version 3.x.x, your code should still be
 working fine and there is no hurry to update the interface but is recommended that you
 do not use the Url class for new code as it would be removed after 2025 also the first
-3.x.x versions was released in January 2022 and three years are more than enough to update
-the older interface code.
+3.x.x versions was released in January 2022 and three years are more than enough to
+update the older interface code.
 """
 
 

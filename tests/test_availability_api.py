@@ -12,7 +12,10 @@ from waybackpy.exceptions import (
 
 now = datetime.utcnow()
 url = "https://example.com/"
-user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
+user_agent = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
+)
 
 
 def rndstr(n: int) -> str:
@@ -26,7 +29,10 @@ def test_oldest() -> None:
     Test the oldest archive of Google.com and also checks the attributes.
     """
     url = "https://example.com/"
-    user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
+    user_agent = (
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
+    )
     availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
     oldest = availability_api.oldest()
     oldest_archive_url = oldest.archive_url
@@ -59,7 +65,8 @@ def test_newest() -> None:
 
 def test_invalid_json() -> None:
     """
-    When the API is malfunctioning or we don't pass a URL it may return invalid JSON data.
+    When the API is malfunctioning or we don't pass a URL,
+    it may return invalid JSON data.
     """
     with pytest.raises(InvalidJSONInAvailabilityAPIResponse):
         availability_api = WaybackMachineAvailabilityAPI(url="", user_agent=user_agent)

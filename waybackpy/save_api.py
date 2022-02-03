@@ -72,7 +72,6 @@ class WaybackMachineSaveAPI(object):
         self.response = session.get(self.request_url, headers=self.request_headers)
         # requests.response.headers is requests.structures.CaseInsensitiveDict
         self.headers = self.response.headers
-        self.headers_str = str(self.headers)
         self.status_code = self.response.status_code
         self.response_url = self.response.url
         session.close()
@@ -85,17 +84,17 @@ class WaybackMachineSaveAPI(object):
         """
 
         regex1 = r"Content-Location: (/web/[0-9]{14}/.*)"
-        match = re.search(regex1, self.headers_str)
+        match = re.search(regex1, str(self.headers))
         if match:
             return "https://web.archive.org" + match.group(1)
 
         regex2 = r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>"
-        match = re.search(regex2, self.headers_str)
+        match = re.search(regex2, str(self.headers))
         if match is not None and len(match.groups()) == 1:
             return "https://" + match.group(1)
 
         regex3 = r"X-Cache-Key:\shttps(.*)[A-Z]{2}"
-        match = re.search(regex3, self.headers_str)
+        match = re.search(regex3, str(self.headers))
         if match is not None and len(match.groups()) == 1:
             return "https" + match.group(1)
 
@@ -132,10 +131,11 @@ class WaybackMachineSaveAPI(object):
         Also check if the time on archive is URL and compare it to instance birth
         time.
 
-        If time on the archive is older than the instance creation time set the cached_save
-        to True else set it to False. The flag can be used to check if the Wayback Machine
-        didn't serve a Cached URL. It is quite common for the Wayback Machine to serve
-        cached archive if last archive was captured before last 45 minutes.
+        If time on the archive is older than the instance creation time set the
+        cached_save to True else set it to False. The flag can be used to check
+        if the Wayback Machine didn't serve a Cached URL. It is quite common for
+        the Wayback Machine to serve cached archive if last archive was captured
+        before last 45 minutes.
         """
         regex = r"https?://web\.archive.org/web/([0-9]{14})/http"
         m = re.search(regex, str(self._archive_url))
@@ -167,7 +167,7 @@ class WaybackMachineSaveAPI(object):
         tries = 0
 
         while True:
-            if not self.saved_archive:
+            if self.saved_archive is None:
                 if tries >= 1:
                     self.sleep(tries)
 
@@ -182,7 +182,8 @@ class WaybackMachineSaveAPI(object):
             tries += 1
             if tries >= self.max_tries:
                 raise MaximumSaveRetriesExceeded(
-                    f"Tried {str(tries)} times but failed to save and retrieve the archive for {self.url}.\n"
+                    f"Tried {tries} times but failed to save "
+                    f"and retrieve the archive for {self.url}.\n"
                     f"Response URL:\n{self.response_url}\n"
-                    f"Response Header:\n{self.headers_str}"
+                    f"Response Header:\n{self.headers}"
                 )

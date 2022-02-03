@@ -15,7 +15,10 @@ from waybackpy.exceptions import WaybackError
 
 def test_get_total_pages() -> None:
     url = "twitter.com"
-    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Safari/605.1.15"
+    user_agent = (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 "
+        "(KHTML, like Gecko) Version/14.0.2 Safari/605.1.15"
+    )
     assert get_total_pages(url=url, user_agent=user_agent) >= 56
 
 

@@ -142,8 +142,8 @@ class WaybackMachineAvailabilityAPI(object):
             if not data or not data["archived_snapshots"]:
                 raise ArchiveNotInAvailabilityAPIResponse(
                     "Archive not found in the availability "
-                    "API response, the URL you requested may not have any "
-                    "archives yet. You may retry after some time or archive the webpage now.\n"
+                    "API response, the URL you requested may not have any archives "
+                    "yet. You may retry after some time or archive the webpage now.\n"
                     f"Response data:\n{self.response.text}"
                 )
         else:
@@ -196,7 +196,8 @@ class WaybackMachineAvailabilityAPI(object):
         unix_timestamp_to_wayback_timestamp or wayback_timestamp method with
         appropriate arguments for their respective parameters.
         Adds the timestamp to the payload dictionary.
-        And finally invoking the json method to make the API call then returns the instance.
+        And finally invoking the json method to make the API call then returns
+        the instance.
         """
         if unix_timestamp:
             timestamp = self.unix_timestamp_to_wayback_timestamp(unix_timestamp)

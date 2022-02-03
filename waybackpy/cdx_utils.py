@@ -69,7 +69,8 @@ def check_filters(filters: List[str]) -> None:
     # [!]field:regex
     for _filter in filters:
         match = re.search(
-            r"(\!?(?:urlkey|timestamp|original|mimetype|statuscode|digest|length)):(.*)",
+            r"(\!?(?:urlkey|timestamp|original|mimetype|statuscode|digest|length)):"
+            r"(.*)",
             _filter,
         )
 
@@ -87,11 +88,15 @@ def check_collapses(collapses: List[str]) -> bool:
 
     for collapse in collapses:
         match = re.search(
-            r"(urlkey|timestamp|original|mimetype|statuscode|digest|length)(:?[0-9]{1,99})?",
+            r"(urlkey|timestamp|original|mimetype|statuscode|digest|length)"
+            r"(:?[0-9]{1,99})?",
             collapse,
         )
         if match is None or len(match.groups()) != 2:
-            exc_message = f"collapse argument '{collapse}' is not following the cdx collapse syntax."
+            exc_message = (
+                f"collapse argument '{collapse}' "
+                "is not following the cdx collapse syntax."
+            )
             raise WaybackError(exc_message)
     else:
         return True
@@ -106,7 +111,10 @@ def check_match_type(match_type: Optional[str], url: str) -> bool:
             "Can not use wildcard in the URL along with the match_type arguments."
         )
     elif match_type not in legal_match_type:
-        exc_message = f"{match_type} is not an allowed match type.\nUse one from 'exact', 'prefix', 'host' or 'domain'"
+        exc_message = (
+            f"{match_type} is not an allowed match type.\n"
+            "Use one from 'exact', 'prefix', 'host' or 'domain'"
+        )
         raise WaybackError(exc_message)
     else:
         return True
