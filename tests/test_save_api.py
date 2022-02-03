@@ -28,7 +28,7 @@ def test_save():
     assert archive_url.find("github.com/akamhy/waybackpy") != -1
     assert timestamp is not None
     assert str(headers).find("github.com/akamhy/waybackpy") != -1
-    assert isinstance(save_api.timestamp(), datetime.datetime)
+    assert isinstance(save_api.timestamp(), datetime)
 
 
 def test_max_redirect_exceeded():
