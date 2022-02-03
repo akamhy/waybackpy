@@ -142,7 +142,7 @@ class WaybackMachineSaveAPI(object):
         regex = r"https?://web\.archive.org/web/([0-9]{14})/http"
         m = re.search(regex, str(self._archive_url))
         if m is None or len(m.groups()) != 1:
-            raise ValueError("Could not find get timestamp")
+            raise ValueError("Could not get timestamp")
         string_timestamp = m.group(1)
         timestamp = datetime.strptime(string_timestamp, "%Y%m%d%H%M%S")
 
