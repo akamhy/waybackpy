@@ -28,14 +28,13 @@ jobs:
         pip install '.[dev]'
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --show-source --statistics
     - name: Lint with black
       run: |
         black . --check --diff
-    # - name: Static type test with mypy
-    #   run: |
-    #     mypy
+    - name: Static type test with mypy
+      run: |
+        mypy
     - name: Test with pytest
       run: |
         pytest
