@@ -1,14 +1,13 @@
-from .exceptions import WaybackError
 from .cdx_snapshot import CDXSnapshot
 from .cdx_utils import (
-    get_total_pages,
-    get_response,
-    check_filters,
     check_collapses,
+    check_filters,
     check_match_type,
     full_url,
+    get_response,
+    get_total_pages,
 )
-
+from .exceptions import WaybackError
 from .utils import DEFAULT_USER_AGENT
 
 

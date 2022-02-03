@@ -1,13 +1,13 @@
 import re
 import time
-import requests
-
 from datetime import datetime
-from urllib3.util.retry import Retry
-from requests.adapters import HTTPAdapter
 
-from .utils import DEFAULT_USER_AGENT
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
 from .exceptions import MaximumSaveRetriesExceeded
+from .utils import DEFAULT_USER_AGENT
 
 
 class WaybackMachineSaveAPI:

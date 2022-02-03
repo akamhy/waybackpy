@@ -1,15 +1,17 @@
-import click
-import re
-import os
 import json as JSON
+import os
 import random
-import requests
+import re
 import string
-from .__version__ import __version__
-from .utils import DEFAULT_USER_AGENT
+
+import click
+import requests
+
+from . import __version__
+from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
 from .save_api import WaybackMachineSaveAPI
-from .availability_api import WaybackMachineAvailabilityAPI
+from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
 
 

@@ -1,13 +1,14 @@
 import pytest
-from waybackpy.exceptions import WaybackError
+
 from waybackpy.cdx_utils import (
-    get_total_pages,
+    check_collapses,
+    check_filters,
+    check_match_type,
     full_url,
     get_response,
-    check_filters,
-    check_collapses,
-    check_match_type,
+    get_total_pages,
 )
+from waybackpy.exceptions import WaybackError
 
 
 def test_get_total_pages():
@@ -86,10 +87,10 @@ def test_check_collapses():
 
 
 def test_check_match_type():
-    assert None == check_match_type(None, "url")
+    assert check_match_type(None, "url") is None
     match_type = "exact"
     url = "test_url"
-    assert None == check_match_type(match_type, url)
+    assert check_match_type(match_type, url) is None
 
     url = "has * in it"
     with pytest.raises(WaybackError):
