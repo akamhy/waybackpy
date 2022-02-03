@@ -1,13 +1,14 @@
 import pytest
-from waybackpy.exceptions import WaybackError
+
 from waybackpy.cdx_utils import (
-    get_total_pages,
+    check_collapses,
+    check_filters,
+    check_match_type,
     full_url,
     get_response,
-    check_filters,
-    check_collapses,
-    check_match_type,
+    get_total_pages,
 )
+from waybackpy.exceptions import WaybackError
 
 
 def test_get_total_pages():

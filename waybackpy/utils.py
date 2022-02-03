@@ -1,4 +1,5 @@
 import requests
+
 from .__version__ import __version__
 
 DEFAULT_USER_AGENT = "waybackpy %s - https://github.com/akamhy/waybackpy" % __version__

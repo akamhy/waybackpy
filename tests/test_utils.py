@@ -1,9 +1,9 @@
-from waybackpy.utils import (
-    latest_version_pypi,
-    latest_version_github,
-    DEFAULT_USER_AGENT,
-)
 from waybackpy.__version__ import __version__
+from waybackpy.utils import (
+    DEFAULT_USER_AGENT,
+    latest_version_github,
+    latest_version_pypi,
+)
 
 
 def test_default_user_agent():

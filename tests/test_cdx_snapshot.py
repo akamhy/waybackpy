@@ -1,5 +1,6 @@
-import pytest
 from datetime import datetime
+
+import pytest
 
 from waybackpy.cdx_snapshot import CDXSnapshot
 

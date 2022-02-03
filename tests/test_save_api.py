@@ -1,11 +1,12 @@
-import pytest
-import time
 import random
 import string
+import time
 from datetime import datetime
 
-from waybackpy.save_api import WaybackMachineSaveAPI
+import pytest
+
 from waybackpy.exceptions import MaximumSaveRetriesExceeded
+from waybackpy.save_api import WaybackMachineSaveAPI
 
 rndstr = lambda n: "".join(
     random.choice(string.ascii_uppercase + string.digits) for _ in range(n)

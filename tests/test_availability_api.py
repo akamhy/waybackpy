@@ -1,12 +1,13 @@
-import pytest
 import random
 import string
 from datetime import datetime, timedelta
 
+import pytest
+
 from waybackpy.availability_api import WaybackMachineAvailabilityAPI
 from waybackpy.exceptions import (
-    InvalidJSONInAvailabilityAPIResponse,
     ArchiveNotInAvailabilityAPIResponse,
+    InvalidJSONInAvailabilityAPIResponse,
 )
 
 now = datetime.utcnow()

@@ -1,12 +1,14 @@
-import time
 import json
-import requests
+import time
 from datetime import datetime
-from .utils import DEFAULT_USER_AGENT
+
+import requests
+
 from .exceptions import (
     ArchiveNotInAvailabilityAPIResponse,
     InvalidJSONInAvailabilityAPIResponse,
 )
+from .utils import DEFAULT_USER_AGENT
 
 
 class WaybackMachineAvailabilityAPI:
