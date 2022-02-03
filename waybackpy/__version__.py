@@ -5,6 +5,11 @@ __description__ = (
 )
 __url__ = "https://akamhy.github.io/waybackpy/"
 __version__ = "3.0.2"
+__download_url__ = (
+    "https://github.com/akamhy/waybackpy/archive/{version}.tar.gz".format(
+        version=__version__
+    )
+)
 __author__ = "Akash Mahanty"
 __author_email__ = "akamhy@yahoo.com"
 __license__ = "MIT"
