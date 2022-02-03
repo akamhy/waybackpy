@@ -108,7 +108,8 @@ class WaybackMachineSaveAPI(object):
 
         return None
 
-    def sleep(self, tries: int) -> None:
+    @staticmethod
+    def sleep(tries: int) -> None:
         """
         Ensure that the we wait some time before succesive retries so that we
         don't waste the retries before the page is even captured by the Wayback

@@ -33,7 +33,8 @@ class WaybackMachineAvailabilityAPI(object):
         self.api_call_time_gap = 5
         self.JSON: Optional[ResponseJSON] = None
 
-    def unix_timestamp_to_wayback_timestamp(self, unix_timestamp: int) -> str:
+    @staticmethod
+    def unix_timestamp_to_wayback_timestamp(unix_timestamp: int) -> str:
         """
         Converts Unix time to wayback Machine timestamp.
         """
@@ -153,7 +154,8 @@ class WaybackMachineAvailabilityAPI(object):
             )
         return archive_url
 
-    def wayback_timestamp(self, **kwargs: int) -> str:
+    @staticmethod
+    def wayback_timestamp(**kwargs: int) -> str:
         """
         Prepends zero before the year, month, day, hour and minute so that they
         are conformable with the YYYYMMDDhhmmss wayback machine timestamp format.

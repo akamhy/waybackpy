@@ -98,8 +98,8 @@ def check_collapses(collapses: List[str]) -> bool:
                 "is not following the cdx collapse syntax."
             )
             raise WaybackError(exc_message)
-    else:
-        return True
+
+    return True
 
 
 def check_match_type(match_type: Optional[str], url: str) -> bool:
