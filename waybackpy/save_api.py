@@ -5,9 +5,7 @@ from typing import Dict, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
-
-# from urllib3.util.retry import Retry
-from requests.packages.urllib3.util.retry import Retry
+from urllib3.util.retry import Retry
 
 from .exceptions import MaximumSaveRetriesExceeded
 from .utils import DEFAULT_USER_AGENT
@@ -65,12 +63,12 @@ class WaybackMachineSaveAPI(object):
         the response URL yourself in the browser.
         """
         session = requests.Session()
-        retries_ = Retry(
+        retries = Retry(
             total=self.total_save_retries,
             backoff_factor=self.backoff_factor,
             status_forcelist=self.status_forcelist,
         )
-        session.mount("https://", HTTPAdapter(max_retries=retries_))
+        session.mount("https://", HTTPAdapter(max_retries=retries))
         self.response = session.get(self.request_url, headers=self.request_headers)
         # requests.response.headers is requests.structures.CaseInsensitiveDict
         self.headers = self.response.headers
