@@ -1,8 +1,9 @@
+black
 click
-requests
-pytest
-pytest-cov
 codecov
 flake8
 mypy
-black
+setuptools>=46.4.0
+pytest
+pytest-cov
+requests
