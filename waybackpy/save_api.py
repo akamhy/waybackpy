@@ -22,6 +22,8 @@ class WaybackMachineSaveAPI:
         self.request_url = "https://web.archive.org/save/" + self.url
         self.user_agent = user_agent
         self.request_headers = {"User-Agent": self.user_agent}
+        if max_tries < 1:
+            raise ValueError("max_tries should be positive")
         self.max_tries = max_tries
         self.total_save_retries = 5
         self.backoff_factor = 0.5
@@ -160,27 +162,22 @@ class WaybackMachineSaveAPI:
         tries = 0
 
         while True:
+            if not self.saved_archive:
+                if tries >= 1:
+                    self.sleep(tries)
+
+                self.get_save_request_headers()
+                self.saved_archive = self.archive_url_parser()
+
+                if self.saved_archive is not None:
+                    self._archive_url = self.saved_archive
+                    self.timestamp()
+                    return self.saved_archive
 
             tries += 1
-
             if tries >= self.max_tries:
                 raise MaximumSaveRetriesExceeded(
                     "Tried %s times but failed to save and retrieve the" % str(tries)
                     + " archive for %s.\nResponse URL:\n%s \nResponse Header:\n%s\n"
                     % (self.url, self.response_url, str(self.headers)),
                 )
-
-            if not self.saved_archive:
-
-                if tries > 1:
-                    self.sleep(tries)
-
-                self.get_save_request_headers()
-                self.saved_archive = self.archive_url_parser()
-
-                if not self.saved_archive:
-                    continue
-                else:
-                    self._archive_url = self.saved_archive
-                    self.timestamp()
-                    return self.saved_archive
