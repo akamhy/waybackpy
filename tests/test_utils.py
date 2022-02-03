@@ -9,7 +9,7 @@ from waybackpy.utils import (
 def test_default_user_agent() -> None:
     assert (
         DEFAULT_USER_AGENT
-        == "waybackpy %s - https://github.com/akamhy/waybackpy" % __version__
+        == f"waybackpy {__version__} - https://github.com/akamhy/waybackpy"
     )
 
 

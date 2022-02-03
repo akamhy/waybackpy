@@ -25,7 +25,7 @@ class WaybackMachineAvailabilityAPI(object):
         self.url = str(url).strip().replace(" ", "%20")
         self.user_agent = user_agent
         self.headers: Dict[str, str] = {"User-Agent": self.user_agent}
-        self.payload = {"url": "{url}".format(url=self.url)}
+        self.payload = {"url": self.url}
         self.endpoint = "https://archive.org/wayback/available"
         self.max_tries = max_tries
         self.tries = 0
@@ -79,7 +79,7 @@ class WaybackMachineAvailabilityAPI(object):
             self.JSON = self.response.json()
         except json.decoder.JSONDecodeError:
             raise InvalidJSONInAvailabilityAPIResponse(
-                "Response data:\n{text}".format(text=self.response.text)
+                f"Response data:\n{self.response.text}"
             )
 
         return self.JSON
@@ -142,9 +142,9 @@ class WaybackMachineAvailabilityAPI(object):
             if not data or not data["archived_snapshots"]:
                 raise ArchiveNotInAvailabilityAPIResponse(
                     "Archive not found in the availability "
-                    + "API response, the URL you requested may not have any "
-                    + "archives yet. You may retry after some time or archive the webpage now."
-                    + "\nResponse data:\n{response}".format(response=self.response.text)
+                    "API response, the URL you requested may not have any "
+                    "archives yet. You may retry after some time or archive the webpage now.\n"
+                    f"Response data:\n{self.response.text}"
                 )
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]

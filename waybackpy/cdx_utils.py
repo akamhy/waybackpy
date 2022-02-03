@@ -30,9 +30,8 @@ def full_url(endpoint: str, params: Dict[str, Any]) -> str:
         key = "filter" if key.startswith("filter") else key
         key = "collapse" if key.startswith("collapse") else key
         amp = "" if full_url.endswith("?") else "&"
-        full_url = (
-            full_url + amp + "{key}={val}".format(key=key, val=quote(str(val), safe=""))
-        )
+        val = quote(str(val), safe="")
+        full_url += f"{amp}{key}={val}"
     return full_url
 
 
@@ -57,9 +56,7 @@ def get_response(
         return response
     except Exception as e:
         reason = str(e)
-        exc_message = "Error while retrieving {url}.\n{reason}".format(
-            url=url, reason=reason
-        )
+        exc_message = f"Error while retrieving {url}.\n{reason}"
         exc = WaybackError(exc_message)
         exc.__cause__ = e
         raise exc
@@ -78,11 +75,7 @@ def check_filters(filters: List[str]) -> None:
 
         if match is None or len(match.groups()) != 2:
 
-            exc_message = (
-                "Filter '{_filter}' is not following the cdx filter syntax.".format(
-                    _filter=_filter
-                )
-            )
+            exc_message = f"Filter '{_filter}' is not following the cdx filter syntax."
             raise WaybackError(exc_message)
 
 
@@ -98,9 +91,7 @@ def check_collapses(collapses: List[str]) -> bool:
             collapse,
         )
         if match is None or len(match.groups()) != 2:
-            exc_message = "collapse argument '{collapse}' is not following the cdx collapse syntax.".format(
-                collapse=collapse
-            )
+            exc_message = f"collapse argument '{collapse}' is not following the cdx collapse syntax."
             raise WaybackError(exc_message)
     else:
         return True
@@ -115,9 +106,7 @@ def check_match_type(match_type: Optional[str], url: str) -> bool:
             "Can not use wildcard in the URL along with the match_type arguments."
         )
     elif match_type not in legal_match_type:
-        exc_message = "{match_type} is not an allowed match type.\nUse one from 'exact', 'prefix', 'host' or 'domain'".format(
-            match_type=match_type
-        )
+        exc_message = f"{match_type} is not an allowed match type.\nUse one from 'exact', 'prefix', 'host' or 'domain'"
         raise WaybackError(exc_message)
     else:
         return True

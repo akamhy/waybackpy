@@ -33,7 +33,7 @@ def test_save() -> None:
 
 def test_max_redirect_exceeded() -> None:
     with pytest.raises(MaximumSaveRetriesExceeded):
-        url = "https://%s.gov" % rndstr
+        url = f"https://{rndstr}.gov"
         user_agent = "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
         save_api = WaybackMachineSaveAPI(url, user_agent, max_tries=3)
         save_api.save()
@@ -64,13 +64,12 @@ def test_timestamp() -> None:
     url = "https://example.com"
     user_agent = "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
     save_api = WaybackMachineSaveAPI(url, user_agent)
-    now = datetime.utcnow()
-    save_api._archive_url = (
-        "https://web.archive.org/web/%s/" % now.strftime("%Y%m%d%H%M%S") + url
-    )
+    now = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    save_api._archive_url = f"https://web.archive.org/web/{now}{url}/"
     save_api.timestamp()
     assert save_api.cached_save is False
-    save_api._archive_url = "https://web.archive.org/web/%s/" % "20100124063622" + url
+    now = "20100124063622"
+    save_api._archive_url = f"https://web.archive.org/web/{now}{url}/"
     save_api.timestamp()
     assert save_api.cached_save is True
 

@@ -46,7 +46,7 @@ def test_get_response() -> None:
     user_agent = (
         "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0"
     )
-    headers = {"User-Agent": "%s" % user_agent}
+    headers = {"User-Agent": str(user_agent)}
     response = get_response(url, headers=headers)
     assert not isinstance(response, Exception) and response.status_code == 200
 

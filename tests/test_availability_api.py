@@ -77,7 +77,7 @@ def test_no_archive() -> None:
     """
     with pytest.raises(ArchiveNotInAvailabilityAPIResponse):
         availability_api = WaybackMachineAvailabilityAPI(
-            url="https://%s.cn" % rndstr(30), user_agent=user_agent
+            url=f"https://{rndstr(30)}.cn", user_agent=user_agent
         )
         _ = availability_api.archive_url
 
@@ -90,7 +90,7 @@ def test_no_api_call_str_repr() -> None:
     str() must not return None so we return ""
     """
     availability_api = WaybackMachineAvailabilityAPI(
-        url="https://%s.gov" % rndstr(30), user_agent=user_agent
+        url=f"https://{rndstr(30)}.gov", user_agent=user_agent
     )
     assert "" == str(availability_api)
 
@@ -101,6 +101,6 @@ def test_no_call_timestamp() -> None:
     the datetime.max as a default value.
     """
     availability_api = WaybackMachineAvailabilityAPI(
-        url="https://%s.in" % rndstr(30), user_agent=user_agent
+        url=f"https://{rndstr(30)}.in", user_agent=user_agent
     )
     assert datetime.max == availability_api.timestamp()

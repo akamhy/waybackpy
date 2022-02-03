@@ -3,7 +3,7 @@ import requests
 from . import __version__
 
 DEFAULT_USER_AGENT: str = (
-    "waybackpy %s - https://github.com/akamhy/waybackpy" % __version__
+    f"waybackpy {__version__} - https://github.com/akamhy/waybackpy"
 )
 
 

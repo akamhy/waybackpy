@@ -25,7 +25,7 @@ from .wrapper import Url
     "--user-agent",
     "--user_agent",
     default=DEFAULT_USER_AGENT,
-    help="User agent, default value is '%s'." % DEFAULT_USER_AGENT,
+    help=f"User agent, default value is '{DEFAULT_USER_AGENT}'.",
 )
 @click.option("-v", "--version", is_flag=True, default=False, help="waybackpy version.")
 @click.option(
@@ -215,7 +215,7 @@ def main(
     """
 
     if version:
-        click.echo("waybackpy version %s" % __version__)
+        click.echo(f"waybackpy version {__version__}")
         return
 
     if license:
@@ -317,22 +317,18 @@ def main(
                 if match is not None:
                     domain = match.group(1)
 
-                file_name = "{domain}-urls-{uid}.txt".format(domain=domain, uid=uid)
+                file_name = f"{domain}-urls-{uid}.txt"
                 file_path = os.path.join(os.getcwd(), file_name)
                 if not os.path.isfile(file_path):
                     open(file_path, "w+").close()
 
                 with open(file_path, "a") as f:
-                    f.write("{url}\n".format(url=url))
+                    f.write(f"{url}\n")
 
             click.echo(url)
 
         if url_count > 0 or file_name is not None:
-            click.echo(
-                "\n\n'{file_name}' saved in current working directory".format(
-                    file_name=file_name
-                )
-            )
+            click.echo(f"\n\n'{file_name}' saved in current working directory")
         else:
             click.echo("No known URLs found. Please try a diffrent input!")
 

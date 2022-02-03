@@ -182,7 +182,7 @@ class WaybackMachineSaveAPI(object):
             tries += 1
             if tries >= self.max_tries:
                 raise MaximumSaveRetriesExceeded(
-                    "Tried %s times but failed to save and retrieve the" % str(tries)
-                    + " archive for %s.\nResponse URL:\n%s \nResponse Header:\n%s\n"
-                    % (self.url, self.response_url, self.headers_str),
+                    f"Tried {str(tries)} times but failed to save and retrieve the archive for {self.url}.\n"
+                    f"Response URL:\n{self.response_url}\n"
+                    f"Response Header:\n{self.headers_str}"
                 )
