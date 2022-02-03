@@ -6,13 +6,13 @@ from waybackpy.utils import (
 )
 
 
-def test_default_user_agent():
+def test_default_user_agent() -> None:
     assert (
         DEFAULT_USER_AGENT
         == "waybackpy %s - https://github.com/akamhy/waybackpy" % __version__
     )
 
 
-def test_latest_version():
+def test_latest_version() -> None:
     package_name = "waybackpy"
     assert latest_version_github(package_name) == latest_version_pypi(package_name)
