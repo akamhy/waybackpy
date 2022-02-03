@@ -34,7 +34,7 @@ jobs:
         black . --check --diff
     - name: Static type test with mypy
       run: |
-        mypy
+        mypy -p waybackpy -p tests
     - name: Test with pytest
       run: |
         pytest
