@@ -1,4 +1,4 @@
-from waybackpy.__version__ import __version__
+from waybackpy import __version__
 from waybackpy.utils import (
     DEFAULT_USER_AGENT,
     latest_version_github,

@@ -8,9 +8,11 @@ import pytest
 from waybackpy.exceptions import MaximumSaveRetriesExceeded
 from waybackpy.save_api import WaybackMachineSaveAPI
 
-rndstr = lambda n: "".join(
-    random.choice(string.ascii_uppercase + string.digits) for _ in range(n)
-)
+
+def rndstr(n):
+    return "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(n)
+    )
 
 
 def test_save():
@@ -24,8 +26,9 @@ def test_save():
     cached_save = save_api.cached_save
     assert cached_save in [True, False]
     assert archive_url.find("github.com/akamhy/waybackpy") != -1
+    assert timestamp is not None
     assert str(headers).find("github.com/akamhy/waybackpy") != -1
-    assert type(save_api.timestamp()) == type(datetime(year=2020, month=10, day=2))
+    assert isinstance(save_api.timestamp(), datetime.datetime)
 
 
 def test_max_redirect_exceeded():

@@ -87,10 +87,10 @@ def test_check_collapses():
 
 
 def test_check_match_type():
-    assert None == check_match_type(None, "url")
+    assert check_match_type(None, "url") is None
     match_type = "exact"
     url = "test_url"
-    assert None == check_match_type(match_type, url)
+    assert check_match_type(match_type, url) is None
 
     url = "has * in it"
     with pytest.raises(WaybackError):

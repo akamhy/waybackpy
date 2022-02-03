@@ -14,9 +14,11 @@ now = datetime.utcnow()
 url = "https://example.com/"
 user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
 
-rndstr = lambda n: "".join(
-    random.choice(string.ascii_uppercase + string.digits) for _ in range(n)
-)
+
+def rndstr(n):
+    return "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(n)
+    )
 
 
 def test_oldest():
@@ -58,7 +60,7 @@ def test_invalid_json():
     """
     with pytest.raises(InvalidJSONInAvailabilityAPIResponse):
         availability_api = WaybackMachineAvailabilityAPI(url="", user_agent=user_agent)
-        archive_url = availability_api.archive_url
+        _ = availability_api.archive_url
 
 
 def test_no_archive():
@@ -74,7 +76,7 @@ def test_no_archive():
         availability_api = WaybackMachineAvailabilityAPI(
             url="https://%s.cn" % rndstr(30), user_agent=user_agent
         )
-        archive_url = availability_api.archive_url
+        _ = availability_api.archive_url
 
 
 def test_no_api_call_str_repr():
