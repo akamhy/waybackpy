@@ -1,7 +1,8 @@
 from datetime import datetime
+from typing import Dict
 
 
-class CDXSnapshot:
+class CDXSnapshot(object):
     """
     Class for the CDX snapshot lines returned by the CDX API,
     Each valid line of the CDX API is casted to an CDXSnapshot object
@@ -10,7 +11,7 @@ class CDXSnapshot:
     of the CDXSnapshot.
     """
 
-    def __init__(self, properties):
+    def __init__(self, properties: Dict[str, str]) -> None:
         self.urlkey = properties["urlkey"]
         self.timestamp = properties["timestamp"]
         self.datetime_timestamp = datetime.strptime(self.timestamp, "%Y%m%d%H%M%S")
@@ -23,7 +24,7 @@ class CDXSnapshot:
             "https://web.archive.org/web/" + self.timestamp + "/" + self.original
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{urlkey} {timestamp} {original} {mimetype} {statuscode} {digest} {length}".format(
             urlkey=self.urlkey,
             timestamp=self.timestamp,

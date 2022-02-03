@@ -3,6 +3,7 @@ import os
 import random
 import re
 import string
+from typing import Generator, List, Optional
 
 import click
 import requests
@@ -163,34 +164,34 @@ from .wrapper import Url
     + "will be printed.",
 )
 def main(
-    url,
-    user_agent,
-    version,
-    license,
-    newest,
-    oldest,
-    json,
-    near,
-    year,
-    month,
-    day,
-    hour,
-    minute,
-    save,
-    headers,
-    known_urls,
-    subdomain,
-    file,
-    cdx,
-    start_timestamp,
-    end_timestamp,
-    filter,
-    match_type,
-    gzip,
-    collapse,
-    limit,
-    cdx_print,
-):
+    url: Optional[str],
+    user_agent: str,
+    version: bool,
+    license: bool,
+    newest: bool,
+    oldest: bool,
+    json: bool,
+    near: bool,
+    year: Optional[int],
+    month: Optional[int],
+    day: Optional[int],
+    hour: Optional[int],
+    minute: Optional[int],
+    save: bool,
+    headers: bool,
+    known_urls: bool,
+    subdomain: bool,
+    file: bool,
+    cdx: bool,
+    start_timestamp: Optional[str],
+    end_timestamp: Optional[str],
+    filter: List[str],
+    match_type: Optional[str],
+    gzip: Optional[str],
+    collapse: List[str],
+    limit: Optional[str],
+    cdx_print: List[str],
+) -> None:
     """\b
                          _                _
                         | |              | |
@@ -244,7 +245,9 @@ def main(
         )
         return
 
-    def echo_availability_api(availability_api_instance):
+    def echo_availability_api(
+        availability_api_instance: WaybackMachineAvailabilityAPI,
+    ) -> None:
         click.echo("Archive URL:")
         if not availability_api_instance.archive_url:
             archive_url = (
@@ -295,13 +298,14 @@ def main(
             click.echo(save_api.headers)
         return
 
-    def save_urls_on_file(url_gen):
+    def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
         domain = None
         sys_random = random.SystemRandom()
         uid = "".join(
             sys_random.choice(string.ascii_lowercase + string.digits) for _ in range(6)
         )
         url_count = 0
+        file_name = None
 
         for url in url_gen:
             url_count += 1
@@ -310,7 +314,7 @@ def main(
 
                 domain = "domain-unknown"
 
-                if match:
+                if match is not None:
                     domain = match.group(1)
 
                 file_name = "{domain}-urls-{uid}.txt".format(domain=domain, uid=uid)
@@ -318,12 +322,12 @@ def main(
                 if not os.path.isfile(file_path):
                     open(file_path, "w+").close()
 
-            with open(file_path, "a") as f:
-                f.write("{url}\n".format(url=url))
+                with open(file_path, "a") as f:
+                    f.write("{url}\n".format(url=url))
 
             click.echo(url)
 
-        if url_count > 0:
+        if url_count > 0 or file_name is not None:
             click.echo(
                 "\n\n'{file_name}' saved in current working directory".format(
                     file_name=file_name
