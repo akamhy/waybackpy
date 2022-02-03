@@ -7,7 +7,7 @@ import string
 import click
 import requests
 
-from .__version__ import __version__
+from . import __version__
 from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
 from .save_api import WaybackMachineSaveAPI
@@ -191,13 +191,13 @@ def main(
     limit,
     cdx_print,
 ):
-    """\b
+    """\
                          _                _
                         | |              | |
     __      ____ _ _   _| |__   __ _  ___| | ___ __  _   _
-    \ \ /\ / / _` | | | | '_ \ / _` |/ __| |/ / '_ \| | | |
-     \ V  V / (_| | |_| | |_) | (_| | (__|   <| |_) | |_| |
-      \_/\_/ \__,_|\__, |_.__/ \__,_|\___|_|\_\ .__/ \__, |
+    \\ \\ /\\ / / _` | | | | '_ \\ / _` |/ __| |/ / '_ \\| | | |
+     \\ V  V / (_| | |_| | |_) | (_| | (__|   <| |_) | |_| |
+      \\_/\\_/ \\__,_|\\__, |_.__/ \\__,_|\\___|_|\\_\\ .__/ \\__, |
                     __/ |                     | |     __/ |
                    |___/                      |_|    |___/
 
