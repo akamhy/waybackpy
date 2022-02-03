@@ -72,6 +72,7 @@ class WaybackMachineSaveAPI(object):
         self.response = session.get(self.request_url, headers=self.request_headers)
         # requests.response.headers is requests.structures.CaseInsensitiveDict
         self.headers = self.response.headers
+        self.headers_str = str(self.response.headers)
         self.status_code = self.response.status_code
         self.response_url = self.response.url
         session.close()
@@ -84,17 +85,17 @@ class WaybackMachineSaveAPI(object):
         """
 
         regex1 = r"Content-Location: (/web/[0-9]{14}/.*)"
-        match = re.search(regex1, str(self.headers))
+        match = re.search(regex1, self.headers_str)
         if match:
             return "https://web.archive.org" + match.group(1)
 
         regex2 = r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>"
-        match = re.search(regex2, str(self.headers))
+        match = re.search(regex2, self.headers_str)
         if match is not None and len(match.groups()) == 1:
             return "https://" + match.group(1)
 
         regex3 = r"X-Cache-Key:\shttps(.*)[A-Z]{2}"
-        match = re.search(regex3, str(self.headers))
+        match = re.search(regex3, self.headers_str)
         if match is not None and len(match.groups()) == 1:
             return "https" + match.group(1)
 
@@ -186,5 +187,5 @@ class WaybackMachineSaveAPI(object):
                     f"Tried {tries} times but failed to save "
                     f"and retrieve the archive for {self.url}.\n"
                     f"Response URL:\n{self.response_url}\n"
-                    f"Response Header:\n{self.headers}"
+                    f"Response Header:\n{self.headers_str}"
                 )
