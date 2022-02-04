@@ -12,6 +12,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -24,9 +25,10 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Version:**
- - OS: [e.g. iOS]
- - Version [e.g. 22]
- - Is latest version? [e.g. Yes/No]
+
+- OS: [e.g. iOS]
+- Version [e.g. 22]
+- Is latest version? [e.g. Yes/No]
 
 **Additional context**
 Add any other context about the problem here.
