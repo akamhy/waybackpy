@@ -16,7 +16,6 @@ from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
 
 
-@click.command()
 @click.option(
     "-u", "--url", help="URL on which Wayback machine operations are to be performed."
 )
@@ -29,7 +28,13 @@ from .wrapper import Url
 )
 @click.option("-v", "--version", is_flag=True, default=False, help="waybackpy version.")
 @click.option(
-    "-l", "--license", is_flag=True, default=False, help="license of Waybackpy."
+    "-l",
+    "--license",
+    "--show-license",
+    "--show_license",
+    is_flag=True,
+    default=False,
+    help="license of Waybackpy.",
 )
 @click.option(
     "-n",
@@ -125,6 +130,8 @@ from .wrapper import Url
 @click.option(
     "-f",
     "--filter",
+    "--cdx-filter",
+    "--cdx_filter",
     multiple=True,
     help="Filter on a specific field or all the CDX fields.",
 )
@@ -163,11 +170,11 @@ from .wrapper import Url
     + "if this parameter is not used then the plain text response of the CDX API "
     + "will be printed.",
 )
-def main(
+def _main(
     url: Optional[str],
     user_agent: str,
     version: bool,
-    license: bool,
+    show_license: bool,
     newest: bool,
     oldest: bool,
     json: bool,
@@ -185,7 +192,7 @@ def main(
     cdx: bool,
     start_timestamp: Optional[str],
     end_timestamp: Optional[str],
-    filter: List[str],
+    cdx_filter: List[str],
     match_type: Optional[str],
     gzip: Optional[str],
     collapse: List[str],
@@ -218,7 +225,7 @@ def main(
         click.echo(f"waybackpy version {__version__}")
         return
 
-    if license:
+    if show_license:
         click.echo(
             requests.get(
                 url="https://raw.githubusercontent.com/akamhy/waybackpy/master/LICENSE"
@@ -344,7 +351,7 @@ def main(
                 click.echo(url)
 
     if cdx:
-        filters = list(filter)
+        filters = list(cdx_filter)
         collapses = list(collapse)
         cdx_print = list(cdx_print)
 
@@ -395,6 +402,10 @@ def main(
                 ):
                     output_string = output_string + snapshot.archive_url + " "
                 click.echo(output_string)
+
+
+def main() -> None:
+    click.command()(_main)
 
 
 if __name__ == "__main__":

@@ -26,27 +26,25 @@ class WaybackMachineCDXServerAPI(object):
         user_agent: str = DEFAULT_USER_AGENT,
         start_timestamp: Optional[str] = None,
         end_timestamp: Optional[str] = None,
-        filters: List[str] = [],
+        filters: Optional[List[str]] = None,
         match_type: Optional[str] = None,
         gzip: Optional[str] = None,
-        collapses: List[str] = [],
+        collapses: Optional[List[str]] = None,
         limit: Optional[str] = None,
         max_tries: int = 3,
     ) -> None:
         self.url = str(url).strip().replace(" ", "%20")
         self.user_agent = user_agent
-        self.start_timestamp = (
-            str(start_timestamp) if start_timestamp is not None else None
-        )
-        self.end_timestamp = str(end_timestamp) if end_timestamp is not None else None
-        self.filters = filters
+        self.start_timestamp = None if start_timestamp is None else str(start_timestamp)
+        self.end_timestamp = None if end_timestamp is None else str(end_timestamp)
+        self.filters = [] if filters is None else filters
         check_filters(self.filters)
-        self.match_type = str(match_type).strip() if match_type is not None else None
+        self.match_type = None if match_type is None else str(match_type).strip()
         check_match_type(self.match_type, self.url)
         self.gzip = gzip
-        self.collapses = collapses
+        self.collapses = [] if collapses is None else collapses
         check_collapses(self.collapses)
-        self.limit = limit if limit is not None else 5000
+        self.limit = 5000 if limit is None else limit
         self.max_tries = max_tries
         self.last_api_request_url: Optional[str] = None
         self.use_page = False
