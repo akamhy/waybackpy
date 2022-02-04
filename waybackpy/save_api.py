@@ -108,13 +108,11 @@ class WaybackMachineSaveAPI(object):
         if match is not None and len(match.groups()) == 1:
             return "https" + match.group(1)
 
-        if self.response_url:
-            self.response_url = self.response_url.strip()
-            if "web.archive.org/web" in self.response_url:
-                regex4 = r"web\.archive\.org/web/(?:[0-9]*?)/(?:.*)$"
-                match = re.search(regex4, self.response_url)
-                if match is not None:
-                    return "https://" + match.group(0)
+        self.response_url = self.response_url.strip()
+        regex4 = r"web\.archive\.org/web/(?:[0-9]*?)/(?:.*)$"
+        match = re.search(regex4, self.response_url)
+        if match is not None:
+            return "https://" + match.group(0)
 
         return None
 
