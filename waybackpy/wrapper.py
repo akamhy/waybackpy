@@ -9,16 +9,20 @@ from .utils import DEFAULT_USER_AGENT
 
 class Url(object):
     """
-    The Url class is not recommended to be used anymore, instead use the
-    WaybackMachineSaveAPI, WaybackMachineAvailabilityAPI and WaybackMachineCDXServerAPI.
+    The Url class is not recommended to be used anymore, instead use:
 
-    The reason it is still in the code is backwards compatibility with 2.x.x versions.
+    - WaybackMachineSaveAPI
+    - WaybackMachineAvailabilityAPI
+    - WaybackMachineCDXServerAPI
 
-    If were are using the Url before the update to version 3.x.x, your code should still be
-    working fine and there is no hurry to update the interface but is recommended that you
-    do not use the Url class for new code as it would be removed after 2025 also the first
-    3.x.x versions was released in January 2022 and three years are more than enough to
-    update the older interface code.
+    The reason it is still in the code is backwards compatibility with 2.x.x
+    versions.
+
+    If were are using the Url before the update to version 3.x.x, your code should
+    still be working fine and there is no hurry to update the interface but is
+    recommended that you do not use the Url class for new code as it would be
+    removed after 2025 also the first 3.x.x versions was released in January 2022
+    and three years are more than enough to update the older interface code.
     """
 
     def __init__(self, url: str, user_agent: str = DEFAULT_USER_AGENT) -> None:
