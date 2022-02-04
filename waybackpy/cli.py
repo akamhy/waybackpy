@@ -16,6 +16,7 @@ from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
 
 
+@click.command()
 @click.option(
     "-u", "--url", help="URL on which Wayback machine operations are to be performed."
 )
@@ -171,7 +172,7 @@ from .wrapper import Url
     + "if this parameter is not used then the plain text response of the CDX API "
     + "will be printed.",
 )
-def _main(
+def main(  # pylint: disable=no-value-for-parameter
     url: Optional[str],
     user_agent: str,
     version: bool,
@@ -403,10 +404,6 @@ def _main(
                 ):
                     output_string = output_string + snapshot.archive_url + " "
                 click.echo(output_string)
-
-
-def main() -> None:
-    click.command()(_main)
 
 
 if __name__ == "__main__":
