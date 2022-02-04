@@ -218,7 +218,6 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     + "will be printed.",
 )
 def main(  # pylint: disable=no-value-for-parameter
-    url: Optional[str],
     user_agent: str,
     version: bool,
     show_license: bool,
@@ -226,25 +225,26 @@ def main(  # pylint: disable=no-value-for-parameter
     oldest: bool,
     json: bool,
     near: bool,
-    year: Optional[int],
-    month: Optional[int],
-    day: Optional[int],
-    hour: Optional[int],
-    minute: Optional[int],
     save: bool,
     headers: bool,
     known_urls: bool,
     subdomain: bool,
     file: bool,
     cdx: bool,
-    start_timestamp: Optional[str],
-    end_timestamp: Optional[str],
     cdx_filter: List[str],
-    match_type: Optional[str],
-    gzip: Optional[str],
     collapse: List[str],
-    limit: Optional[str],
     cdx_print: List[str],
+    url: Optional[str] = None,
+    year: Optional[int] = None,
+    month: Optional[int] = None,
+    day: Optional[int] = None,
+    hour: Optional[int] = None,
+    minute: Optional[int] = None,
+    start_timestamp: Optional[str] = None,
+    end_timestamp: Optional[str] = None,
+    match_type: Optional[str] = None,
+    gzip: Optional[str] = None,
+    limit: Optional[str] = None,
 ) -> None:
     """\b
                          _                _
@@ -276,7 +276,7 @@ def main(  # pylint: disable=no-value-for-parameter
             ).text
         )
     elif url is None:
-        click.echo("No URL detected. Please provide an URL.")
+        click.echo("No URL detected. Please provide an URL.", err=True)
     elif (
         not version
         and not oldest
@@ -288,7 +288,8 @@ def main(  # pylint: disable=no-value-for-parameter
     ):
         click.echo(
             "Only URL passed, but did not specify what to do with the URL. "
-            "Use --help flag for help using waybackpy."
+            "Use --help flag for help using waybackpy.",
+            err=True,
         )
     elif oldest:
         availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
@@ -383,4 +384,4 @@ def main(  # pylint: disable=no-value-for-parameter
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pylint: disable=no-value-for-parameter
