@@ -8,7 +8,7 @@ from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 from urllib3.util.retry import Retry
 
-from .exceptions import MaximumSaveRetriesExceeded
+from .exceptions import MaximumSaveRetriesExceeded, TooManyRequestsError
 from .utils import DEFAULT_USER_AGENT
 
 
@@ -79,6 +79,12 @@ class WaybackMachineSaveAPI(object):
         self.status_code = self.response.status_code
         self.response_url = self.response.url
         session.close()
+        if self.status_code == 429:
+            raise TooManyRequestsError(
+                "Seem to be refused to request by the server. "
+                "Save Page Now receives up to 15 URLs per minutes. "
+                "Wait a moment and run again."
+            )
 
     def archive_url_parser(self) -> Optional[str]:
         """
@@ -105,9 +111,9 @@ class WaybackMachineSaveAPI(object):
         if self.response_url:
             self.response_url = self.response_url.strip()
             if "web.archive.org/web" in self.response_url:
-                regex = r"web\.archive\.org/web/(?:[0-9]*?)/(?:.*)$"
-                match = re.search(regex, self.response_url)
-                if match:
+                regex4 = r"web\.archive\.org/web/(?:[0-9]*?)/(?:.*)$"
+                match = re.search(regex4, self.response_url)
+                if match is not None:
                     return "https://" + match.group(0)
 
         return None
