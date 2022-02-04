@@ -34,7 +34,7 @@ from .wrapper import Url
     "--show_license",
     is_flag=True,
     default=False,
-    help="license of Waybackpy.",
+    help="Show license of Waybackpy.",
 )
 @click.option(
     "-n",
