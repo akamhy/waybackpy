@@ -19,7 +19,10 @@ class WaybackMachineSaveAPI(object):
     """
 
     def __init__(
-        self, url: str, user_agent: str = DEFAULT_USER_AGENT, max_tries: int = 8
+        self,
+        url: str,
+        user_agent: str = DEFAULT_USER_AGENT,
+        max_tries: int = 8,
     ) -> None:
         self.url = str(url).strip().replace(" ", "%20")
         self.request_url = "https://web.archive.org/save/" + self.url
@@ -169,17 +172,16 @@ class WaybackMachineSaveAPI(object):
         tries = 0
 
         while True:
-            if self.saved_archive is None:
-                if tries >= 1:
-                    self.sleep(tries)
+            if tries >= 1:
+                self.sleep(tries)
 
-                self.get_save_request_headers()
-                self.saved_archive = self.archive_url_parser()
+            self.get_save_request_headers()
+            self.saved_archive = self.archive_url_parser()
 
-                if isinstance(self.saved_archive, str):
-                    self._archive_url = self.saved_archive
-                    self.timestamp()
-                    return self.saved_archive
+            if isinstance(self.saved_archive, str):
+                self._archive_url = self.saved_archive
+                self.timestamp()
+                return self.saved_archive
 
             tries += 1
             if tries >= self.max_tries:
