@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD033 MD041 -->
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
@@ -15,28 +16,27 @@
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
-## ⭐️ Introduction
+# ⭐️ Introduction
+
 Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-python-package.html) and a [CLI](https://www.w3schools.com/whatis/whatis_cli.asp) tool that interfaces with the [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API.
 
  Wayback Machine has 3 client side [API](https://www.redhat.com/en/topics/api/what-are-application-programming-interfaces)s.
 
-  - [Save API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#save-api)
-  - [Availability API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#availability-api)
-  - [CDX API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#cdx-api)
+- [Save API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#save-api)
+- [Availability API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#availability-api)
+- [CDX API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#cdx-api)
 
 These three APIs can be accessed via the waybackpy either by importing it in a script or from the CLI.
 
-
-### 🏗 Installation
+## 🏗 Installation
 
 **Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), from [PyPI](https://pypi.org/) (recommended)**:
 
 ```bash
 pip install waybackpy
 ```
-
 
 **Using [conda](https://en.wikipedia.org/wiki/Conda_(package_manager)), from [conda-forge](https://anaconda.org/conda-forge/waybackpy) (recommended)**:
 
@@ -48,27 +48,26 @@ See also [waybackpy feedstock](https://github.com/conda-forge/waybackpy-feedstoc
 conda install -c conda-forge waybackpy
 ```
 
-
 **Install directly from [this git repository](https://github.com/akamhy/waybackpy) (NOT recommended)**:
 
 ```bash
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
+## 🐳 Docker Image
 
-### 🐳 Docker Image
 Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
 
 [Docker image](https://searchitoperations.techtarget.com/definition/Docker-image) is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI).
 
 RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
 
+## 🚀 Usage
 
-### 🚀 Usage
+### As a Python package
 
-#### As a Python package
+#### Save API aka SavePageNow
 
-##### Save API aka SavePageNow
 ```python
 >>> from waybackpy import WaybackMachineSaveAPI
 >>> url = "https://github.com"
@@ -83,7 +82,8 @@ False
 datetime.datetime(2022, 1, 18, 12, 52, 49)
 ```
 
-##### Availability API
+#### Availability API
+
 ```python
 >>> from waybackpy import WaybackMachineAvailabilityAPI
 >>>
@@ -102,7 +102,8 @@ https://web.archive.org/web/20220118150444/https://www.google.com/
 https://web.archive.org/web/20101010101708/http://www.google.com/
 ```
 
-##### CDX API aka CDXServerAPI
+#### CDX API aka CDXServerAPI
+
 ```python
 >>> from waybackpy import WaybackMachineCDXServerAPI
 >>> url = "https://pypi.org"
@@ -122,8 +123,7 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 > Documentation is at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
 
-
-#### As a CLI tool
+### As a CLI tool
 
 Demo video on [asciinema.org](https://asciinema.org), you can copy the text from video:
 
@@ -131,7 +131,8 @@ Demo video on [asciinema.org](https://asciinema.org), you can copy the text from
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
-### 🛡 License
+## 🛡 License
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
 Copyright (c) 2020-2022 Akash Mahanty Et al.
