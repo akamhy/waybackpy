@@ -99,11 +99,12 @@ def test_archive_url_parser() -> None:
     )
     save_api = WaybackMachineSaveAPI(url, user_agent)
 
-    save_api.headers = (  # type: ignore[assignment]
+    h = (
         "\nSTART\nContent-Location: "
         "/web/20201126185327/https://www.scribbr.com/citing-sources/et-al"
         "\nEND\n"
     )
+    save_api.headers = h  # type: ignore[assignment]
 
     expected_url = (
         "https://web.archive.org/web/20201126185327/"
@@ -181,9 +182,8 @@ def test_archive_url_parser() -> None:
         "https://web.archive.org/web/20171128185327/"
         "https://www.scribbr.com/citing-sources/et-al/US"
     )
-    save_api.headers = (  # type: ignore[assignment]
-        f"START\nX-Cache-Key: {expected_url_3}\nEND\n"
-    )
+    h = f"START\nX-Cache-Key: {expected_url_3}\nEND\n"
+    save_api.headers = h  # type: ignore[assignment]
 
     expected_url4 = (
         "https://web.archive.org/web/20171128185327/"
@@ -191,9 +191,8 @@ def test_archive_url_parser() -> None:
     )
     assert save_api.archive_url_parser() == expected_url4
 
-    save_api.headers = (  # type: ignore[assignment]
-        "TEST TEST TEST AND NO MATCH - TEST FOR RESPONSE URL MATCHING"
-    )
+    h = "TEST TEST TEST AND NO MATCH - TEST FOR RESPONSE URL MATCHING"
+    save_api.headers = h  # type: ignore[assignment]
     save_api.response_url = (
         "https://web.archive.org/web/20171128185327/"
         "https://www.scribbr.com/citing-sources/et-al"
