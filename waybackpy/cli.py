@@ -129,6 +129,7 @@ from .wrapper import Url
 )
 @click.option(
     "-f",
+    "--cdxfilter",
     "--filter",
     "--cdx-filter",
     "--cdx_filter",
