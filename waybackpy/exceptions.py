@@ -14,6 +14,8 @@ class WaybackError(Exception):
      All other exceptions are inherited from this class.
     """
 
+    pass
+
 
 class RedirectSaveError(WaybackError):
     """
@@ -21,11 +23,15 @@ class RedirectSaveError(WaybackError):
     redirect URL is archived but not the original URL.
     """
 
+    pass
+
 
 class URLError(Exception):
     """
     Raised when malformed URLs are passed as arguments.
     """
+
+    pass
 
 
 class MaximumRetriesExceeded(WaybackError):
@@ -33,11 +39,15 @@ class MaximumRetriesExceeded(WaybackError):
     MaximumRetriesExceeded
     """
 
+    pass
+
 
 class MaximumSaveRetriesExceeded(MaximumRetriesExceeded):
     """
     MaximumSaveRetriesExceeded
     """
+
+    pass
 
 
 class ArchiveNotInAvailabilityAPIResponse(WaybackError):
@@ -45,8 +55,12 @@ class ArchiveNotInAvailabilityAPIResponse(WaybackError):
     Could not parse the archive in the JSON response of the availability API.
     """
 
+    pass
+
 
 class InvalidJSONInAvailabilityAPIResponse(WaybackError):
     """
     availability api returned invalid JSON
     """
+
+    pass

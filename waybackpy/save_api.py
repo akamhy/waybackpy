@@ -1,38 +1,41 @@
 import re
 import time
 from datetime import datetime
+from typing import Dict, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
+from requests.structures import CaseInsensitiveDict
 from urllib3.util.retry import Retry
 
 from .exceptions import MaximumSaveRetriesExceeded
 from .utils import DEFAULT_USER_AGENT
 
 
-class WaybackMachineSaveAPI:
-
+class WaybackMachineSaveAPI(object):
     """
     WaybackMachineSaveAPI class provides an interface for saving URLs on the
     Wayback Machine.
     """
 
-    def __init__(self, url, user_agent=DEFAULT_USER_AGENT, max_tries=8):
+    def __init__(
+        self, url: str, user_agent: str = DEFAULT_USER_AGENT, max_tries: int = 8
+    ) -> None:
         self.url = str(url).strip().replace(" ", "%20")
         self.request_url = "https://web.archive.org/save/" + self.url
         self.user_agent = user_agent
-        self.request_headers = {"User-Agent": self.user_agent}
+        self.request_headers: Dict[str, str] = {"User-Agent": self.user_agent}
         if max_tries < 1:
             raise ValueError("max_tries should be positive")
         self.max_tries = max_tries
         self.total_save_retries = 5
         self.backoff_factor = 0.5
         self.status_forcelist = [500, 502, 503, 504]
-        self._archive_url = None
+        self._archive_url: Optional[str] = None
         self.instance_birth_time = datetime.utcnow()
 
     @property
-    def archive_url(self):
+    def archive_url(self) -> str:
         """
         Returns the archive URL is already cached by _archive_url
         else invoke the save method to save the archive which returns the
@@ -44,7 +47,7 @@ class WaybackMachineSaveAPI:
         else:
             return self.save()
 
-    def get_save_request_headers(self):
+    def get_save_request_headers(self) -> None:
         """
         Creates a session and tries 'retries' number of times to
         retrieve the archive.
@@ -68,14 +71,13 @@ class WaybackMachineSaveAPI:
         )
         session.mount("https://", HTTPAdapter(max_retries=retries))
         self.response = session.get(self.request_url, headers=self.request_headers)
-        self.headers = (
-            self.response.headers
-        )  # <class 'requests.structures.CaseInsensitiveDict'>
+        # requests.response.headers is requests.structures.CaseInsensitiveDict
+        self.headers: CaseInsensitiveDict[str] = self.response.headers
         self.status_code = self.response.status_code
         self.response_url = self.response.url
         session.close()
 
-    def archive_url_parser(self):
+    def archive_url_parser(self) -> Optional[str]:
         """
         Three regexen (like oxen?) are used to search for the
         archive URL in the headers and finally look in the response URL
@@ -89,12 +91,12 @@ class WaybackMachineSaveAPI:
 
         regex2 = r"rel=\"memento.*?(web\.archive\.org/web/[0-9]{14}/.*?)>"
         match = re.search(regex2, str(self.headers))
-        if match:
+        if match is not None and len(match.groups()) == 1:
             return "https://" + match.group(1)
 
         regex3 = r"X-Cache-Key:\shttps(.*)[A-Z]{2}"
         match = re.search(regex3, str(self.headers))
-        if match:
+        if match is not None and len(match.groups()) == 1:
             return "https" + match.group(1)
 
         if self.response_url:
@@ -105,7 +107,10 @@ class WaybackMachineSaveAPI:
                 if match:
                     return "https://" + match.group(0)
 
-    def sleep(self, tries):
+        return None
+
+    @staticmethod
+    def sleep(tries: int) -> None:
         """
         Ensure that the we wait some time before succesive retries so that we
         don't waste the retries before the page is even captured by the Wayback
@@ -120,7 +125,7 @@ class WaybackMachineSaveAPI:
             sleep_seconds = 10
         time.sleep(sleep_seconds)
 
-    def timestamp(self):
+    def timestamp(self) -> datetime:
         """
         Read the timestamp off the archive URL and convert the Wayback Machine
         timestamp to datetime object.
@@ -128,14 +133,16 @@ class WaybackMachineSaveAPI:
         Also check if the time on archive is URL and compare it to instance birth
         time.
 
-        If time on the archive is older than the instance creation time set the cached_save
-        to True else set it to False. The flag can be used to check if the Wayback Machine
-        didn't serve a Cached URL. It is quite common for the Wayback Machine to serve
-        cached archive if last archive was captured before last 45 minutes.
+        If time on the archive is older than the instance creation time set the
+        cached_save to True else set it to False. The flag can be used to check
+        if the Wayback Machine didn't serve a Cached URL. It is quite common for
+        the Wayback Machine to serve cached archive if last archive was captured
+        before last 45 minutes.
         """
-        m = re.search(
-            r"https?://web\.archive.org/web/([0-9]{14})/http", self._archive_url
-        )
+        regex = r"https?://web\.archive.org/web/([0-9]{14})/http"
+        m = re.search(regex, str(self._archive_url))
+        if m is None or len(m.groups()) != 1:
+            raise ValueError("Could not get timestamp")
         string_timestamp = m.group(1)
         timestamp = datetime.strptime(string_timestamp, "%Y%m%d%H%M%S")
 
@@ -149,7 +156,7 @@ class WaybackMachineSaveAPI:
 
         return timestamp
 
-    def save(self):
+    def save(self) -> str:
         """
         Calls the SavePageNow API of the Wayback Machine with required parameters
         and headers to save the URL.
@@ -162,14 +169,14 @@ class WaybackMachineSaveAPI:
         tries = 0
 
         while True:
-            if not self.saved_archive:
+            if self.saved_archive is None:
                 if tries >= 1:
                     self.sleep(tries)
 
                 self.get_save_request_headers()
                 self.saved_archive = self.archive_url_parser()
 
-                if self.saved_archive is not None:
+                if isinstance(self.saved_archive, str):
                     self._archive_url = self.saved_archive
                     self.timestamp()
                     return self.saved_archive
@@ -177,7 +184,8 @@ class WaybackMachineSaveAPI:
             tries += 1
             if tries >= self.max_tries:
                 raise MaximumSaveRetriesExceeded(
-                    "Tried %s times but failed to save and retrieve the" % str(tries)
-                    + " archive for %s.\nResponse URL:\n%s \nResponse Header:\n%s\n"
-                    % (self.url, self.response_url, str(self.headers)),
+                    f"Tried {tries} times but failed to save "
+                    f"and retrieve the archive for {self.url}.\n"
+                    f"Response URL:\n{self.response_url}\n"
+                    f"Response Header:\n{self.headers}"
                 )

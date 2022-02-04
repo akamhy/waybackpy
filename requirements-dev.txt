@@ -3,7 +3,8 @@ click
 codecov
 flake8
 mypy
-setuptools>=46.4.0
 pytest
 pytest-cov
 requests
+setuptools>=46.4.0
+types-requests

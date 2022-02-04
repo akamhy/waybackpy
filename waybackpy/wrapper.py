@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Generator, Optional
 
 from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
@@ -14,40 +15,42 @@ The reason it is still in the code is backwards compatibility with 2.x.x version
 If were are using the Url before the update to version 3.x.x, your code should still be
 working fine and there is no hurry to update the interface but is recommended that you
 do not use the Url class for new code as it would be removed after 2025 also the first
-3.x.x versions was released in January 2022 and three years are more than enough to update
-the older interface code.
+3.x.x versions was released in January 2022 and three years are more than enough to
+update the older interface code.
 """
 
 
-class Url:
-    def __init__(self, url, user_agent=DEFAULT_USER_AGENT):
+class Url(object):
+    def __init__(self, url: str, user_agent: str = DEFAULT_USER_AGENT) -> None:
         self.url = url
         self.user_agent = str(user_agent)
-        self.archive_url = None
-        self.timestamp = None
+        self.archive_url: Optional[str] = None
+        self.timestamp: Optional[datetime] = None
         self.wayback_machine_availability_api = WaybackMachineAvailabilityAPI(
             self.url, user_agent=self.user_agent
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         if not self.archive_url:
             self.newest()
-        return self.archive_url
+        return str(self.archive_url)
 
-    def __len__(self):
+    def __len__(self) -> int:
         td_max = timedelta(
             days=999999999, hours=23, minutes=59, seconds=59, microseconds=999999
         )
 
-        if not self.timestamp:
+        if not isinstance(self.timestamp, datetime):
             self.oldest()
 
-        if self.timestamp == datetime.max:
+        if not isinstance(self.timestamp, datetime):
+            raise TypeError("timestamp must be a datetime")
+        elif self.timestamp == datetime.max:
             return td_max.days
+        else:
+            return (datetime.utcnow() - self.timestamp).days
 
-        return (datetime.utcnow() - self.timestamp).days
-
-    def save(self):
+    def save(self) -> "Url":
         self.wayback_machine_save_api = WaybackMachineSaveAPI(
             self.url, user_agent=self.user_agent
         )
@@ -58,13 +61,13 @@ class Url:
 
     def near(
         self,
-        year=None,
-        month=None,
-        day=None,
-        hour=None,
-        minute=None,
-        unix_timestamp=None,
-    ):
+        year: Optional[int] = None,
+        month: Optional[int] = None,
+        day: Optional[int] = None,
+        hour: Optional[int] = None,
+        minute: Optional[int] = None,
+        unix_timestamp: Optional[int] = None,
+    ) -> "Url":
 
         self.wayback_machine_availability_api.near(
             year=year,
@@ -77,22 +80,24 @@ class Url:
         self.set_availability_api_attrs()
         return self
 
-    def oldest(self):
+    def oldest(self) -> "Url":
         self.wayback_machine_availability_api.oldest()
         self.set_availability_api_attrs()
         return self
 
-    def newest(self):
+    def newest(self) -> "Url":
         self.wayback_machine_availability_api.newest()
         self.set_availability_api_attrs()
         return self
 
-    def set_availability_api_attrs(self):
+    def set_availability_api_attrs(self) -> None:
         self.archive_url = self.wayback_machine_availability_api.archive_url
         self.JSON = self.wayback_machine_availability_api.JSON
         self.timestamp = self.wayback_machine_availability_api.timestamp()
 
-    def total_archives(self, start_timestamp=None, end_timestamp=None):
+    def total_archives(
+        self, start_timestamp: Optional[str] = None, end_timestamp: Optional[str] = None
+    ) -> int:
         cdx = WaybackMachineCDXServerAPI(
             self.url,
             user_agent=self.user_agent,
@@ -107,12 +112,12 @@ class Url:
 
     def known_urls(
         self,
-        subdomain=False,
-        host=False,
-        start_timestamp=None,
-        end_timestamp=None,
-        match_type="prefix",
-    ):
+        subdomain: bool = False,
+        host: bool = False,
+        start_timestamp: Optional[str] = None,
+        end_timestamp: Optional[str] = None,
+        match_type: str = "prefix",
+    ) -> Generator[str, None, None]:
         if subdomain:
             match_type = "domain"
         if host:
