@@ -29,7 +29,12 @@ from .wrapper import Url
 )
 @click.option("-v", "--version", is_flag=True, default=False, help="waybackpy version.")
 @click.option(
-    "-l", "--license", is_flag=True, default=False, help="license of Waybackpy."
+    "-l",
+    "--showlicense",
+    "--license",
+    is_flag=True,
+    default=False,
+    help="show license of Waybackpy.",
 )
 @click.option(
     "-n",
@@ -124,6 +129,7 @@ from .wrapper import Url
 )
 @click.option(
     "-f",
+    "--cdxfilter",
     "--filter",
     multiple=True,
     help="Filter on a specific field or all the CDX fields.",
@@ -167,7 +173,7 @@ def main(
     url: Optional[str],
     user_agent: str,
     version: bool,
-    license: bool,
+    showlicense: bool,
     newest: bool,
     oldest: bool,
     json: bool,
@@ -185,7 +191,7 @@ def main(
     cdx: bool,
     start_timestamp: Optional[str],
     end_timestamp: Optional[str],
-    filter: List[str],
+    cdxfilter: List[str],
     match_type: Optional[str],
     gzip: Optional[str],
     collapse: List[str],
@@ -218,7 +224,7 @@ def main(
         click.echo(f"waybackpy version {__version__}")
         return
 
-    if license:
+    if showlicense:
         click.echo(
             requests.get(
                 url="https://raw.githubusercontent.com/akamhy/waybackpy/master/LICENSE"
@@ -344,7 +350,7 @@ def main(
                 click.echo(url)
 
     if cdx:
-        filters = list(filter)
+        filters = list(cdxfilter)
         collapses = list(collapse)
         cdx_print = list(cdx_print)
 
