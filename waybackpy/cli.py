@@ -29,7 +29,12 @@ from .wrapper import Url
 )
 @click.option("-v", "--version", is_flag=True, default=False, help="waybackpy version.")
 @click.option(
-    "-l", "--showlicense", "--license", is_flag=True, default=False, help="show license of Waybackpy."
+    "-l",
+    "--showlicense",
+    "--license",
+    is_flag=True,
+    default=False,
+    help="show license of Waybackpy.",
 )
 @click.option(
     "-n",
