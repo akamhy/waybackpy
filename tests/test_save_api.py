@@ -2,8 +2,10 @@ import random
 import string
 import time
 from datetime import datetime
+from typing import cast
 
 import pytest
+from requests.structures import CaseInsensitiveDict
 
 from waybackpy.exceptions import MaximumSaveRetriesExceeded
 from waybackpy.save_api import WaybackMachineSaveAPI
@@ -97,11 +99,11 @@ def test_archive_url_parser() -> None:
     )
     save_api = WaybackMachineSaveAPI(url, user_agent)
 
-    save_api.headers_str = """
-    START
-    Content-Location: /web/20201126185327/https://www.scribbr.com/citing-sources/et-al
-    END
-    """
+    save_api.headers = (  # type: ignore[assignment]
+        "\nSTART\nContent-Location: "
+        "/web/20201126185327/https://www.scribbr.com/citing-sources/et-al"
+        "\nEND\n"
+    )
 
     expected_url = (
         "https://web.archive.org/web/20201126185327/"
@@ -166,7 +168,8 @@ def test_archive_url_parser() -> None:
         "X-Archive-Screenname": "0",
         "Content-Encoding": "gzip",
     }
-    save_api.headers_str = str(headers)
+
+    save_api.headers = cast(CaseInsensitiveDict[str], headers)
 
     expected_url2 = (
         "https://web.archive.org/web/20210102094009/"
@@ -178,7 +181,9 @@ def test_archive_url_parser() -> None:
         "https://web.archive.org/web/20171128185327/"
         "https://www.scribbr.com/citing-sources/et-al/US"
     )
-    save_api.headers_str = f"START\nX-Cache-Key: {expected_url_3}\nEND\n"
+    save_api.headers = (  # type: ignore[assignment]
+        f"START\nX-Cache-Key: {expected_url_3}\nEND\n"
+    )
 
     expected_url4 = (
         "https://web.archive.org/web/20171128185327/"
@@ -186,7 +191,7 @@ def test_archive_url_parser() -> None:
     )
     assert save_api.archive_url_parser() == expected_url4
 
-    save_api.headers_str = (
+    save_api.headers = (  # type: ignore[assignment]
         "TEST TEST TEST AND NO MATCH - TEST FOR RESPONSE URL MATCHING"
     )
     save_api.response_url = (
