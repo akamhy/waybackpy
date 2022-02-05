@@ -127,6 +127,7 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 Demo video on [asciinema.org](https://asciinema.org), you can copy the text from video:
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6d777d8509f642ac89a20715bb3a6193)](https://app.codacy.com/gh/akamhy/waybackpy?utm_source=github.com&utm_medium=referral&utm_content=akamhy/waybackpy&utm_campaign=Badge_Grade_Settings)
 [![asciicast](https://asciinema.org/a/464367.svg)](https://asciinema.org/a/464367)
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
