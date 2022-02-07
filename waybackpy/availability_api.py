@@ -188,7 +188,10 @@ class WaybackMachineAvailabilityAPI:
                     "Archive not found in the availability "
                     "API response, the URL you requested may not have any archives "
                     "yet. You may retry after some time or archive the webpage now.\n"
-                    f"Response data:\n{None if self.response is None else self.response.text}"
+                    "Response data:\n"
+                    ""
+                    if self.response is None
+                    else self.response.text
                 )
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]
