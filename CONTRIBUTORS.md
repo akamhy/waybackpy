@@ -3,6 +3,7 @@
 ## AUTHORS
 
 - akamhy (<https://github.com/akamhy>)
+- eggplants (<https://github.com/eggplants>)
 - danvalen1 (<https://github.com/danvalen1>)
 - AntiCompositeNumber (<https://github.com/AntiCompositeNumber>)
 - jonasjancarik (<https://github.com/jonasjancarik>)
