@@ -71,21 +71,24 @@ class WaybackMachineCDXServerAPI(object):
     ) -> Generator[str, None, None]:
         """
         Manages the API calls for the instance, it automatically selects the best
-        parameters by looking as the query of the end-user. For bigger queries automatically
-        use the CDX pagination API and for smaller queries use the normal API.
+        parameters by looking as the query of the end-user. For bigger queries
+        automatically use the CDX pagination API and for smaller queries use the
+        normal API.
 
-        CDX Server API is a complex API and to make it easy for the end user to consume it
-        the CDX manager(this method) handles the selection of the API output, whether to
-        use the pagination API or not.
+        CDX Server API is a complex API and to make it easy for the end user to
+        consume it the CDX manager(this method) handles the selection of the
+        API output, whether to use the pagination API or not.
 
-        For doing large/bulk queries, the use of the Pagination API is recommended by the
-        Wayback Machine authors. And it determines if the query would be large or not by
-        using the showNumPages=true parameter, this tells the number of pages of CDX DATA
-        that the pagination API will return.
-        If the number of page is less than 2 we use the normal non-pagination API as the
-        pagination API is known to lag and for big queries it should not matter but for
-        queries where the number of pages are less this method chooses accuracy over the
-        pagination API.
+        For doing large/bulk queries, the use of the Pagination API is
+        recommended by the Wayback Machine authors. And it determines if the
+        query would be large or not by using the showNumPages=true parameter,
+        this tells the number of pages of CDX DATA that the pagination API
+        will return.
+
+        If the number of page is less than 2 we use the normal non-pagination
+        API as the pagination API is known to lag and for big queries it should
+        not matter but for queries where the number of pages are less this
+        method chooses accuracy over the pagination API.
         """
 
         # number of pages that will returned by the pagination API.
@@ -242,9 +245,9 @@ class WaybackMachineCDXServerAPI(object):
 
                 if total_property_values != warranted_total_property_values:
                     raise WaybackError(
-                        f"Snapshot returned by Cdx API has {total_property_values} "
-                        f"properties instead of expected {warranted_total_property_values} properties.\n"
-                        f"Problematic Snapshot: {snapshot}"
+                        f"Snapshot returned by CDX API has {total_property_values} prop"
+                        f"erties instead of expected {warranted_total_property_values} "
+                        f"properties.\nProblematic Snapshot: {snapshot}"
                     )
 
                 (
