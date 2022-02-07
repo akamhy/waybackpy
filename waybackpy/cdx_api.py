@@ -24,7 +24,7 @@ from .exceptions import WaybackError
 from .utils import DEFAULT_USER_AGENT
 
 
-class WaybackMachineCDXServerAPI(object):
+class WaybackMachineCDXServerAPI:
     """
     Class that interfaces the CDX server API of the Wayback Machine.
 

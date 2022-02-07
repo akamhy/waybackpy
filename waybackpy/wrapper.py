@@ -7,13 +7,15 @@ the Url class.
 from datetime import datetime, timedelta
 from typing import Generator, Optional
 
-from .availability_api import WaybackMachineAvailabilityAPI
+from requests.structures import CaseInsensitiveDict
+
+from .availability_api import ResponseJSON, WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
 from .save_api import WaybackMachineSaveAPI
 from .utils import DEFAULT_USER_AGENT
 
 
-class Url(object):
+class Url:
     """
     The Url class is not recommended to be used anymore, instead use:
 
@@ -39,6 +41,9 @@ class Url(object):
         self.wayback_machine_availability_api = WaybackMachineAvailabilityAPI(
             self.url, user_agent=self.user_agent
         )
+        self.wayback_machine_save_api: Optional[WaybackMachineSaveAPI] = None
+        self.headers: Optional[CaseInsensitiveDict[str]] = None
+        self.json: Optional[ResponseJSON] = None
 
     def __str__(self) -> str:
         if not self.archive_url:
@@ -107,7 +112,7 @@ class Url(object):
     def set_availability_api_attrs(self) -> None:
         """Set the attributes for total backwards compatibility."""
         self.archive_url = self.wayback_machine_availability_api.archive_url
-        self.JSON = self.wayback_machine_availability_api.JSON
+        self.json = self.wayback_machine_availability_api.json
         self.timestamp = self.wayback_machine_availability_api.timestamp()
 
     def total_archives(

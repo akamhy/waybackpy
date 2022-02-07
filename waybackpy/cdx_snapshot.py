@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Dict
 
 
-class CDXSnapshot(object):
+class CDXSnapshot:
     """
     Class for the CDX snapshot lines('record') returned by the CDX API,
     Each valid line of the CDX API is casted to an CDXSnapshot object

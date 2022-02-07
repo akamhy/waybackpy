@@ -40,8 +40,8 @@ def test_oldest() -> None:
     oldest_timestamp = oldest.timestamp()
     assert abs(oldest_timestamp - now) > timedelta(days=7000)  # More than 19 years
     assert (
-        availability_api.JSON is not None
-        and availability_api.JSON["archived_snapshots"]["closest"]["available"] is True
+        availability_api.json is not None
+        and availability_api.json["archived_snapshots"]["closest"]["available"] is True
     )
     assert repr(oldest).find("example.com") != -1
     assert "2002" in str(oldest)

@@ -1,3 +1,5 @@
+"""Module initializer and provider of static infomation."""
+
 __title__ = "waybackpy"
 __description__ = (
     "Python package that interfaces with the Internet Archive's Wayback Machine APIs. "
