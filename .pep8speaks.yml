@@ -4,3 +4,4 @@ scanner:
 
 flake8:
     max-line-length: 88
+    extend-ignore: W503,W605
