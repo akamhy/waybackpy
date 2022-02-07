@@ -1,3 +1,14 @@
+"""
+This module interfaces the Wayback Machine's CDX server API.
+
+The module has WaybackMachineCDXServerAPI which should be used by the users of
+this module to consume the CDX server API.
+
+WaybackMachineCDXServerAPI has a snapshot method that yields the snapshots, and
+the snapshots are yielded as instances of the CDXSnapshot class.
+"""
+
+
 from typing import Dict, Generator, List, Optional, cast
 
 from .cdx_snapshot import CDXSnapshot
@@ -16,6 +27,11 @@ from .utils import DEFAULT_USER_AGENT
 class WaybackMachineCDXServerAPI(object):
     """
     Class that interfaces the CDX server API of the Wayback Machine.
+
+    snapshot() returns a generator that can be iterated upon by the end-user,
+    the generator returns the snapshots/entries as instance of CDXSnapshot to
+    make the usage easy, just use '.' to get any attribute as the attributes are
+    accessible via a dot ".".
     """
 
     # start_timestamp: from, can not use from as it's a keyword
@@ -53,9 +69,32 @@ class WaybackMachineCDXServerAPI(object):
     def cdx_api_manager(
         self, payload: Dict[str, str], headers: Dict[str, str], use_page: bool = False
     ) -> Generator[str, None, None]:
+        """
+        Manages the API calls for the instance, it automatically selects the best
+        parameters by looking as the query of the end-user. For bigger queries automatically
+        use the CDX pagination API and for smaller queries use the normal API.
+
+        CDX Server API is a complex API and to make it easy for the end user to consume it
+        the CDX manager(this method) handles the selection of the API output, whether to
+        use the pagination API or not.
+
+        For doing large/bulk queries, the use of the Pagination API is recommended by the
+        Wayback Machine authors. And it determines if the query would be large or not by
+        using the showNumPages=true parameter, this tells the number of pages of CDX DATA
+        that the pagination API will return.
+        If the number of page is less than 2 we use the normal non-pagination API as the
+        pagination API is known to lag and for big queries it should not matter but for
+        queries where the number of pages are less this method chooses accuracy over the
+        pagination API.
+        """
+
+        # number of pages that will returned by the pagination API.
+        # get_total_pages adds the showNumPages=true param to pagination API
+        # requests.
+        # This is a special query that will return a single number indicating
+        # the number of pages.
         total_pages = get_total_pages(self.url, self.user_agent)
-        # If we only have two or less pages of archives then we care for more accuracy
-        # pagination API is lagged sometimes
+
         if use_page is True and total_pages >= 2:
             blank_pages = 0
             for i in range(total_pages):
@@ -78,11 +117,11 @@ class WaybackMachineCDXServerAPI(object):
         else:
             payload["showResumeKey"] = "true"
             payload["limit"] = str(self.limit)
-            resumeKey = None
+            resume_key = None
             more = True
             while more:
-                if resumeKey:
-                    payload["resumeKey"] = resumeKey
+                if resume_key:
+                    payload["resumeKey"] = resume_key
 
                 url = full_url(self.endpoint, params=payload)
                 res = get_response(url, headers=headers)
@@ -102,13 +141,16 @@ class WaybackMachineCDXServerAPI(object):
 
                     if len(second_last_line) == 0:
 
-                        resumeKey = lines[-1].strip()
-                        text = text.replace(resumeKey, "", 1).strip()
+                        resume_key = lines[-1].strip()
+                        text = text.replace(resume_key, "", 1).strip()
                         more = True
 
                 yield text
 
     def add_payload(self, payload: Dict[str, str]) -> None:
+        """
+        Adds the payload to the payload dictionary.
+        """
         if self.start_timestamp:
             payload["from"] = self.start_timestamp
 
@@ -122,17 +164,35 @@ class WaybackMachineCDXServerAPI(object):
             payload["matchType"] = self.match_type
 
         if self.filters and len(self.filters) > 0:
-            for i, f in enumerate(self.filters):
-                payload["filter" + str(i)] = f
+            for i, _filter in enumerate(self.filters):
+                payload["filter" + str(i)] = _filter
 
         if self.collapses and len(self.collapses) > 0:
-            for i, f in enumerate(self.collapses):
-                payload["collapse" + str(i)] = f
+            for i, collapse in enumerate(self.collapses):
+                payload["collapse" + str(i)] = collapse
 
         # Don't need to return anything as it's dictionary.
         payload["url"] = self.url
 
     def snapshots(self) -> Generator[CDXSnapshot, None, None]:
+        """
+        This function yields the CDX data lines as snapshots.
+
+        As it is a generator it exhaustible, the reason that this is
+        a generator and not a list are:
+
+        a) CDX server API can return millions of entries for a query and list
+        is not suitable for such cases.
+
+        b) Preventing memory usage issues, as told before this method may yield
+        millions of records for some queries and your system may not have enough
+        memory for such a big list. Also Remember this if outputing to Jupyter
+        Notebooks.
+
+        The objects yielded by this method are instance of CDXSnapshot class,
+        you can access the attributes of the entries as the attribute of the instance
+        itself.
+        """
         payload: Dict[str, str] = {}
         headers = {"User-Agent": self.user_agent}
 
@@ -144,18 +204,25 @@ class WaybackMachineCDXServerAPI(object):
         if self.collapses != []:
             self.use_page = False
 
-        texts = self.cdx_api_manager(payload, headers, use_page=self.use_page)
+        entries = self.cdx_api_manager(payload, headers, use_page=self.use_page)
 
-        for text in texts:
+        for entry in entries:
 
-            if text.isspace() or len(text) <= 1 or not text:
+            if entry.isspace() or len(entry) <= 1 or not entry:
                 continue
 
-            snapshot_list = text.split("\n")
+            # each line is a snapshot aka entry of the CDX server API.
+            # We are able to split the page by lines because it only
+            # splits the lines on a sinlge page and not all the entries
+            # at once, thus there should be no issues of too much memory usage.
+            snapshot_list = entry.split("\n")
 
             for snapshot in snapshot_list:
 
-                if len(snapshot) < 46:  # 14 + 32 (timestamp+digest)
+                # 14 + 32 == 46 ( timestamp + digest ), ignore the invalid entries.
+                # they are invalid if their length is smaller than sum of length
+                # of a standard wayback_timestamp and standard digest of an entry.
+                if len(snapshot) < 46:
                     continue
 
                 properties: Dict[str, Optional[str]] = {
@@ -168,15 +235,15 @@ class WaybackMachineCDXServerAPI(object):
                     "length": None,
                 }
 
-                prop_values = snapshot.split(" ")
+                property_value = snapshot.split(" ")
 
-                prop_values_len = len(prop_values)
-                properties_len = len(properties)
+                total_property_values = len(property_value)
+                warranted_total_property_values = len(properties)
 
-                if prop_values_len != properties_len:
+                if total_property_values != warranted_total_property_values:
                     raise WaybackError(
-                        f"Snapshot returned by Cdx API has {prop_values_len} "
-                        f"properties instead of expected {properties_len} properties.\n"
+                        f"Snapshot returned by Cdx API has {total_property_values} "
+                        f"properties instead of expected {warranted_total_property_values} properties.\n"
                         f"Problematic Snapshot: {snapshot}"
                     )
 
@@ -188,6 +255,6 @@ class WaybackMachineCDXServerAPI(object):
                     properties["statuscode"],
                     properties["digest"],
                     properties["length"],
-                ) = prop_values
+                ) = property_value
 
                 yield CDXSnapshot(cast(Dict[str, str], properties))
