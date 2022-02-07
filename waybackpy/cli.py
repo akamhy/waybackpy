@@ -2,11 +2,11 @@
 Module that makes waybackpy a CLI tool.
 """
 
-import json as JSON
 import os
 import random
 import re
 import string
+from json import dumps
 from typing import Generator, List, Optional
 
 import click
@@ -40,7 +40,7 @@ def echo_availability_api(
     click.echo(archive_url)
     if json:
         click.echo("JSON response:")
-        click.echo(JSON.dumps(availability_api_instance.JSON))
+        click.echo(dumps(availability_api_instance.json))
 
 
 def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
@@ -63,7 +63,7 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
             domain = "domain-unknown" if match is None else match.group(1)
             file_name = f"{domain}-urls-{uid}.txt"
             file_path = os.path.join(os.getcwd(), file_name)
-            with open(file_path, "a") as file:
+            with open(file_path, "a", encoding="UTF-8") as file:
                 file.write(f"{url}\n")
 
         click.echo(url)
@@ -345,8 +345,8 @@ def main(  # pylint: disable=no-value-for-parameter
         if file:
             return save_urls_on_file(url_gen)
 
-        for url in url_gen:
-            click.echo(url)
+        for url_ in url_gen:
+            click.echo(url_)
 
     elif cdx:
         filters = list(cdx_filter)

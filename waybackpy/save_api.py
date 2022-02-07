@@ -12,6 +12,7 @@ from typing import Dict, Optional
 
 import requests
 from requests.adapters import HTTPAdapter
+from requests.models import Response
 from requests.structures import CaseInsensitiveDict
 from urllib3.util.retry import Retry
 
@@ -19,7 +20,7 @@ from .exceptions import MaximumSaveRetriesExceeded, TooManyRequestsError, Waybac
 from .utils import DEFAULT_USER_AGENT
 
 
-class WaybackMachineSaveAPI(object):
+class WaybackMachineSaveAPI:
     """
     WaybackMachineSaveAPI class provides an interface for saving URLs on the
     Wayback Machine.
@@ -43,6 +44,12 @@ class WaybackMachineSaveAPI(object):
         self.status_forcelist = [500, 502, 503, 504]
         self._archive_url: Optional[str] = None
         self.instance_birth_time = datetime.utcnow()
+        self.response: Optional[Response] = None
+        self.headers: Optional[CaseInsensitiveDict[str]] = None
+        self.status_code: Optional[int] = None
+        self.response_url: Optional[str] = None
+        self.cached_save: Optional[bool] = None
+        self.saved_archive: Optional[str] = None
 
     @property
     def archive_url(self) -> str:
@@ -83,7 +90,7 @@ class WaybackMachineSaveAPI(object):
         session.mount("https://", HTTPAdapter(max_retries=retries))
         self.response = session.get(self.request_url, headers=self.request_headers)
         # requests.response.headers is requests.structures.CaseInsensitiveDict
-        self.headers: CaseInsensitiveDict[str] = self.response.headers
+        self.headers = self.response.headers
         self.status_code = self.response.status_code
         self.response_url = self.response.url
         session.close()
@@ -129,7 +136,9 @@ class WaybackMachineSaveAPI(object):
         if match is not None and len(match.groups()) == 1:
             return "https" + match.group(1)
 
-        self.response_url = self.response_url.strip()
+        self.response_url = (
+            "" if self.response_url is None else self.response_url.strip()
+        )
         regex4 = r"web\.archive\.org/web/(?:[0-9]*?)/(?:.*)$"
         match = re.search(regex4, self.response_url)
         if match is not None:

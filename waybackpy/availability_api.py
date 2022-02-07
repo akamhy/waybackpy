@@ -37,7 +37,7 @@ from .utils import DEFAULT_USER_AGENT
 ResponseJSON = Dict[str, Any]
 
 
-class WaybackMachineAvailabilityAPI(object):
+class WaybackMachineAvailabilityAPI:
     """
     Class that interfaces the availability API of the Wayback Machine.
     """
@@ -55,7 +55,8 @@ class WaybackMachineAvailabilityAPI(object):
         self.tries: int = 0
         self.last_api_call_unix_time: int = int(time.time())
         self.api_call_time_gap: int = 5
-        self.JSON: Optional[ResponseJSON] = None
+        self.json: Optional[ResponseJSON] = None
+        self.response: Optional[Response] = None
 
     @staticmethod
     def unix_timestamp_to_wayback_timestamp(unix_timestamp: int) -> str:
@@ -83,12 +84,12 @@ class WaybackMachineAvailabilityAPI(object):
         # String should not return anything other than a string object
         # So, if a string repr is asked for before making any API requests
         # just return ""
-        if not self.JSON:
+        if not self.json:
             return ""
 
         return self.archive_url
 
-    def json(self) -> Optional[ResponseJSON]:
+    def setup_json(self) -> Optional[ResponseJSON]:
         """
         Makes the API call to the availability API and set the JSON response
         to the JSON attribute of the instance and also returns the JSON
@@ -109,19 +110,19 @@ class WaybackMachineAvailabilityAPI(object):
         if sleep_time > 0:
             time.sleep(sleep_time)
 
-        self.response: Response = requests.get(
+        self.response = requests.get(
             self.endpoint, params=self.payload, headers=self.headers
         )
         self.last_api_call_unix_time = int(time.time())
         self.tries += 1
         try:
-            self.JSON = self.response.json()
+            self.json = None if self.response is None else self.response.json()
         except json.decoder.JSONDecodeError as json_decode_error:
             raise InvalidJSONInAvailabilityAPIResponse(
                 f"Response data:\n{self.response.text}"
             ) from json_decode_error
 
-        return self.JSON
+        return self.json
 
     def timestamp(self) -> datetime:
         """
@@ -136,19 +137,19 @@ class WaybackMachineAvailabilityAPI(object):
         guaranteed that you can get the datetime object from the timestamp.
         """
 
-        if self.JSON is None or "archived_snapshots" not in self.JSON:
+        if self.json is None or "archived_snapshots" not in self.json:
             return datetime.max
 
         if (
-            self.JSON is not None
-            and "archived_snapshots" in self.JSON
-            and self.JSON["archived_snapshots"] is not None
-            and "closest" in self.JSON["archived_snapshots"]
-            and self.JSON["archived_snapshots"]["closest"] is not None
-            and "timestamp" in self.JSON["archived_snapshots"]["closest"]
+            self.json is not None
+            and "archived_snapshots" in self.json
+            and self.json["archived_snapshots"] is not None
+            and "closest" in self.json["archived_snapshots"]
+            and self.json["archived_snapshots"]["closest"] is not None
+            and "timestamp" in self.json["archived_snapshots"]["closest"]
         ):
             return datetime.strptime(
-                self.JSON["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
+                self.json["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
             )
 
         raise ValueError("Could not get timestamp from result")
@@ -162,7 +163,7 @@ class WaybackMachineAvailabilityAPI(object):
         """
 
         archive_url = ""
-        data = self.JSON
+        data = self.json
 
         # If the user didn't invoke oldest, newest or near but tries to access the
         # archive_url attribute then assume they are fine with any archive
@@ -176,8 +177,8 @@ class WaybackMachineAvailabilityAPI(object):
             while (self.tries < self.max_tries) and (
                 not data or not data["archived_snapshots"]
             ):
-                self.json()  # It makes a new API call
-                data = self.JSON  # json() updated the value of JSON attribute
+                self.setup_json()  # It makes a new API call
+                data = self.json  # json() updated the value of JSON attribute
 
             # If we exhausted the max_tries, then we give up and
             # raise exception.
@@ -187,7 +188,7 @@ class WaybackMachineAvailabilityAPI(object):
                     "Archive not found in the availability "
                     "API response, the URL you requested may not have any archives "
                     "yet. You may retry after some time or archive the webpage now.\n"
-                    f"Response data:\n{self.response.text}"
+                    f"Response data:\n{None if self.response is None else self.response.text}"
                 )
         else:
             archive_url = data["archived_snapshots"]["closest"]["url"]
@@ -262,5 +263,5 @@ class WaybackMachineAvailabilityAPI(object):
             )
 
         self.payload["timestamp"] = timestamp
-        self.json()
+        self.setup_json()
         return self
