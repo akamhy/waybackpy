@@ -62,9 +62,7 @@ class Url(object):
         return (datetime.utcnow() - self.timestamp).days
 
     def save(self) -> "Url":
-        """
-        Save the URL on wayback machine.
-        """
+        """Save the URL on wayback machine."""
         self.wayback_machine_save_api = WaybackMachineSaveAPI(
             self.url, user_agent=self.user_agent
         )
@@ -82,9 +80,7 @@ class Url(object):
         minute: Optional[int] = None,
         unix_timestamp: Optional[int] = None,
     ) -> "Url":
-        """
-        Returns the archive of the URL close to a date and time.
-        """
+        """Returns the archive of the URL close to a date and time."""
         self.wayback_machine_availability_api.near(
             year=year,
             month=month,
@@ -97,25 +93,19 @@ class Url(object):
         return self
 
     def oldest(self) -> "Url":
-        """
-        Returns the oldest archive of the URL.
-        """
+        """Returns the oldest archive of the URL."""
         self.wayback_machine_availability_api.oldest()
         self.set_availability_api_attrs()
         return self
 
     def newest(self) -> "Url":
-        """
-        Returns the newest archive of the URL.
-        """
+        """Returns the newest archive of the URL."""
         self.wayback_machine_availability_api.newest()
         self.set_availability_api_attrs()
         return self
 
     def set_availability_api_attrs(self) -> None:
-        """
-        Set the attributes for total backwards compatibility.
-        """
+        """Set the attributes for total backwards compatibility."""
         self.archive_url = self.wayback_machine_availability_api.archive_url
         self.JSON = self.wayback_machine_availability_api.JSON
         self.timestamp = self.wayback_machine_availability_api.timestamp()
@@ -147,9 +137,7 @@ class Url(object):
         end_timestamp: Optional[str] = None,
         match_type: str = "prefix",
     ) -> Generator[str, None, None]:
-        """
-        yields known URLs for any URL.
-        """
+        """Yields known URLs for any URL."""
         if subdomain:
             match_type = "domain"
         if host:
