@@ -1,6 +1,4 @@
-"""
-Module initializer and provider of static infomation.
-"""
+"""Module initializer and provider of static infomation."""
 
 __title__ = "waybackpy"
 __description__ = (
