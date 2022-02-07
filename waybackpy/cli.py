@@ -1,3 +1,7 @@
+"""
+Module that makes waybackpy a CLI tool.
+"""
+
 import json as JSON
 import os
 import random
@@ -19,7 +23,10 @@ from .wrapper import Url
 def echo_availability_api(
     availability_api_instance: WaybackMachineAvailabilityAPI, json: bool
 ) -> None:
-    click.echo("Archive URL:")
+    """
+    Output availability API depending functions.
+    Near, oldest and newest output by this method.
+    """
     if not availability_api_instance.archive_url:
         archive_url = (
             "NO ARCHIVE FOUND - The requested URL is probably "
@@ -29,6 +36,7 @@ def echo_availability_api(
         )
     else:
         archive_url = availability_api_instance.archive_url
+    click.echo("Archive URL:")
     click.echo(archive_url)
     if json:
         click.echo("JSON response:")
@@ -36,6 +44,10 @@ def echo_availability_api(
 
 
 def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
+    """
+    Save output of CDX API on file.
+    Mainly here because of backwards compatibility.
+    """
     domain = None
     sys_random = random.SystemRandom()
     uid = "".join(
@@ -51,8 +63,8 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
             domain = "domain-unknown" if match is None else match.group(1)
             file_name = f"{domain}-urls-{uid}.txt"
             file_path = os.path.join(os.getcwd(), file_name)
-            with open(file_path, "a") as f:
-                f.write(f"{url}\n")
+            with open(file_path, "a") as file:
+                file.write(f"{url}\n")
 
         click.echo(url)
 
@@ -269,6 +281,7 @@ def main(  # pylint: disable=no-value-for-parameter
     """
     if version:
         click.echo(f"waybackpy version {__version__}")
+
     elif show_license:
         click.echo(
             requests.get(
@@ -277,6 +290,7 @@ def main(  # pylint: disable=no-value-for-parameter
         )
     elif url is None:
         click.echo("No URL detected. Please provide an URL.", err=True)
+
     elif (
         not version
         and not oldest
@@ -291,14 +305,17 @@ def main(  # pylint: disable=no-value-for-parameter
             "Use --help flag for help using waybackpy.",
             err=True,
         )
+
     elif oldest:
         availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
         availability_api.oldest()
         echo_availability_api(availability_api, json)
+
     elif newest:
         availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
         availability_api.newest()
         echo_availability_api(availability_api, json)
+
     elif near:
         availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
         near_args = {}
@@ -309,6 +326,7 @@ def main(  # pylint: disable=no-value-for-parameter
                 near_args[key] = arg
         availability_api.near(**near_args)
         echo_availability_api(availability_api, json)
+
     elif save:
         save_api = WaybackMachineSaveAPI(url, user_agent=user_agent)
         save_api.save()
@@ -319,15 +337,17 @@ def main(  # pylint: disable=no-value-for-parameter
         if headers:
             click.echo("Save API headers:")
             click.echo(save_api.headers)
+
     elif known_urls:
         wayback = Url(url, user_agent)
         url_gen = wayback.known_urls(subdomain=subdomain)
 
         if file:
             return save_urls_on_file(url_gen)
-        else:
-            for url in url_gen:
-                click.echo(url)
+
+        for url in url_gen:
+            click.echo(url)
+
     elif cdx:
         filters = list(cdx_filter)
         collapses = list(collapse)

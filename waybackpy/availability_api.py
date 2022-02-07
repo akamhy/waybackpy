@@ -1,9 +1,32 @@
+"""
+This module interfaces the Wayback Machine's availability API.
+
+The interface could be useful for looking up archives and finding archives
+that are close to a specific date and time.
+
+It has a class called WaybackMachineAvailabilityAPI, and the class has
+methods such as:
+
+near() for looking up archives close to a specific date and time.
+
+oldest() for retrieving the first archive URL of the webpage.
+
+newest() for retrieving the latest archive of an URL.
+
+The Wayback Machine Availability response should be a valid JSON and
+if it is not then an exception, InvalidJSONInAvailabilityAPIResponse is raised.
+
+If the Availability API returned valid JSON but archive URL could not be found
+it it then ArchiveNotInAvailabilityAPIResponse is raised.
+"""
+
 import json
 import time
 from datetime import datetime
 from typing import Any, Dict, Optional
 
 import requests
+from requests.models import Response
 
 from .exceptions import (
     ArchiveNotInAvailabilityAPIResponse,
@@ -22,38 +45,43 @@ class WaybackMachineAvailabilityAPI(object):
     def __init__(
         self, url: str, user_agent: str = DEFAULT_USER_AGENT, max_tries: int = 3
     ) -> None:
+
         self.url = str(url).strip().replace(" ", "%20")
         self.user_agent = user_agent
         self.headers: Dict[str, str] = {"User-Agent": self.user_agent}
-        self.payload = {"url": self.url}
-        self.endpoint = "https://archive.org/wayback/available"
-        self.max_tries = max_tries
-        self.tries = 0
-        self.last_api_call_unix_time = int(time.time())
-        self.api_call_time_gap = 5
+        self.payload: Dict[str, str] = {"url": self.url}
+        self.endpoint: str = "https://archive.org/wayback/available"
+        self.max_tries: int = max_tries
+        self.tries: int = 0
+        self.last_api_call_unix_time: int = int(time.time())
+        self.api_call_time_gap: int = 5
         self.JSON: Optional[ResponseJSON] = None
 
     @staticmethod
     def unix_timestamp_to_wayback_timestamp(unix_timestamp: int) -> str:
         """
-        Converts Unix time to wayback Machine timestamp.
+        Converts Unix time to wayback Machine timestamp and the Wayback Machine
+        timestamp format is yyyyMMddhhmmss.
         """
+
         return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
 
     def __repr__(self) -> str:
         """
         Same as string representation, just return the archive URL as a string.
         """
+
         return str(self)
 
     def __str__(self) -> str:
         """
-        String representation of the class. If atleast one API call was successfully
-        made then return the archive URL as a string. Else returns None.
+        String representation of the class. If atleast one API
+        call was successfully made then return the archive URL
+        as a string. Else returns "".
         """
 
-        # String must not return anything other than a string object
-        # So, if some asks for string repr before making the API requests
+        # String should not return anything other than a string object
+        # So, if a string repr is asked for before making any API requests
         # just return ""
         if not self.JSON:
             return ""
@@ -62,26 +90,36 @@ class WaybackMachineAvailabilityAPI(object):
 
     def json(self) -> Optional[ResponseJSON]:
         """
-        Makes the API call to the availability API can set the JSON response
-        to the JSON attribute of the instance and also returns the JSON attribute.
+        Makes the API call to the availability API and set the JSON response
+        to the JSON attribute of the instance and also returns the JSON
+        attribute.
+
+        time_diff and sleep_time makes sure that you are not making too many
+        requests in a short interval of item, making too many requests is bad
+        as Wayback Machine may reject them above a certain threshold.
+
+        The end-user can change the api_call_time_gap attribute of the instance
+        to increase or decrease the default time gap between two successive API
+        calls, but it is not recommended to increase it.
         """
+
         time_diff = int(time.time()) - self.last_api_call_unix_time
         sleep_time = self.api_call_time_gap - time_diff
 
         if sleep_time > 0:
             time.sleep(sleep_time)
 
-        self.response = requests.get(
+        self.response: Response = requests.get(
             self.endpoint, params=self.payload, headers=self.headers
         )
         self.last_api_call_unix_time = int(time.time())
         self.tries += 1
         try:
             self.JSON = self.response.json()
-        except json.decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError as json_decode_error:
             raise InvalidJSONInAvailabilityAPIResponse(
                 f"Response data:\n{self.response.text}"
-            )
+            ) from json_decode_error
 
         return self.JSON
 
@@ -91,15 +129,17 @@ class WaybackMachineAvailabilityAPI(object):
         If JSON attribute of the instance is None it implies that the either
         the the last API call failed or one was never made.
 
-        If not JSON or if JSON but no timestamp in the JSON response then returns
-        the maximum value for datetime object that is possible.
+        If not JSON or if JSON but no timestamp in the JSON response then
+        returns the maximum value for datetime object that is possible.
 
-        If you get an URL as a response form the availability API it is guaranteed
-        that you can get the datetime object from the timestamp.
+        If you get an URL as a response form the availability API it is
+        guaranteed that you can get the datetime object from the timestamp.
         """
+
         if self.JSON is None or "archived_snapshots" not in self.JSON:
             return datetime.max
-        elif (
+
+        if (
             self.JSON is not None
             and "archived_snapshots" in self.JSON
             and self.JSON["archived_snapshots"] is not None
@@ -110,21 +150,23 @@ class WaybackMachineAvailabilityAPI(object):
             return datetime.strptime(
                 self.JSON["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
             )
-        else:
-            raise ValueError("Could not get timestamp from result")
+
+        raise ValueError("Could not get timestamp from result")
 
     @property
     def archive_url(self) -> str:
         """
-        Reads the the JSON response data and tries to get the timestamp and returns
-        the timestamp if found else returns None.
+        Reads the the JSON response data and returns
+        the timestamp if found and if not found raises
+        ArchiveNotInAvailabilityAPIResponse.
         """
+
         archive_url = ""
         data = self.JSON
 
-        # If the user didn't used oldest, newest or near but tries to access the
-        # archive_url attribute then, we assume they are fine with any archive
-        # and invoke the oldest archive function.
+        # If the user didn't invoke oldest, newest or near but tries to access the
+        # archive_url attribute then assume they are fine with any archive
+        # and invoke the oldest method.
         if not data:
             self.oldest()
 
@@ -137,7 +179,7 @@ class WaybackMachineAvailabilityAPI(object):
                 self.json()  # It makes a new API call
                 data = self.JSON  # json() updated the value of JSON attribute
 
-            # Even if after we exhausted teh max_tries, then we give up and
+            # If we exhausted the max_tries, then we give up and
             # raise exception.
 
             if not data or not data["archived_snapshots"]:
@@ -160,6 +202,7 @@ class WaybackMachineAvailabilityAPI(object):
         Prepends zero before the year, month, day, hour and minute so that they
         are conformable with the YYYYMMDDhhmmss wayback machine timestamp format.
         """
+
         return "".join(
             str(kwargs[key]).zfill(2)
             for key in ["year", "month", "day", "hour", "minute"]
@@ -167,18 +210,21 @@ class WaybackMachineAvailabilityAPI(object):
 
     def oldest(self) -> "WaybackMachineAvailabilityAPI":
         """
-        Passing the year 1994 should return the oldest archive because
-        wayback machine was started in May, 1996 and there should be no archive
-        before the year 1994.
+        Passes the date 1994-01-01 to near which should return the oldest archive
+        because Wayback Machine was started in May, 1996 and it is assumed that
+        there would be no archive older than January 1, 1994.
         """
-        return self.near(year=1994)
+
+        return self.near(year=1994, month=1, day=1)
 
     def newest(self) -> "WaybackMachineAvailabilityAPI":
         """
-        Passing the current UNIX time should be sufficient to get the newest
-        archive considering the API request-response time delay and also the
-        database lags on Wayback machine.
+        Passes the current UNIX time to near() for retrieving the newest archive
+        from the availability API.
+
+        We assume that wayback machine can not archive the future of a webpage.
         """
+
         return self.near(unix_timestamp=int(time.time()))
 
     def near(
@@ -191,16 +237,18 @@ class WaybackMachineAvailabilityAPI(object):
         unix_timestamp: Optional[int] = None,
     ) -> "WaybackMachineAvailabilityAPI":
         """
-        The main method for this Class, oldest and newest methods are dependent on this
-        method.
+        The main method for the Class, oldest() and newest() are dependent on it.
 
         It generates the timestamp based on the input either by calling the
         unix_timestamp_to_wayback_timestamp or wayback_timestamp method with
         appropriate arguments for their respective parameters.
+
         Adds the timestamp to the payload dictionary.
+
         And finally invoking the json method to make the API call then returns
         the instance.
         """
+
         if unix_timestamp:
             timestamp = self.unix_timestamp_to_wayback_timestamp(unix_timestamp)
         else:

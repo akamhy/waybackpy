@@ -53,10 +53,6 @@ def test_get_response() -> None:
     response = get_response(url, headers=headers)
     assert not isinstance(response, Exception) and response.status_code == 200
 
-    url = "http/wwhfhfvhvjhmom"
-    with pytest.raises(WaybackError):
-        get_response(url, headers=headers)
-
 
 def test_check_filters() -> None:
     filters: List[str] = []
