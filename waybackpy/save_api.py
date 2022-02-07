@@ -1,3 +1,10 @@
+"""
+This module interfaces the Wayback Machine's SavePageNow (SPN) API.
+
+The module has WaybackMachineSaveAPI class which should be used by the users of
+this module to use the SavePageNow API.
+"""
+
 import re
 import time
 from datetime import datetime
@@ -8,7 +15,7 @@ from requests.adapters import HTTPAdapter
 from requests.structures import CaseInsensitiveDict
 from urllib3.util.retry import Retry
 
-from .exceptions import MaximumSaveRetriesExceeded, TooManyRequestsError
+from .exceptions import MaximumSaveRetriesExceeded, TooManyRequestsError, WaybackError
 from .utils import DEFAULT_USER_AGENT
 
 
@@ -47,8 +54,8 @@ class WaybackMachineSaveAPI(object):
 
         if self._archive_url:
             return self._archive_url
-        else:
-            return self.save()
+
+        return self.save()
 
     def get_save_request_headers(self) -> None:
         """
@@ -66,6 +73,7 @@ class WaybackMachineSaveAPI(object):
         to be very unreliable thus if it fails first check opening
         the response URL yourself in the browser.
         """
+
         session = requests.Session()
         retries = Retry(
             total=self.total_save_retries,
@@ -79,11 +87,24 @@ class WaybackMachineSaveAPI(object):
         self.status_code = self.response.status_code
         self.response_url = self.response.url
         session.close()
+
         if self.status_code == 429:
+            # why wait 5 minutes and 429?
+            # see https://github.com/akamhy/waybackpy/issues/97
             raise TooManyRequestsError(
-                "Seem to be refused to request by the server. "
-                "Save Page Now receives up to 15 URLs per minutes. "
-                "Wait a moment and run again."
+                f"Can not save '{self.url}'. "
+                f"Save request refused by the server. "
+                f"Save Page Now limits saving 15 URLs per minutes. "
+                f"Try waiting for 5 minutes and then try again."
+            )
+
+        # why 509?
+        # see https://github.com/akamhy/waybackpy/pull/99
+        # also https://t.co/xww4YJ0Iwc
+        if self.status_code == 509:
+            raise WaybackError(
+                f"Can not save '{self.url}'. You have probably reached the "
+                f"limit of active sessions."
             )
 
     def archive_url_parser(self) -> Optional[str]:
@@ -146,13 +167,17 @@ class WaybackMachineSaveAPI(object):
         the Wayback Machine to serve cached archive if last archive was captured
         before last 45 minutes.
         """
-        regex = r"https?://web\.archive.org/web/([0-9]{14})/http"
-        m = re.search(regex, str(self._archive_url))
-        if m is None or len(m.groups()) != 1:
-            raise ValueError("Could not get timestamp")
-        string_timestamp = m.group(1)
-        timestamp = datetime.strptime(string_timestamp, "%Y%m%d%H%M%S")
 
+        regex = r"https?://web\.archive.org/web/([0-9]{14})/http"
+        match = re.search(regex, str(self._archive_url))
+
+        if match is None or len(match.groups()) != 1:
+            raise ValueError(
+                f"Can not parse timestamp from archive URL, '{self._archive_url}'."
+            )
+
+        string_timestamp = match.group(1)
+        timestamp = datetime.strptime(string_timestamp, "%Y%m%d%H%M%S")
         timestamp_unixtime = time.mktime(timestamp.timetuple())
         instance_birth_time_unixtime = time.mktime(self.instance_birth_time.timetuple())
 
