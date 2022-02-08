@@ -6,7 +6,9 @@
 - eggplants (<https://github.com/eggplants>)
 - danvalen1 (<https://github.com/danvalen1>)
 - AntiCompositeNumber (<https://github.com/AntiCompositeNumber>)
+- rafaelrdealmeida (<https://github.com/rafaelrdealmeida>)
 - jonasjancarik (<https://github.com/jonasjancarik>)
+- jfinkhaeuser (<https://github.com/jfinkhaeuser>)
 
 ## ACKNOWLEDGEMENTS
 
