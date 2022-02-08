@@ -90,7 +90,6 @@ class WaybackMachineCDXServerAPI:
         not matter but for queries where the number of pages are less this
         method chooses accuracy over the pagination API.
         """
-
         # number of pages that will returned by the pagination API.
         # get_total_pages adds the showNumPages=true param to pagination API
         # requests.
