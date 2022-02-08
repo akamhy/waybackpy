@@ -58,7 +58,6 @@ class WaybackMachineSaveAPI:
         else invoke the save method to save the archive which returns the
         archive thus we return the methods return value.
         """
-
         if self._archive_url:
             return self._archive_url
 
@@ -80,7 +79,6 @@ class WaybackMachineSaveAPI:
         to be very unreliable thus if it fails first check opening
         the response URL yourself in the browser.
         """
-
         session = requests.Session()
         retries = Retry(
             total=self.total_save_retries,
@@ -120,7 +118,6 @@ class WaybackMachineSaveAPI:
         archive URL in the headers and finally look in the response URL
         for the archive URL.
         """
-
         regex1 = r"Content-Location: (/web/[0-9]{14}/.*)"
         match = re.search(regex1, str(self.headers))
         if match:
@@ -156,7 +153,6 @@ class WaybackMachineSaveAPI:
 
         If tries are multiple of 3 sleep 10 seconds else sleep 5 seconds.
         """
-
         sleep_seconds = 5
         if tries % 3 == 0:
             sleep_seconds = 10
@@ -176,7 +172,6 @@ class WaybackMachineSaveAPI:
         the Wayback Machine to serve cached archive if last archive was captured
         before last 45 minutes.
         """
-
         regex = r"https?://web\.archive.org/web/([0-9]{14})/http"
         match = re.search(regex, str(self._archive_url))
 
@@ -205,7 +200,6 @@ class WaybackMachineSaveAPI:
         Raises MaximumSaveRetriesExceeded is maximum retries are exhausted but still
         we were unable to retrieve the archive from the Wayback Machine.
         """
-
         self.saved_archive = None
         tries = 0
 

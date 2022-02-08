@@ -64,14 +64,12 @@ class WaybackMachineAvailabilityAPI:
         Converts Unix time to wayback Machine timestamp and the Wayback Machine
         timestamp format is yyyyMMddhhmmss.
         """
-
         return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
 
     def __repr__(self) -> str:
         """
         Same as string representation, just return the archive URL as a string.
         """
-
         return str(self)
 
     def __str__(self) -> str:
@@ -80,7 +78,6 @@ class WaybackMachineAvailabilityAPI:
         call was successfully made then return the archive URL
         as a string. Else returns "".
         """
-
         # String should not return anything other than a string object
         # So, if a string repr is asked for before making any API requests
         # just return ""
@@ -103,7 +100,6 @@ class WaybackMachineAvailabilityAPI:
         to increase or decrease the default time gap between two successive API
         calls, but it is not recommended to increase it.
         """
-
         time_diff = int(time.time()) - self.last_api_call_unix_time
         sleep_time = self.api_call_time_gap - time_diff
 
@@ -136,7 +132,6 @@ class WaybackMachineAvailabilityAPI:
         If you get an URL as a response form the availability API it is
         guaranteed that you can get the datetime object from the timestamp.
         """
-
         if self.json is None or "archived_snapshots" not in self.json:
             return datetime.max
 
@@ -161,7 +156,6 @@ class WaybackMachineAvailabilityAPI:
         the timestamp if found and if not found raises
         ArchiveNotInAvailabilityAPIResponse.
         """
-
         archive_url = ""
         data = self.json
 
@@ -206,7 +200,6 @@ class WaybackMachineAvailabilityAPI:
         Prepends zero before the year, month, day, hour and minute so that they
         are conformable with the YYYYMMDDhhmmss wayback machine timestamp format.
         """
-
         return "".join(
             str(kwargs[key]).zfill(2)
             for key in ["year", "month", "day", "hour", "minute"]
@@ -218,7 +211,6 @@ class WaybackMachineAvailabilityAPI:
         because Wayback Machine was started in May, 1996 and it is assumed that
         there would be no archive older than January 1, 1994.
         """
-
         return self.near(year=1994, month=1, day=1)
 
     def newest(self) -> "WaybackMachineAvailabilityAPI":
@@ -228,7 +220,6 @@ class WaybackMachineAvailabilityAPI:
 
         We assume that wayback machine can not archive the future of a webpage.
         """
-
         return self.near(unix_timestamp=int(time.time()))
 
     def near(
@@ -252,7 +243,6 @@ class WaybackMachineAvailabilityAPI:
         And finally invoking the json method to make the API call then returns
         the instance.
         """
-
         if unix_timestamp:
             timestamp = self.unix_timestamp_to_wayback_timestamp(unix_timestamp)
         else:

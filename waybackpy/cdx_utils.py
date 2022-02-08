@@ -23,7 +23,6 @@ def get_total_pages(url: str, user_agent: str = DEFAULT_USER_AGENT) -> int:
     URL makes the CDX server return an integer which is the number of pages
     of CDX pages available for us to query using the pagination API.
     """
-
     endpoint = "https://web.archive.org/cdx/search/cdx?"
     payload = {"showNumPages": "true", "url": str(url)}
     headers = {"User-Agent": user_agent}
@@ -43,7 +42,6 @@ def full_url(endpoint: str, params: Dict[str, Any]) -> str:
     such as filter and collapse and this function adds them without
     overwriting earlier added arguments.
     """
-
     if not params:
         return endpoint
     _full_url = endpoint if endpoint.endswith("?") else (endpoint + "?")
@@ -67,7 +65,6 @@ def get_response(
     """
     Make get request to the CDX server and return the response.
     """
-
     session = requests.Session()
 
     retries_ = Retry(
@@ -87,7 +84,6 @@ def check_filters(filters: List[str]) -> None:
     Check that the filter arguments passed by the end-user are valid.
     If not valid then raise WaybackError.
     """
-
     if not isinstance(filters, list):
         raise WaybackError("filters must be a list.")
 
@@ -110,7 +106,6 @@ def check_collapses(collapses: List[str]) -> bool:
     Check that the collapse arguments passed by the end-user are valid.
     If not valid then raise WaybackError.
     """
-
     if not isinstance(collapses, list):
         raise WaybackError("collapses must be a list.")
 
@@ -138,7 +133,6 @@ def check_match_type(match_type: Optional[str], url: str) -> bool:
     Check that the match_type argument passed by the end-user is valid.
     If not valid then raise WaybackError.
     """
-
     legal_match_type = ["exact", "prefix", "host", "domain"]
 
     if not match_type:
