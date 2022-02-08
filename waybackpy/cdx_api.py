@@ -60,7 +60,7 @@ class WaybackMachineCDXServerAPI:
         self.gzip = gzip
         self.collapses = [] if collapses is None else collapses
         check_collapses(self.collapses)
-        self.limit = 5000 if limit is None else limit
+        self.limit = 25000 if limit is None else limit
         self.max_tries = max_tries
         self.last_api_request_url: Optional[str] = None
         self.use_page = False
