@@ -29,19 +29,21 @@ def test_full_url() -> None:
 
     params = {"a": "1"}
     assert full_url(endpoint, params) == "https://web.archive.org/cdx/search/cdx?a=1"
-    assert full_url(
-        endpoint + "?", params
-    ) == "https://web.archive.org/cdx/search/cdx?a=1"
+    assert (
+        full_url(endpoint + "?", params) == "https://web.archive.org/cdx/search/cdx?a=1"
+    )
 
     params["b"] = 2
-    assert full_url(
-        endpoint + "?", params
-    ) == "https://web.archive.org/cdx/search/cdx?a=1&b=2"
+    assert (
+        full_url(endpoint + "?", params)
+        == "https://web.archive.org/cdx/search/cdx?a=1&b=2"
+    )
 
     params["c"] = "foo bar"
-    assert full_url(
-        endpoint + "?", params
-    ) == "https://web.archive.org/cdx/search/cdx?a=1&b=2&c=foo%20bar"
+    assert (
+        full_url(endpoint + "?", params)
+        == "https://web.archive.org/cdx/search/cdx?a=1&b=2&c=foo%20bar"
+    )
 
 
 def test_get_response() -> None:
