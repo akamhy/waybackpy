@@ -9,6 +9,7 @@
 
 <p align="center">
 <a href="https://github.com/akamhy/waybackpy/actions?query=workflow%3ATests"><img alt="Unit Tests" src="https://github.com/akamhy/waybackpy/workflows/Tests/badge.svg"></a>
+<a href="https://codecov.io/gh/akamhy/waybackpy"><img alt="codecov" src="https://codecov.io/gh/akamhy/waybackpy/branch/master/graph/badge.svg"></a>
 <a href="https://pypi.org/project/waybackpy/"><img alt="pypi" src="https://img.shields.io/pypi/v/waybackpy.svg"></a>
 <a href="https://pepy.tech/project/waybackpy?versions=2*&versions=1*&versions=3*"><img alt="Downloads" src="https://pepy.tech/badge/waybackpy/month"></a>
 <a href="https://app.codacy.com/gh/akamhy/waybackpy?utm_source=github.com&utm_medium=referral&utm_content=akamhy/waybackpy&utm_campaign=Badge_Grade_Settings"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/6d777d8509f642ac89a20715bb3a6193"></a>
