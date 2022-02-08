@@ -99,7 +99,7 @@ def test_no_api_call_str_repr() -> None:
     availability_api = WaybackMachineAvailabilityAPI(
         url=f"https://{rndstr(30)}.gov", user_agent=user_agent
     )
-    assert "" == str(availability_api)
+    assert str(availability_api) == ""
 
 
 def test_no_call_timestamp() -> None:
