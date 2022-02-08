@@ -38,6 +38,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    # - name: Upload coverage to Codecov
-    #   run: |
-    #     bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload coverage to Codecov
+      run: |
+        bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
