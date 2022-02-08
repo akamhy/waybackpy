@@ -17,7 +17,6 @@ def test_oldest():
 
 def test_near():
     runner = CliRunner()
-    url = "https://github.com"
     result = runner.invoke(
         main,
         [
@@ -44,7 +43,6 @@ def test_near():
 
 def test_json():
     runner = CliRunner()
-    url = "https://github.com"
     result = runner.invoke(
         main,
         [
