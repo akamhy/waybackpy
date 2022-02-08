@@ -59,17 +59,28 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     for url in url_gen:
         url_count += 1
         if not domain:
-            match = re.search("https?://([A-Za-z_0-9.-]+).*", url)
-            domain = "domain-unknown" if match is None else match.group(1)
-            file_name = f"{domain}-urls-{uid}.txt"
+            m = re.search("https?://([A-Za-z_0-9.-]+).*", url)
+
+            domain = "domain-unknown"
+
+            if m:
+                domain = m.group(1)
+
+            file_name = "{domain}-urls-{uid}.txt".format(domain=domain, uid=uid)
             file_path = os.path.join(os.getcwd(), file_name)
-            with open(file_path, "a", encoding="UTF-8") as file:
-                file.write(f"{url}\n")
+            if not os.path.isfile(file_path):
+                open(file_path, "w+").close()
+
+        with open(file_path, "a") as f:
+            f.write("{url}\n".format(url=url))
 
         click.echo(url)
 
-    if url_count > 0 or file_name is not None:
-        click.echo(f"\n\n'{file_name}' saved in current working directory")
+    if url_count > 0:
+        click.echo(
+            f"\n\n{url_count} URLs saved inside '{file_name}' in the current "
+            + "working directory."
+        )
     else:
         click.echo("No known URLs found. Please try a diffrent input!")
 
@@ -343,10 +354,10 @@ def main(  # pylint: disable=no-value-for-parameter
         url_gen = wayback.known_urls(subdomain=subdomain)
 
         if file:
-            return save_urls_on_file(url_gen)
-
-        for url_ in url_gen:
-            click.echo(url_)
+            save_urls_on_file(url_gen)
+        else:
+            for url_ in url_gen:
+                click.echo(url_)
 
     elif cdx:
         filters = list(cdx_filter)
