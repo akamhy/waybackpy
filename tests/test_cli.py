@@ -105,7 +105,7 @@ def test_save() -> None:
     runner = CliRunner()
     result = runner.invoke(
         main,
-        "--url https://news.ycombinator.com --user_agent my-unique-user-agent \
+        "--url https://yahoo.com --user_agent my-unique-user-agent \
 --save --headers".split(
             " "
         ),
@@ -116,7 +116,7 @@ def test_save() -> None:
         result.output.find("Cached save:\nFalse") != -1
     )
     assert result.output.find("Save API headers:\n") != -1
-    assert result.output.find("://news.ycombinator.com") != -1
+    assert result.output.find("yahoo.com") != -1
 
 
 def test_version() -> None:
