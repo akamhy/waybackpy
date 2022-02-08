@@ -1,10 +1,11 @@
 import requests
 from click.testing import CliRunner
 
-from waybackpy.cli import __version__, main
+from waybackpy.cli import main
+from waybackpy import __version__
 
 
-def test_oldest():
+def test_oldest() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--url", " https://github.com ", "--oldest"])
     assert result.exit_code == 0
@@ -15,7 +16,7 @@ def test_oldest():
     )
 
 
-def test_near():
+def test_near() -> None:
     runner = CliRunner()
     result = runner.invoke(
         main,
@@ -24,13 +25,13 @@ def test_near():
             " https://facebook.com ",
             "--near",
             "--year",
-            2010,
+            "2010",
             "--month",
-            5,
+            "5",
             "--day",
-            10,
+            "10",
             "--hour",
-            6,
+            "6",
         ],
     )
     assert result.exit_code == 0
@@ -41,7 +42,7 @@ def test_near():
     )
 
 
-def test_json():
+def test_json() -> None:
     runner = CliRunner()
     result = runner.invoke(
         main,
@@ -50,13 +51,13 @@ def test_json():
             " https://apple.com ",
             "--near",
             "--year",
-            2010,
+            "2010",
             "--month",
-            2,
+            "2",
             "--day",
-            8,
+            "8",
             "--hour",
-            12,
+            "12",
             "--json",
         ],
     )
@@ -74,7 +75,7 @@ amp": "20100208125854"}}, "timestamp":"""
     )
 
 
-def test_newest():
+def test_newest() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--url", " https://microsoft.com ", "--newest"])
     assert result.exit_code == 0
@@ -84,7 +85,7 @@ def test_newest():
     )
 
 
-def test_cdx():
+def test_cdx() -> None:
     runner = CliRunner()
     result = runner.invoke(
         main,
@@ -100,7 +101,7 @@ def test_cdx():
     assert result.output.count("\n") > 3000
 
 
-def test_save():
+def test_save() -> None:
     runner = CliRunner()
     result = runner.invoke(
         main,
@@ -118,14 +119,14 @@ def test_save():
     assert result.output.find("://news.ycombinator.com") != -1
 
 
-def test_version():
+def test_version() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--version"])
     assert result.exit_code == 0
     assert result.output == f"waybackpy version {__version__}\n"
 
 
-def test_license():
+def test_license() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--license"])
     assert result.exit_code == 0
@@ -138,7 +139,7 @@ def test_license():
     )
 
 
-def test_only_url():
+def test_only_url() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--url", "https://google.com"])
     assert result.exit_code == 0
@@ -149,7 +150,7 @@ def test_only_url():
     )
 
 
-def test_known_url():
+def test_known_url() -> None:
     # with file generator enabled
     runner = CliRunner()
     result = runner.invoke(
