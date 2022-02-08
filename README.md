@@ -19,7 +19,7 @@
 
 ---
 
-# ⭐️ Introduction
+# <img src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png" width="30"></img> Introduction
 
 Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-python-package.html) and a [CLI](https://www.w3schools.com/whatis/whatis_cli.asp) tool that interfaces with the [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API.
 
@@ -31,7 +31,7 @@ Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-p
 
 These three APIs can be accessed via the waybackpy either by importing it in a script or from the CLI.
 
-## 🏗 Installation
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f3d7.png" width="20"></img> Installation
 
 **Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), from [PyPI](https://pypi.org/) (recommended)**:
 
@@ -55,7 +55,7 @@ conda install -c conda-forge waybackpy
 pip install git+https://github.com/akamhy/waybackpy.git
 ```
 
-## 🐳 Docker Image
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f433.png" width="20"></img> Docker Image
 
 Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
 
@@ -63,7 +63,7 @@ Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
 
 RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
 
-## 🚀 Usage
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f680.png" width="20"></img> Usage
 
 ### As a Python package
 
@@ -132,7 +132,7 @@ Demo video on [asciinema.org](https://asciinema.org), you can copy the text from
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
-## 🛡 License
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e1.png" width="20"></img> License
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
