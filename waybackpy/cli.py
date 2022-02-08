@@ -189,12 +189,14 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     "-st",
     "--start-timestamp",
     "--start_timestamp",
+    "--from",
     help="Start timestamp for CDX API in yyyyMMddhhmmss format.",
 )
 @click.option(
     "-et",
     "--end-timestamp",
     "--end_timestamp",
+    "--to",
     help="End timestamp for CDX API in yyyyMMddhhmmss format.",
 )
 @click.option(
