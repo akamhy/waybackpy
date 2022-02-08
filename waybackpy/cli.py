@@ -59,20 +59,20 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     for url in url_gen:
         url_count += 1
         if not domain:
-            m = re.search("https?://([A-Za-z_0-9.-]+).*", url)
+            match = re.search("https?://([A-Za-z_0-9.-]+).*", url)
 
             domain = "domain-unknown"
 
-            if m:
-                domain = m.group(1)
+            if match:
+                domain = match.group(1)
 
-            file_name = "{domain}-urls-{uid}.txt".format(domain=domain, uid=uid)
+            file_name = f"{domain}-urls-{uid}.txt"
             file_path = os.path.join(os.getcwd(), file_name)
             if not os.path.isfile(file_path):
-                open(file_path, "w+").close()
+                open(file_path, "w+", encoding="utf-8").close()
 
-        with open(file_path, "a") as f:
-            f.write("{url}\n".format(url=url))
+        with open(file_path, "a", encoding="utf-8") as file:
+            file.write(f"{url}\n")
 
         click.echo(url)
 
@@ -302,21 +302,6 @@ def main(  # pylint: disable=no-value-for-parameter
     elif url is None:
         click.echo("No URL detected. Please provide an URL.", err=True)
 
-    elif (
-        not version
-        and not oldest
-        and not newest
-        and not near
-        and not save
-        and not known_urls
-        and not cdx
-    ):
-        click.echo(
-            "Only URL passed, but did not specify what to do with the URL. "
-            "Use --help flag for help using waybackpy.",
-            err=True,
-        )
-
     elif oldest:
         availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
         availability_api.oldest()
@@ -412,6 +397,13 @@ def main(  # pylint: disable=no-value-for-parameter
                     output_string.append(snapshot.archive_url)
 
                 click.echo(" ".join(output_string))
+
+    else:
+        click.echo(
+            "Only URL passed, but did not specify what to do with the URL. "
+            "Use --help flag for help using waybackpy.",
+            err=True,
+        )
 
 
 if __name__ == "__main__":
