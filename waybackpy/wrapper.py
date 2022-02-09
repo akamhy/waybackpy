@@ -113,7 +113,7 @@ class Url:
         """Set the attributes for total backwards compatibility."""
         self.archive_url = self.wayback_machine_availability_api.archive_url
         self.json = self.wayback_machine_availability_api.json
-        self.JSON = self.json # for backwards compatibility, do not remove it.
+        self.JSON = self.json  # for backwards compatibility, do not remove it.
         self.timestamp = self.wayback_machine_availability_api.timestamp()
 
     def total_archives(
