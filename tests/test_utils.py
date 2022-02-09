@@ -1,5 +1,3 @@
-import pytest
-
 from waybackpy import __version__
 from waybackpy.utils import DEFAULT_USER_AGENT
 

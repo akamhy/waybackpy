@@ -15,10 +15,10 @@ import requests
 from . import __version__
 from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
+from .exceptions import ArchiveNotInAvailabilityAPIResponse
 from .save_api import WaybackMachineSaveAPI
 from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
-from .exceptions import ArchiveNotInAvailabilityAPIResponse
 
 
 def echo_availability_api(
