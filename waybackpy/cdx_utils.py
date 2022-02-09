@@ -2,7 +2,7 @@
 Utility functions required for accessing the CDX server API.
 
 These are here in this module so that we don’t make any module too
-big.
+long.
 """
 
 import re
@@ -63,7 +63,7 @@ def get_response(
     backoff_factor: float = 0.5,
 ) -> Union[requests.Response, Exception]:
     """
-    Make get request to the CDX server and return the response.
+    Makes get request to the CDX server and returns the response.
     """
     session = requests.Session()
 

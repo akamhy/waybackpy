@@ -1,5 +1,5 @@
 """
-Module that contains the CDXSnapshot class, CDX records are casted
+Module that contains the CDXSnapshot class, CDX records/lines are casted
 to CDXSnapshot objects for easier access.
 
 The CDX index format is plain text data. Each line ('record') indicates a
