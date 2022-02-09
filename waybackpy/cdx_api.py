@@ -173,7 +173,6 @@ class WaybackMachineCDXServerAPI:
             for i, collapse in enumerate(self.collapses):
                 payload["collapse" + str(i)] = collapse
 
-        # Don't need to return anything as it's dictionary.
         payload["url"] = self.url
 
     def snapshots(self) -> Generator[CDXSnapshot, None, None]:

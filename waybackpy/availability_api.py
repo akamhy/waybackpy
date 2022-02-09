@@ -1,19 +1,19 @@
 """
 This module interfaces the Wayback Machine's availability API.
 
-The interface could be useful for looking up archives and finding archives
+The interface is useful for looking up archives and finding archives
 that are close to a specific date and time.
 
-It has a class called WaybackMachineAvailabilityAPI, and the class has
-methods such as:
+It has a class WaybackMachineAvailabilityAPI, and the class has
+methods like:
 
-near() for looking up archives close to a specific date and time.
+near() for retrieving archives close to a specific date and time.
 
 oldest() for retrieving the first archive URL of the webpage.
 
-newest() for retrieving the latest archive of an URL.
+newest() for retrieving the latest archive of the webpage.
 
-The Wayback Machine Availability response should be a valid JSON and
+The Wayback Machine Availability API response must be a valid JSON and
 if it is not then an exception, InvalidJSONInAvailabilityAPIResponse is raised.
 
 If the Availability API returned valid JSON but archive URL could not be found
@@ -39,7 +39,7 @@ ResponseJSON = Dict[str, Any]
 
 class WaybackMachineAvailabilityAPI:
     """
-    Class that interfaces the availability API of the Wayback Machine.
+    Class that interfaces the Wayback Machine's availability API.
     """
 
     def __init__(
@@ -61,7 +61,7 @@ class WaybackMachineAvailabilityAPI:
     @staticmethod
     def unix_timestamp_to_wayback_timestamp(unix_timestamp: int) -> str:
         """
-        Converts Unix time to wayback Machine timestamp and the Wayback Machine
+        Converts Unix time to Wayback Machine timestamp, Wayback Machine
         timestamp format is yyyyMMddhhmmss.
         """
         return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
@@ -76,10 +76,10 @@ class WaybackMachineAvailabilityAPI:
         """
         String representation of the class. If atleast one API
         call was successfully made then return the archive URL
-        as a string. Else returns "".
+        as a string. Else returns "" (empty string literal).
         """
-        # String should not return anything other than a string object
-        # So, if a string repr is asked for before making any API requests
+        # __str__ can not return anything other than a string object
+        # So, if a string repr is asked even before making a API request
         # just return ""
         if not self.json:
             return ""
@@ -147,7 +147,7 @@ class WaybackMachineAvailabilityAPI:
                 self.json["archived_snapshots"]["closest"]["timestamp"], "%Y%m%d%H%M%S"
             )
 
-        raise ValueError("Could not get timestamp from result")
+        raise ValueError("Timestamp not found in the Availability API's JSON response.")
 
     @property
     def archive_url(self) -> str:
@@ -159,8 +159,8 @@ class WaybackMachineAvailabilityAPI:
         archive_url = ""
         data = self.json
 
-        # If the user didn't invoke oldest, newest or near but tries to access the
-        # archive_url attribute then assume they are fine with any archive
+        # If the user didn't invoke oldest, newest or near but tries to access
+        # archive_url attribute then assume they that are fine with any archive
         # and invoke the oldest method.
         if not data:
             self.oldest()
@@ -172,10 +172,10 @@ class WaybackMachineAvailabilityAPI:
                 not data or not data["archived_snapshots"]
             ):
                 self.setup_json()  # It makes a new API call
-                data = self.json  # json() updated the value of JSON attribute
+                data = self.json  # setup_json() updates value of json attribute
 
-            # If we exhausted the max_tries, then we give up and
-            # raise exception.
+            # If exhausted max_tries, then give up and
+            # raise ArchiveNotInAvailabilityAPIResponse.
 
             if not data or not data["archived_snapshots"]:
                 raise ArchiveNotInAvailabilityAPIResponse(
@@ -198,7 +198,7 @@ class WaybackMachineAvailabilityAPI:
     def wayback_timestamp(**kwargs: int) -> str:
         """
         Prepends zero before the year, month, day, hour and minute so that they
-        are conformable with the YYYYMMDDhhmmss wayback machine timestamp format.
+        are conformable with the YYYYMMDDhhmmss Wayback Machine timestamp format.
         """
         return "".join(
             str(kwargs[key]).zfill(2)
@@ -218,7 +218,7 @@ class WaybackMachineAvailabilityAPI:
         Passes the current UNIX time to near() for retrieving the newest archive
         from the availability API.
 
-        We assume that wayback machine can not archive the future of a webpage.
+        Remember UNIX time is UTC and Wayback Machine is also UTC based.
         """
         return self.near(unix_timestamp=int(time.time()))
 
@@ -232,7 +232,8 @@ class WaybackMachineAvailabilityAPI:
         unix_timestamp: Optional[int] = None,
     ) -> "WaybackMachineAvailabilityAPI":
         """
-        The main method for the Class, oldest() and newest() are dependent on it.
+        The most important method of this Class, oldest() and newest() are
+        dependent on it.
 
         It generates the timestamp based on the input either by calling the
         unix_timestamp_to_wayback_timestamp or wayback_timestamp method with
@@ -240,8 +241,8 @@ class WaybackMachineAvailabilityAPI:
 
         Adds the timestamp to the payload dictionary.
 
-        And finally invoking the json method to make the API call then returns
-        the instance.
+        And finally invokes the setup_json method to make the API call then
+        finally returns the instance.
         """
         if unix_timestamp:
             timestamp = self.unix_timestamp_to_wayback_timestamp(unix_timestamp)

@@ -12,20 +12,7 @@ class WaybackError(Exception):
     1) Wayback Machine API Service is unreachable/down.
     2) You passed illegal arguments.
 
-    All other exceptions are inherited from this class.
-    """
-
-
-class RedirectSaveError(WaybackError):
-    """
-    Raised when the original URL is redirected and the
-    redirect URL is archived but not the original URL.
-    """
-
-
-class URLError(Exception):
-    """
-    Raised when malformed URLs are passed as arguments.
+    All other exceptions are inherited from this main exception.
     """
 
 
@@ -33,6 +20,8 @@ class TooManyRequestsError(WaybackError):
     """
     Raised when you make more than 15 requests per
     minute and the Wayback Machine returns 429.
+
+    See https://github.com/akamhy/waybackpy/issues/131
     """
 
 
