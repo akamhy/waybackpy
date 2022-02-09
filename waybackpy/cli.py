@@ -7,7 +7,7 @@ import random
 import re
 import string
 from json import dumps
-from typing import Generator, List, Optional
+from typing import Any, Generator, List, Optional
 
 import click
 import requests
@@ -41,6 +41,70 @@ def echo_availability_api(
     if json:
         click.echo("JSON response:")
         click.echo(dumps(availability_api_instance.json))
+
+
+def handle_cdx(data: List[Any]) -> None:
+    """
+    Handles the CDX CLI options and output.
+    """
+    url = data[0]
+    user_agent = data[1]
+    start_timestamp = data[2]
+    end_timestamp = data[3]
+    cdx_filter = data[4]
+    collapse = data[5]
+    cdx_print = data[6]
+    limit = data[7]
+    gzip = data[8]
+    match_type = data[9]
+
+    filters = list(cdx_filter)
+    collapses = list(collapse)
+    cdx_print = list(cdx_print)
+
+    cdx_api = WaybackMachineCDXServerAPI(
+        url,
+        user_agent=user_agent,
+        start_timestamp=start_timestamp,
+        end_timestamp=end_timestamp,
+        filters=filters,
+        match_type=match_type,
+        gzip=gzip,
+        collapses=collapses,
+        limit=limit,
+    )
+
+    snapshots = cdx_api.snapshots()
+
+    for snapshot in snapshots:
+        if len(cdx_print) == 0:
+            click.echo(snapshot)
+        else:
+            output_string = []
+            if any(val in cdx_print for val in ["urlkey", "url-key", "url_key"]):
+                output_string.append(snapshot.urlkey)
+            if any(
+                val in cdx_print for val in ["timestamp", "time-stamp", "time_stamp"]
+            ):
+                output_string.append(snapshot.timestamp)
+            if "original" in cdx_print:
+                output_string.append(snapshot.original)
+            if any(val in cdx_print for val in ["mimetype", "mime-type", "mime_type"]):
+                output_string.append(snapshot.mimetype)
+            if any(
+                val in cdx_print for val in ["statuscode", "status-code", "status_code"]
+            ):
+                output_string.append(snapshot.statuscode)
+            if "digest" in cdx_print:
+                output_string.append(snapshot.digest)
+            if "length" in cdx_print:
+                output_string.append(snapshot.length)
+            if any(
+                val in cdx_print for val in ["archiveurl", "archive-url", "archive_url"]
+            ):
+                output_string.append(snapshot.archive_url)
+
+            click.echo(" ".join(output_string))
 
 
 def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
@@ -347,58 +411,19 @@ def main(  # pylint: disable=no-value-for-parameter
                 click.echo(url_)
 
     elif cdx:
-        filters = list(cdx_filter)
-        collapses = list(collapse)
-        cdx_print = list(cdx_print)
-
-        cdx_api = WaybackMachineCDXServerAPI(
+        data = [
             url,
-            user_agent=user_agent,
-            start_timestamp=start_timestamp,
-            end_timestamp=end_timestamp,
-            filters=filters,
-            match_type=match_type,
-            gzip=gzip,
-            collapses=collapses,
-            limit=limit,
-        )
-
-        snapshots = cdx_api.snapshots()
-
-        for snapshot in snapshots:
-            if len(cdx_print) == 0:
-                click.echo(snapshot)
-            else:
-                output_string = []
-                if any(val in cdx_print for val in ["urlkey", "url-key", "url_key"]):
-                    output_string.append(snapshot.urlkey)
-                if any(
-                    val in cdx_print
-                    for val in ["timestamp", "time-stamp", "time_stamp"]
-                ):
-                    output_string.append(snapshot.timestamp)
-                if "original" in cdx_print:
-                    output_string.append(snapshot.original)
-                if any(
-                    val in cdx_print for val in ["mimetype", "mime-type", "mime_type"]
-                ):
-                    output_string.append(snapshot.mimetype)
-                if any(
-                    val in cdx_print
-                    for val in ["statuscode", "status-code", "status_code"]
-                ):
-                    output_string.append(snapshot.statuscode)
-                if "digest" in cdx_print:
-                    output_string.append(snapshot.digest)
-                if "length" in cdx_print:
-                    output_string.append(snapshot.length)
-                if any(
-                    val in cdx_print
-                    for val in ["archiveurl", "archive-url", "archive_url"]
-                ):
-                    output_string.append(snapshot.archive_url)
-
-                click.echo(" ".join(output_string))
+            user_agent,
+            start_timestamp,
+            end_timestamp,
+            cdx_filter,
+            collapse,
+            cdx_print,
+            limit,
+            gzip,
+            match_type,
+        ]
+        handle_cdx(data)
 
     else:
         click.echo(
