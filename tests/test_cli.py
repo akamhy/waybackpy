@@ -1,8 +1,8 @@
 import requests
 from click.testing import CliRunner
 
-from waybackpy.cli import main
 from waybackpy import __version__
+from waybackpy.cli import main
 
 
 def test_oldest() -> None:
