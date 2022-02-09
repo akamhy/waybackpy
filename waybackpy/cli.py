@@ -301,7 +301,7 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     "-l",
     "--limit",
     help="Number of maximum record that CDX API is asked to return per API call, "
-    + "default value is 500 records.",
+    + "default value is 25000 records.",
 )
 @click.option(
     "-cp",
