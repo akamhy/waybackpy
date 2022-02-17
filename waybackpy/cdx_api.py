@@ -16,6 +16,7 @@ from .cdx_utils import (
     check_collapses,
     check_filters,
     check_match_type,
+    check_sort,
     full_url,
     get_response,
     get_total_pages,
@@ -44,6 +45,7 @@ class WaybackMachineCDXServerAPI:
         end_timestamp: Optional[str] = None,
         filters: Optional[List[str]] = None,
         match_type: Optional[str] = None,
+        sort: Optional[str] = None,
         gzip: Optional[str] = None,
         collapses: Optional[List[str]] = None,
         limit: Optional[str] = None,
@@ -57,6 +59,8 @@ class WaybackMachineCDXServerAPI:
         check_filters(self.filters)
         self.match_type = None if match_type is None else str(match_type).strip()
         check_match_type(self.match_type, self.url)
+        self.sort = None if sort is None else str(sort).strip()
+        check_sort(self.sort)
         self.gzip = gzip
         self.collapses = [] if collapses is None else collapses
         check_collapses(self.collapses)
@@ -164,6 +168,9 @@ class WaybackMachineCDXServerAPI:
 
         if self.match_type:
             payload["matchType"] = self.match_type
+
+        if self.sort:
+            payload["sort"] = self.sort
 
         if self.filters and len(self.filters) > 0:
             for i, _filter in enumerate(self.filters):
