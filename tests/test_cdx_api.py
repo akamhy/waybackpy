@@ -66,7 +66,7 @@ def test_c() -> None:
         timestamp = snapshot.timestamp
         break
 
-    assert "google.com" in archive_url
+    assert str(archive_url).find("google.com")
     assert "20101010" in timestamp
 
 
@@ -88,5 +88,5 @@ def test_d() -> None:
     count = 0
     for snapshot in snapshots:
         count += 1
-        assert "akamhy.github.io" in snapshot.archive_url
+        assert str(snapshot.archive_url).find("akamhy.github.io")
     assert count > 50
