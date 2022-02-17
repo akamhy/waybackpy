@@ -63,6 +63,9 @@ def handle_cdx(data: List[Any]) -> None:
     limit = data[7]
     gzip = data[8]
     match_type = data[9]
+    sort = data[10]
+    use_pagination = data[11]
+    closest = data[12]
 
     filters = list(cdx_filter)
     collapses = list(collapse)
@@ -73,8 +76,11 @@ def handle_cdx(data: List[Any]) -> None:
         user_agent=user_agent,
         start_timestamp=start_timestamp,
         end_timestamp=end_timestamp,
+        closest=closest,
         filters=filters,
         match_type=match_type,
+        sort=sort,
+        use_pagination=use_pagination,
         gzip=gzip,
         collapses=collapses,
         limit=limit,
@@ -249,7 +255,6 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     help="Use with '--known_urls' to save the URLs in file at current directory.",
 )
 @click.option(
-    "-c",
     "--cdx",
     default=False,
     is_flag=True,
@@ -270,6 +275,12 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     help="End timestamp for CDX API in yyyyMMddhhmmss format.",
 )
 @click.option(
+    "-C",
+    "--closest",
+    help="Archive that are closest the timestamp passed as arguments to this "
+    + "parameter.",
+)
+@click.option(
     "-f",
     "--cdx-filter",
     "--cdx_filter",
@@ -284,6 +295,20 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     help="The default behavior is to return matches for an exact URL. "
     + "However, the CDX server can also return results matching a certain prefix, "
     + "a certain host, or all sub-hosts by using the match_type",
+)
+@click.option(
+    "-st",
+    "--sort",
+    help="Choose one from default, closest or reverse. It returns sorted CDX entries "
+    + "in the response.",
+)
+@click.option(
+    "-up",
+    "--use-pagination",
+    "--use_pagination",
+    default=False,
+    is_flag=True,
+    help="Use the pagination API of the CDX server instead of the default one.",
 )
 @click.option(
     "-gz",
@@ -326,6 +351,7 @@ def main(  # pylint: disable=no-value-for-parameter
     subdomain: bool,
     file: bool,
     cdx: bool,
+    use_pagination: bool,
     cdx_filter: List[str],
     collapse: List[str],
     cdx_print: List[str],
@@ -337,7 +363,9 @@ def main(  # pylint: disable=no-value-for-parameter
     minute: Optional[int] = None,
     start_timestamp: Optional[str] = None,
     end_timestamp: Optional[str] = None,
+    closest: Optional[str] = None,
     match_type: Optional[str] = None,
+    sort: Optional[str] = None,
     gzip: Optional[str] = None,
     limit: Optional[str] = None,
 ) -> None:
@@ -428,6 +456,9 @@ def main(  # pylint: disable=no-value-for-parameter
             limit,
             gzip,
             match_type,
+            sort,
+            use_pagination,
+            closest,
         ]
         handle_cdx(data)
 

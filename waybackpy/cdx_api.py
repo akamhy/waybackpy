@@ -50,6 +50,8 @@ class WaybackMachineCDXServerAPI:
         collapses: Optional[List[str]] = None,
         limit: Optional[str] = None,
         max_tries: int = 3,
+        use_pagination: bool = False,
+        closest: Optional[str] = None,
     ) -> None:
         self.url = str(url).strip().replace(" ", "%20")
         self.user_agent = user_agent
@@ -66,60 +68,58 @@ class WaybackMachineCDXServerAPI:
         check_collapses(self.collapses)
         self.limit = 25000 if limit is None else limit
         self.max_tries = max_tries
+        self.use_pagination = use_pagination
+        self.closest = None if closest is None else str(closest)
         self.last_api_request_url: Optional[str] = None
-        self.use_page = False
         self.endpoint = "https://web.archive.org/cdx/search/cdx"
 
     def cdx_api_manager(
-        self, payload: Dict[str, str], headers: Dict[str, str], use_page: bool = False
+        self, payload: Dict[str, str], headers: Dict[str, str]
     ) -> Generator[str, None, None]:
         """
-        Manages the API calls for the instance, it automatically selects the best
-        parameters by looking as the query of the end-user. For bigger queries
-        automatically use the CDX pagination API and for smaller queries use the
-        normal API.
-
-        CDX Server API is a complex API and to make it easy for the end user to
-        consume it the CDX manager(this method) handles the selection of the
-        API output, whether to use the pagination API or not.
-
-        For doing large/bulk queries, the use of the Pagination API is
-        recommended by the Wayback Machine authors. And it determines if the
-        query would be large or not by using the showNumPages=true parameter,
-        this tells the number of pages of CDX DATA that the pagination API
-        will return.
-
-        If the number of page is less than 2 we use the normal non-pagination
-        API as the pagination API is known to lag and for big queries it should
-        not matter but for queries where the number of pages are less this
-        method chooses accuracy over the pagination API.
+        This method uses the pagination API of the CDX server if
+        use_pagination attribute is True else uses the standard
+        CDX server response data.
         """
-        # number of pages that will returned by the pagination API.
-        # get_total_pages adds the showNumPages=true param to pagination API
-        # requests.
-        # This is a special query that will return a single number indicating
-        # the number of pages.
-        total_pages = get_total_pages(self.url, self.user_agent)
 
-        if use_page is True and total_pages >= 2:
-            blank_pages = 0
+        # When using the pagination API of the CDX server.
+        if self.use_pagination is True:
+
+            total_pages = get_total_pages(self.url, self.user_agent)
+            successive_blank_pages = 0
+
             for i in range(total_pages):
                 payload["page"] = str(i)
 
                 url = full_url(self.endpoint, params=payload)
                 res = get_response(url, headers=headers)
+
                 if isinstance(res, Exception):
                     raise res
 
                 self.last_api_request_url = url
                 text = res.text
-                if len(text) == 0:
-                    blank_pages += 1
 
-                if blank_pages >= 2:
+                # Reset the counter if the last page was blank
+                # but the current page is not.
+                if successive_blank_pages == 1:
+                    if len(text) != 0:
+                        successive_blank_pages = 0
+
+                # Increase the succesive page counter on encountering
+                # blank page.
+                if len(text) == 0:
+                    successive_blank_pages += 1
+
+                # If two succesive pages are blank
+                # then we don't have any more pages left to
+                # iterate.
+                if successive_blank_pages >= 2:
                     break
 
                 yield text
+
+        # When not using the pagination API of the CDX server
         else:
             payload["showResumeKey"] = "true"
             payload["limit"] = str(self.limit)
@@ -166,6 +166,9 @@ class WaybackMachineCDXServerAPI:
         if self.gzip is None:
             payload["gzip"] = "false"
 
+        if self.closest:
+            payload["closest"] = self.closest
+
         if self.match_type:
             payload["matchType"] = self.match_type
 
@@ -206,13 +209,7 @@ class WaybackMachineCDXServerAPI:
 
         self.add_payload(payload)
 
-        if not self.start_timestamp or self.end_timestamp:
-            self.use_page = True
-
-        if self.collapses != []:
-            self.use_page = False
-
-        entries = self.cdx_api_manager(payload, headers, use_page=self.use_page)
+        entries = self.cdx_api_manager(payload, headers)
 
         for entry in entries:
 

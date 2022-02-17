@@ -13,7 +13,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .exceptions import WaybackError
+from .exceptions import BlockedSiteError, WaybackError
 from .utils import DEFAULT_USER_AGENT
 
 
@@ -28,10 +28,36 @@ def get_total_pages(url: str, user_agent: str = DEFAULT_USER_AGENT) -> int:
     headers = {"User-Agent": user_agent}
     request_url = full_url(endpoint, params=payload)
     response = get_response(request_url, headers=headers)
-
+    check_for_blocked_site(response, url)
     if isinstance(response, requests.Response):
         return int(response.text.strip())
     raise response
+
+
+def check_for_blocked_site(
+    response: Union[requests.Response, Exception], url: Optional[str] = None
+) -> None:
+    """
+    Checks that the URL can be archived by wayback machine or not.
+    robots.txt policy of the site may prevent the wayback machine.
+    """
+    # see https://github.com/akamhy/waybackpy/issues/157
+
+    # the following if block is to make mypy happy.
+    if isinstance(response, Exception):
+        raise response
+
+    if not url:
+        url = "The requested content"
+    if (
+        "org.archive.util.io.RuntimeIOException: "
+        + "org.archive.wayback.exception.AdministrativeAccessControlException: "
+        + "Blocked Site Error"
+        in response.text.strip()
+    ):
+        raise BlockedSiteError(
+            f"{url} is excluded from Wayback Machine by the site's robots.txt policy."
+        )
 
 
 def full_url(endpoint: str, params: Dict[str, Any]) -> str:
@@ -76,6 +102,7 @@ def get_response(
     session.mount("https://", HTTPAdapter(max_retries=retries_))
     response = session.get(url, headers=headers)
     session.close()
+    check_for_blocked_site(response)
     return response
 
 

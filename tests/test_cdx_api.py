@@ -32,7 +32,11 @@ def test_b() -> None:
     url = "https://www.google.com"
 
     wayback = WaybackMachineCDXServerAPI(
-        url=url, user_agent=user_agent, start_timestamp="202101", end_timestamp="202112"
+        url=url,
+        user_agent=user_agent,
+        start_timestamp="202101",
+        end_timestamp="202112",
+        collapses=["urlkey"],
     )
     #  timeframe bound prefix matching enabled along with active urlkey based collapsing
 
@@ -40,3 +44,49 @@ def test_b() -> None:
 
     for snapshot in snapshots:
         assert snapshot.timestamp.startswith("2021")
+
+
+def test_c() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+    url = "https://www.google.com"
+
+    cdx = WaybackMachineCDXServerAPI(
+        url=url,
+        user_agent=user_agent,
+        closest="201010101010",
+        sort="closest",
+        limit="1",
+    )
+    snapshots = cdx.snapshots()
+    for snapshot in snapshots:
+        archive_url = snapshot.archive_url
+        timestamp = snapshot.timestamp
+        break
+
+    assert str(archive_url).find("google.com")
+    assert "20101010" in timestamp
+
+
+def test_d() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+
+    cdx = WaybackMachineCDXServerAPI(
+        url="akamhy.github.io",
+        user_agent=user_agent,
+        match_type="prefix",
+        use_pagination=True,
+        filters=["statuscode:200"],
+    )
+    snapshots = cdx.snapshots()
+
+    count = 0
+    for snapshot in snapshots:
+        count += 1
+        assert str(snapshot.archive_url).find("akamhy.github.io")
+    assert count > 50

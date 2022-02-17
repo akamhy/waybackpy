@@ -219,4 +219,5 @@ def test_archive_url() -> None:
     save_api.saved_archive = (
         "https://web.archive.org/web/20220124063056/https://example.com/"
     )
+    save_api._archive_url = save_api.saved_archive
     assert save_api.archive_url == save_api.saved_archive

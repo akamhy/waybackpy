@@ -16,6 +16,13 @@ class WaybackError(Exception):
     """
 
 
+class BlockedSiteError(WaybackError):
+    """
+    Raised when the archives for website/URLs that was excluded from Wayback
+    Machine are requested via the CDX server API.
+    """
+
+
 class TooManyRequestsError(WaybackError):
     """
     Raised when you make more than 15 requests per
