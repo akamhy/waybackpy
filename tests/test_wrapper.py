@@ -35,4 +35,11 @@ def test_total_archives() -> None:
 
 def test_known_urls() -> None:
     wayback = Url("akamhy.github.io")
-    assert len(list(wayback.known_urls())) > 40
+    assert len(list(wayback.known_urls(subdomain=True))) > 40
+
+
+def test_Save() -> None:
+    wayback = Url("https://en.wikipedia.org/wiki/Asymptotic_equipartition_property")
+    wayback.save()
+    archive_url = str(wayback.archive_url)
+    assert archive_url.find("Asymptotic_equipartition_property") != -1
