@@ -6,6 +6,7 @@ from waybackpy.cdx_utils import (
     check_collapses,
     check_filters,
     check_match_type,
+    check_sort,
     full_url,
     get_response,
     get_total_pages,
@@ -101,3 +102,12 @@ def test_check_match_type() -> None:
 
     with pytest.raises(WaybackError):
         check_match_type("not a valid type", "url")
+
+
+def test_check_sort() -> None:
+    assert check_sort("default")
+    assert check_sort("closest")
+    assert check_sort("reverse")
+
+    with pytest.raises(WaybackError):
+        assert check_sort("random crap")

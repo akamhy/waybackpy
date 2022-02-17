@@ -151,3 +151,24 @@ def check_match_type(match_type: Optional[str], url: str) -> bool:
         raise WaybackError(exc_message)
 
     return True
+
+
+def check_sort(sort: Optional[str]) -> bool:
+    """
+    Check that the sort argument passed by the end-user is valid.
+    If not valid then raise WaybackError.
+    """
+
+    legal_sort = ["default", "closest", "reverse"]
+
+    if not sort:
+        return True
+
+    if sort not in legal_sort:
+        exc_message = (
+            f"{sort} is not an allowed argument for sort.\n"
+            "Use one from 'default', 'closest' or 'reverse'"
+        )
+        raise WaybackError(exc_message)
+
+    return True
