@@ -84,6 +84,25 @@ False
 datetime.datetime(2022, 1, 18, 12, 52, 49)
 ```
 
+#### CDX API aka CDXServerAPI
+
+```python
+>>> from waybackpy import WaybackMachineCDXServerAPI
+>>> url = "https://pypi.org"
+>>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
+>>> cdx = WaybackMachineCDXServerAPI(url, user_agent, start_timestamp=2016, end_timestamp=2017)
+>>> for item in cdx.snapshots():
+...     print(item.archive_url)
+...
+https://web.archive.org/web/20160110011047/http://pypi.org/
+https://web.archive.org/web/20160305104847/http://pypi.org/
+.
+. # URLS REDACTED FOR READABILITY
+.
+https://web.archive.org/web/20171127171549/https://pypi.org/
+https://web.archive.org/web/20171206002737/http://pypi.org:80/
+```
+
 #### Availability API
 
 ```python
@@ -102,25 +121,6 @@ https://web.archive.org/web/20220118150444/https://www.google.com/
 >>>
 >>> availability_api.near(year=2010, month=10, day=10, hour=10)
 https://web.archive.org/web/20101010101708/http://www.google.com/
-```
-
-#### CDX API aka CDXServerAPI
-
-```python
->>> from waybackpy import WaybackMachineCDXServerAPI
->>> url = "https://pypi.org"
->>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
->>> cdx = WaybackMachineCDXServerAPI(url, user_agent, start_timestamp=2016, end_timestamp=2017)
->>> for item in cdx.snapshots():
-...     print(item.archive_url)
-...
-https://web.archive.org/web/20160110011047/http://pypi.org/
-https://web.archive.org/web/20160305104847/http://pypi.org/
-.
-. # URLS REDACTED FOR READABILITY
-.
-https://web.archive.org/web/20171127171549/https://pypi.org/
-https://web.archive.org/web/20171206002737/http://pypi.org:80/
 ```
 
 > Documentation is at <https://github.com/akamhy/waybackpy/wiki/Python-package-docs>.
