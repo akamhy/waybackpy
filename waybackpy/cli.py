@@ -6,16 +6,48 @@ import os
 import random
 import re
 import string
-from typing import Any, Generator, List, Optional
+from typing import Any, Dict, Generator, List, Optional
 
 import click
 import requests
 
 from . import __version__
 from .cdx_api import WaybackMachineCDXServerAPI
+from .exceptions import BlockedSiteError, NoCDXRecordFound
 from .save_api import WaybackMachineSaveAPI
 from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
+
+
+def handle_cdx_closest_derivative_methods(
+    cdx_api: "WaybackMachineCDXServerAPI",
+    oldest: bool,
+    near: bool,
+    newest: bool,
+    near_args: Optional[Dict[str, int]] = None,
+) -> None:
+    """
+    Handles the closest parameter derivative methods.
+
+    near, newest and oldest use the closest parameter with active
+    closest based sorting.
+    """
+    try:
+        if near:
+            if near_args:
+                archive_url = cdx_api.near(**near_args).archive_url
+            else:
+                archive_url = cdx_api.near().archive_url
+        elif newest:
+            archive_url = cdx_api.newest().archive_url
+        elif oldest:
+            archive_url = cdx_api.oldest().archive_url
+        click.echo("Archive URL:")
+        click.echo(archive_url)
+    except NoCDXRecordFound as exc:
+        click.echo(click.style("NoCDXRecordFound: ", fg="red") + str(exc), err=True)
+    except BlockedSiteError as exc:
+        click.echo(click.style("BlockedSiteError: ", fg="red") + str(exc), err=True)
 
 
 def handle_cdx(data: List[Any]) -> None:
@@ -362,17 +394,20 @@ def main(  # pylint: disable=no-value-for-parameter
             ).text
         )
     elif url is None:
-        click.echo("No URL detected. Please provide an URL.", err=True)
+        click.echo(
+            click.style("NoURLDetected: ", fg="red")
+            + "No URL detected. "
+            + "Please provide an URL.",
+            err=True,
+        )
 
     elif oldest:
         cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
-        click.echo("Archive URL:")
-        click.echo(cdx_api.oldest().archive_url)
+        handle_cdx_closest_derivative_methods(cdx_api, oldest, near, newest)
 
     elif newest:
         cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
-        click.echo("Archive URL:")
-        click.echo(cdx_api.newest().archive_url)
+        handle_cdx_closest_derivative_methods(cdx_api, oldest, near, newest)
 
     elif near:
         cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
@@ -382,8 +417,9 @@ def main(  # pylint: disable=no-value-for-parameter
         for key, arg in zip(keys, args_arr):
             if arg:
                 near_args[key] = arg
-        click.echo("Archive URL:")
-        click.echo(cdx_api.near(**near_args).archive_url)
+        handle_cdx_closest_derivative_methods(
+            cdx_api, oldest, near, newest, near_args=near_args
+        )
 
     elif save:
         save_api = WaybackMachineSaveAPI(url, user_agent=user_agent)
@@ -425,9 +461,11 @@ def main(  # pylint: disable=no-value-for-parameter
         handle_cdx(data)
 
     else:
+
         click.echo(
-            "Only URL passed, but did not specify what to do with the URL. "
-            "Use --help flag for help using waybackpy.",
+            click.style("NoCommandFound: ", fg="red")
+            + "Only URL passed, but did not specify what to do with the URL. "
+            + "Use --help flag for help using waybackpy.",
             err=True,
         )
 
