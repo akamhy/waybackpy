@@ -379,7 +379,7 @@ def main(  # pylint: disable=no-value-for-parameter
 
     Documentation: https://github.com/akamhy/waybackpy/wiki/CLI-docs
 
-    waybackpy - CLI usage(Demo video): https://asciinema.org/a/464367
+    waybackpy - CLI usage(Demo video): https://asciinema.org/a/469890
 
     Released under the MIT License. Use the flag --license for license.
 
