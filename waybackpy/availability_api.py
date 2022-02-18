@@ -32,7 +32,11 @@ from .exceptions import (
     ArchiveNotInAvailabilityAPIResponse,
     InvalidJSONInAvailabilityAPIResponse,
 )
-from .utils import DEFAULT_USER_AGENT
+from .utils import (
+    DEFAULT_USER_AGENT,
+    unix_timestamp_to_wayback_timestamp,
+    wayback_timestamp,
+)
 
 ResponseJSON = Dict[str, Any]
 
@@ -57,14 +61,6 @@ class WaybackMachineAvailabilityAPI:
         self.api_call_time_gap: int = 5
         self.json: Optional[ResponseJSON] = None
         self.response: Optional[Response] = None
-
-    @staticmethod
-    def unix_timestamp_to_wayback_timestamp(unix_timestamp: int) -> str:
-        """
-        Converts Unix time to Wayback Machine timestamp, Wayback Machine
-        timestamp format is yyyyMMddhhmmss.
-        """
-        return datetime.utcfromtimestamp(int(unix_timestamp)).strftime("%Y%m%d%H%M%S")
 
     def __repr__(self) -> str:
         """
@@ -194,17 +190,6 @@ class WaybackMachineAvailabilityAPI:
             )
         return archive_url
 
-    @staticmethod
-    def wayback_timestamp(**kwargs: int) -> str:
-        """
-        Prepends zero before the year, month, day, hour and minute so that they
-        are conformable with the YYYYMMDDhhmmss Wayback Machine timestamp format.
-        """
-        return "".join(
-            str(kwargs[key]).zfill(2)
-            for key in ["year", "month", "day", "hour", "minute"]
-        )
-
     def oldest(self) -> "WaybackMachineAvailabilityAPI":
         """
         Passes the date 1994-01-01 to near which should return the oldest archive
@@ -245,10 +230,10 @@ class WaybackMachineAvailabilityAPI:
         finally returns the instance.
         """
         if unix_timestamp:
-            timestamp = self.unix_timestamp_to_wayback_timestamp(unix_timestamp)
+            timestamp = unix_timestamp_to_wayback_timestamp(unix_timestamp)
         else:
             now = datetime.utcnow().timetuple()
-            timestamp = self.wayback_timestamp(
+            timestamp = wayback_timestamp(
                 year=now.tm_year if year is None else year,
                 month=now.tm_mon if month is None else month,
                 day=now.tm_mday if day is None else day,

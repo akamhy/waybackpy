@@ -73,6 +73,12 @@ class CDXSnapshot:
             f"https://web.archive.org/web/{self.timestamp}/{self.original}"
         )
 
+    def __repr__(self) -> str:
+        """
+        Same as __str__()
+        """
+        return str(self)
+
     def __str__(self) -> str:
         """
         The string representation is same as the line returned by the

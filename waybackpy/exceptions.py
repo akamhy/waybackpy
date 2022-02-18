@@ -16,6 +16,14 @@ class WaybackError(Exception):
     """
 
 
+class NoCDXRecordFound(WaybackError):
+    """
+    No records returned by the CDX server for a query.
+    Raised when the user invokes near(), newest() or oldest() methods
+    and there are no archives.
+    """
+
+
 class BlockedSiteError(WaybackError):
     """
     Raised when the archives for website/URLs that was excluded from Wayback

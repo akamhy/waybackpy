@@ -6,47 +6,48 @@ import os
 import random
 import re
 import string
-from json import dumps
-from typing import Any, Generator, List, Optional
+from typing import Any, Dict, Generator, List, Optional
 
 import click
 import requests
 
 from . import __version__
-from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
-from .exceptions import ArchiveNotInAvailabilityAPIResponse
+from .exceptions import BlockedSiteError, NoCDXRecordFound
 from .save_api import WaybackMachineSaveAPI
 from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
 
 
-def echo_availability_api(
-    availability_api_instance: WaybackMachineAvailabilityAPI, json: bool
+def handle_cdx_closest_derivative_methods(
+    cdx_api: "WaybackMachineCDXServerAPI",
+    oldest: bool,
+    near: bool,
+    newest: bool,
+    near_args: Optional[Dict[str, int]] = None,
 ) -> None:
     """
-    Output for method that use the availability API.
-    Near, oldest and newest output via this function.
+    Handles the closest parameter derivative methods.
+
+    near, newest and oldest use the closest parameter with active
+    closest based sorting.
     """
     try:
-        if availability_api_instance.archive_url:
-            archive_url = availability_api_instance.archive_url
-    except ArchiveNotInAvailabilityAPIResponse as error:
-        message = (
-            "NO ARCHIVE FOUND - The requested URL is probably "
-            + "not yet archived or if the URL was recently archived then it is "
-            + "not yet available via the Wayback Machine's availability API "
-            + "because of database lag and should be available after some time."
-        )
-
-        click.echo(message + "\nJSON response:\n" + str(error), err=True)
-        return
-
-    click.echo("Archive URL:")
-    click.echo(archive_url)
-    if json:
-        click.echo("JSON response:")
-        click.echo(dumps(availability_api_instance.json))
+        if near:
+            if near_args:
+                archive_url = cdx_api.near(**near_args).archive_url
+            else:
+                archive_url = cdx_api.near().archive_url
+        elif newest:
+            archive_url = cdx_api.newest().archive_url
+        elif oldest:
+            archive_url = cdx_api.oldest().archive_url
+        click.echo("Archive URL:")
+        click.echo(archive_url)
+    except NoCDXRecordFound as exc:
+        click.echo(click.style("NoCDXRecordFound: ", fg="red") + str(exc), err=True)
+    except BlockedSiteError as exc:
+        click.echo(click.style("BlockedSiteError: ", fg="red") + str(exc), err=True)
 
 
 def handle_cdx(data: List[Any]) -> None:
@@ -145,7 +146,8 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
             file_name = f"{domain}-urls-{uid}.txt"
             file_path = os.path.join(os.getcwd(), file_name)
             if not os.path.isfile(file_path):
-                open(file_path, "w+", encoding="utf-8").close()
+                with open(file_path, "w+", encoding="utf-8") as file:
+                    file.close()
 
         with open(file_path, "a", encoding="utf-8") as file:
             file.write(f"{url}\n")
@@ -198,13 +200,6 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     default=False,
     is_flag=True,
     help="Retrieve the oldest archive of URL.",
-)
-@click.option(
-    "-j",
-    "--json",
-    default=False,
-    is_flag=True,
-    help="JSON data returned by the availability API.",
 )
 @click.option(
     "-N",
@@ -343,7 +338,6 @@ def main(  # pylint: disable=no-value-for-parameter
     show_license: bool,
     newest: bool,
     oldest: bool,
-    json: bool,
     near: bool,
     save: bool,
     headers: bool,
@@ -400,28 +394,32 @@ def main(  # pylint: disable=no-value-for-parameter
             ).text
         )
     elif url is None:
-        click.echo("No URL detected. Please provide an URL.", err=True)
+        click.echo(
+            click.style("NoURLDetected: ", fg="red")
+            + "No URL detected. "
+            + "Please provide an URL.",
+            err=True,
+        )
 
     elif oldest:
-        availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
-        availability_api.oldest()
-        echo_availability_api(availability_api, json)
+        cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
+        handle_cdx_closest_derivative_methods(cdx_api, oldest, near, newest)
 
     elif newest:
-        availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
-        availability_api.newest()
-        echo_availability_api(availability_api, json)
+        cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
+        handle_cdx_closest_derivative_methods(cdx_api, oldest, near, newest)
 
     elif near:
-        availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
+        cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
         near_args = {}
         keys = ["year", "month", "day", "hour", "minute"]
         args_arr = [year, month, day, hour, minute]
         for key, arg in zip(keys, args_arr):
             if arg:
                 near_args[key] = arg
-        availability_api.near(**near_args)
-        echo_availability_api(availability_api, json)
+        handle_cdx_closest_derivative_methods(
+            cdx_api, oldest, near, newest, near_args=near_args
+        )
 
     elif save:
         save_api = WaybackMachineSaveAPI(url, user_agent=user_agent)
@@ -463,9 +461,11 @@ def main(  # pylint: disable=no-value-for-parameter
         handle_cdx(data)
 
     else:
+
         click.echo(
-            "Only URL passed, but did not specify what to do with the URL. "
-            "Use --help flag for help using waybackpy.",
+            click.style("NoCommandFound: ", fg="red")
+            + "Only URL passed, but did not specify what to do with the URL. "
+            + "Use --help flag for help using waybackpy.",
             err=True,
         )
 
