@@ -42,39 +42,6 @@ def test_near() -> None:
     )
 
 
-def test_json() -> None:
-    runner = CliRunner()
-    result = runner.invoke(
-        main,
-        [
-            "--url",
-            " https://apple.com ",
-            "--near",
-            "--year",
-            "2010",
-            "--month",
-            "2",
-            "--day",
-            "8",
-            "--hour",
-            "12",
-            "--json",
-        ],
-    )
-    assert result.exit_code == 0
-    assert (
-        result.output.find(
-            """Archive URL:\nhttps://web.archive.org/web/2010020812\
-5854/http://www.apple.com/\nJSON respons\
-e:\n{"url": "https://apple.com", "archived_snapshots": {"close\
-st": {"status": "200", "available": true, "url": "http://web.ar\
-chive.org/web/20100208125854/http://www.apple.com/", "timest\
-amp": "20100208125854"}}, "timestamp":"""
-        )
-        != -1
-    )
-
-
 def test_newest() -> None:
     runner = CliRunner()
     result = runner.invoke(main, ["--url", " https://microsoft.com ", "--newest"])

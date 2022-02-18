@@ -1,4 +1,16 @@
+import random
+import string
+
+import pytest
+
 from waybackpy.cdx_api import WaybackMachineCDXServerAPI
+from waybackpy.exceptions import NoCDXRecordFound
+
+
+def rndstr(n: int) -> str:
+    return "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(n)
+    )
 
 
 def test_a() -> None:
@@ -90,3 +102,77 @@ def test_d() -> None:
         count += 1
         assert str(snapshot.archive_url).find("akamhy.github.io")
     assert count > 50
+
+
+def test_oldest() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+
+    cdx = WaybackMachineCDXServerAPI(
+        url="google.com",
+        user_agent=user_agent,
+        filters=["statuscode:200"],
+    )
+    oldest = cdx.oldest()
+    assert "1998" in oldest.timestamp
+    assert "google" in oldest.urlkey
+    assert oldest.original.find("google.com") != -1
+    assert oldest.archive_url.find("google.com") != -1
+
+
+def test_newest() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+
+    cdx = WaybackMachineCDXServerAPI(
+        url="google.com",
+        user_agent=user_agent,
+        filters=["statuscode:200"],
+    )
+    newest = cdx.newest()
+    assert "google" in newest.urlkey
+    assert newest.original.find("google.com") != -1
+    assert newest.archive_url.find("google.com") != -1
+
+
+def test_near() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+
+    cdx = WaybackMachineCDXServerAPI(
+        url="google.com",
+        user_agent=user_agent,
+        filters=["statuscode:200"],
+    )
+    near = cdx.near(year=2010, month=10, day=10, hour=10, minute=10)
+    assert "2010101010" in near.timestamp
+    assert "google" in near.urlkey
+    assert near.original.find("google.com") != -1
+    assert near.archive_url.find("google.com") != -1
+
+    near = cdx.near(wayback_machine_timestamp="201010101010")
+    assert "2010101010" in near.timestamp
+    assert "google" in near.urlkey
+    assert near.original.find("google.com") != -1
+    assert near.archive_url.find("google.com") != -1
+
+    near = cdx.near(unix_timestamp=1286705410)
+    assert "2010101010" in near.timestamp
+    assert "google" in near.urlkey
+    assert near.original.find("google.com") != -1
+    assert near.archive_url.find("google.com") != -1
+
+    with pytest.raises(NoCDXRecordFound):
+        dne_url = f"https://{rndstr(30)}.in"
+        cdx = WaybackMachineCDXServerAPI(
+            url=dne_url,
+            user_agent=user_agent,
+            filters=["statuscode:200"],
+        )
+        cdx.near(unix_timestamp=1286705410)

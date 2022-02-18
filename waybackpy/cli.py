@@ -6,47 +6,16 @@ import os
 import random
 import re
 import string
-from json import dumps
 from typing import Any, Generator, List, Optional
 
 import click
 import requests
 
 from . import __version__
-from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
-from .exceptions import ArchiveNotInAvailabilityAPIResponse
 from .save_api import WaybackMachineSaveAPI
 from .utils import DEFAULT_USER_AGENT
 from .wrapper import Url
-
-
-def echo_availability_api(
-    availability_api_instance: WaybackMachineAvailabilityAPI, json: bool
-) -> None:
-    """
-    Output for method that use the availability API.
-    Near, oldest and newest output via this function.
-    """
-    try:
-        if availability_api_instance.archive_url:
-            archive_url = availability_api_instance.archive_url
-    except ArchiveNotInAvailabilityAPIResponse as error:
-        message = (
-            "NO ARCHIVE FOUND - The requested URL is probably "
-            + "not yet archived or if the URL was recently archived then it is "
-            + "not yet available via the Wayback Machine's availability API "
-            + "because of database lag and should be available after some time."
-        )
-
-        click.echo(message + "\nJSON response:\n" + str(error), err=True)
-        return
-
-    click.echo("Archive URL:")
-    click.echo(archive_url)
-    if json:
-        click.echo("JSON response:")
-        click.echo(dumps(availability_api_instance.json))
 
 
 def handle_cdx(data: List[Any]) -> None:
@@ -145,7 +114,8 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
             file_name = f"{domain}-urls-{uid}.txt"
             file_path = os.path.join(os.getcwd(), file_name)
             if not os.path.isfile(file_path):
-                open(file_path, "w+", encoding="utf-8").close()
+                with open(file_path, "w+", encoding="utf-8") as file:
+                    file.close()
 
         with open(file_path, "a", encoding="utf-8") as file:
             file.write(f"{url}\n")
@@ -198,13 +168,6 @@ def save_urls_on_file(url_gen: Generator[str, None, None]) -> None:
     default=False,
     is_flag=True,
     help="Retrieve the oldest archive of URL.",
-)
-@click.option(
-    "-j",
-    "--json",
-    default=False,
-    is_flag=True,
-    help="JSON data returned by the availability API.",
 )
 @click.option(
     "-N",
@@ -343,7 +306,6 @@ def main(  # pylint: disable=no-value-for-parameter
     show_license: bool,
     newest: bool,
     oldest: bool,
-    json: bool,
     near: bool,
     save: bool,
     headers: bool,
@@ -403,25 +365,25 @@ def main(  # pylint: disable=no-value-for-parameter
         click.echo("No URL detected. Please provide an URL.", err=True)
 
     elif oldest:
-        availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
-        availability_api.oldest()
-        echo_availability_api(availability_api, json)
+        cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
+        click.echo("Archive URL:")
+        click.echo(cdx_api.oldest().archive_url)
 
     elif newest:
-        availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
-        availability_api.newest()
-        echo_availability_api(availability_api, json)
+        cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
+        click.echo("Archive URL:")
+        click.echo(cdx_api.newest().archive_url)
 
     elif near:
-        availability_api = WaybackMachineAvailabilityAPI(url, user_agent=user_agent)
+        cdx_api = WaybackMachineCDXServerAPI(url, user_agent=user_agent)
         near_args = {}
         keys = ["year", "month", "day", "hour", "minute"]
         args_arr = [year, month, day, hour, minute]
         for key, arg in zip(keys, args_arr):
             if arg:
                 near_args[key] = arg
-        availability_api.near(**near_args)
-        echo_availability_api(availability_api, json)
+        click.echo("Archive URL:")
+        click.echo(cdx_api.near(**near_args).archive_url)
 
     elif save:
         save_api = WaybackMachineSaveAPI(url, user_agent=user_agent)

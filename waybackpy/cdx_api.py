@@ -9,7 +9,9 @@ the snapshots are yielded as instances of the CDXSnapshot class.
 """
 
 
-from typing import Dict, Generator, List, Optional, cast
+import time
+from datetime import datetime
+from typing import Dict, Generator, List, Optional, Union, cast
 
 from .cdx_snapshot import CDXSnapshot
 from .cdx_utils import (
@@ -21,8 +23,12 @@ from .cdx_utils import (
     get_response,
     get_total_pages,
 )
-from .exceptions import WaybackError
-from .utils import DEFAULT_USER_AGENT
+from .exceptions import NoCDXRecordFound, WaybackError
+from .utils import (
+    DEFAULT_USER_AGENT,
+    unix_timestamp_to_wayback_timestamp,
+    wayback_timestamp,
+)
 
 
 class WaybackMachineCDXServerAPI:
@@ -184,6 +190,69 @@ class WaybackMachineCDXServerAPI:
                 payload["collapse" + str(i)] = collapse
 
         payload["url"] = self.url
+
+    def near(
+        self,
+        year: Optional[int] = None,
+        month: Optional[int] = None,
+        day: Optional[int] = None,
+        hour: Optional[int] = None,
+        minute: Optional[int] = None,
+        unix_timestamp: Optional[int] = None,
+        wayback_machine_timestamp: Optional[Union[int, str]] = None,
+    ) -> CDXSnapshot:
+        """
+        Fetch archive close to a datetime, it can only return
+        a single URL. If you want more do not use this method
+        instead use the class.
+        """
+        if unix_timestamp:
+            timestamp = unix_timestamp_to_wayback_timestamp(unix_timestamp)
+        elif wayback_machine_timestamp:
+            timestamp = str(wayback_machine_timestamp)
+        else:
+            now = datetime.utcnow().timetuple()
+            timestamp = wayback_timestamp(
+                year=now.tm_year if year is None else year,
+                month=now.tm_mon if month is None else month,
+                day=now.tm_mday if day is None else day,
+                hour=now.tm_hour if hour is None else hour,
+                minute=now.tm_min if minute is None else minute,
+            )
+        self.closest = timestamp
+        self.sort = "closest"
+        self.limit = 1
+        first_snapshot = None
+        for snapshot in self.snapshots():
+            first_snapshot = snapshot
+            break
+
+        if not first_snapshot:
+            raise NoCDXRecordFound(
+                "Wayback Machine's CDX server did not return any records "
+                + "for the query. The URL may not have any archives "
+                + " on the Wayback Machine or the URL may have been recently "
+                + "archived and is still not available on the CDX server."
+            )
+
+        return first_snapshot
+
+    def newest(self) -> CDXSnapshot:
+        """
+        Passes the current UNIX time to near() for retrieving the newest archive
+        from the availability API.
+
+        Remember UNIX time is UTC and Wayback Machine is also UTC based.
+        """
+        return self.near(unix_timestamp=int(time.time()))
+
+    def oldest(self) -> CDXSnapshot:
+        """
+        Passes the date 1994-01-01 to near which should return the oldest archive
+        because Wayback Machine was started in May, 1996 and it is assumed that
+        there would be no archive older than January 1, 1994.
+        """
+        return self.near(year=1994, month=1, day=1)
 
     def snapshots(self) -> Generator[CDXSnapshot, None, None]:
         """

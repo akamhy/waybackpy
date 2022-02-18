@@ -41,3 +41,4 @@ def test_CDXSnapshot() -> None:
     )
     assert archive_url == snapshot.archive_url
     assert sample_input == str(snapshot)
+    assert sample_input == repr(snapshot)
