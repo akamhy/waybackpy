@@ -195,9 +195,9 @@ https://web.archive.org/web/20101010101708/http://www.google.com/
 
 ### As a CLI tool
 
-Demo video on [asciinema.org](https://asciinema.org), you can copy the text from video:
+Demo video on [asciinema.org](https://asciinema.org/a/469890), you can copy the text from video:
 
-[![asciicast](https://asciinema.org/a/464367.svg)](https://asciinema.org/a/464367)
+[![asciicast](https://asciinema.org/a/469890.svg)](https://asciinema.org/a/469890)
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
