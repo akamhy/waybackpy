@@ -112,7 +112,7 @@ def test_only_url() -> None:
     assert result.exit_code == 0
     assert (
         result.output
-        == "Only URL passed, but did not specify what to do with the URL. Use \
+        == "NoCommandFound: Only URL passed, but did not specify what to do with the URL. Use \
 --help flag for help using waybackpy.\n"
     )
 
