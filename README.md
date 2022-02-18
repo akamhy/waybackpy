@@ -88,6 +88,66 @@ datetime.datetime(2022, 1, 18, 12, 52, 49)
 
 ```python
 >>> from waybackpy import WaybackMachineCDXServerAPI
+>>> url = "https://google.com"
+>>> user_agent = "my new app's user agent"
+>>> cdx_api = WaybackMachineCDXServerAPI(url, user_agent)
+```
+##### oldest
+```python
+>>> cdx_api.oldest()
+com,google)/ 19981111184551 http://google.com:80/ text/html 200 HOQ2TGPYAEQJPNUA6M4SMZ3NGQRBXDZ3 381
+>>> oldest = cdx_api.oldest()
+>>> oldest
+com,google)/ 19981111184551 http://google.com:80/ text/html 200 HOQ2TGPYAEQJPNUA6M4SMZ3NGQRBXDZ3 381
+>>> oldest.archive_url
+'https://web.archive.org/web/19981111184551/http://google.com:80/'
+>>> oldest.original
+'http://google.com:80/'
+>>> oldest.urlkey
+'com,google)/'
+>>> oldest.timestamp
+'19981111184551'
+>>> oldest.datetime_timestamp
+datetime.datetime(1998, 11, 11, 18, 45, 51)
+>>> oldest.statuscode
+'200'
+>>> oldest.mimetype
+'text/html'
+```
+##### newest
+```python
+>>> newest = cdx_api.newest()
+>>> newest
+com,google)/ 20220217234427 http://@google.com/ text/html 301 Y6PVK4XWOI3BXQEXM5WLLWU5JKUVNSFZ 563
+>>> newest.archive_url
+'https://web.archive.org/web/20220217234427/http://@google.com/'
+>>> newest.timestamp
+'20220217234427'
+```
+##### near
+```python
+>>> near = cdx_api.near(year=2010, month=10, day=10, hour=10, minute=10)
+>>> near.archive_url
+'https://web.archive.org/web/20101010101435/http://google.com/'
+>>> near
+com,google)/ 20101010101435 http://google.com/ text/html 301 Y6PVK4XWOI3BXQEXM5WLLWU5JKUVNSFZ 391
+>>> near.timestamp
+'20101010101435'
+>>> near.timestamp
+'20101010101435'
+>>> near = cdx_api.near(wayback_machine_timestamp=2008080808)
+>>> near.archive_url
+'https://web.archive.org/web/20080808051143/http://google.com/'
+>>> near = cdx_api.near(unix_timestamp=1286705410)
+>>> near
+com,google)/ 20101010101435 http://google.com/ text/html 301 Y6PVK4XWOI3BXQEXM5WLLWU5JKUVNSFZ 391
+>>> near.archive_url
+'https://web.archive.org/web/20101010101435/http://google.com/'
+>>> 
+```
+##### snapshots
+```python
+>>> from waybackpy import WaybackMachineCDXServerAPI
 >>> url = "https://pypi.org"
 >>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
 >>> cdx = WaybackMachineCDXServerAPI(url, user_agent, start_timestamp=2016, end_timestamp=2017)
@@ -105,6 +165,8 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 #### Availability API
 
+It is recommended to not use the availability API due to performance issues. All the methods of availability API interface class, `WaybackMachineAvailabilityAPI`, are also implemented in the CDX server API interface class, `WaybackMachineCDXServerAPI`.
+
 ```python
 >>> from waybackpy import WaybackMachineAvailabilityAPI
 >>>
@@ -112,13 +174,19 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 >>> user_agent = "Mozilla/5.0 (Windows NT 5.1; rv:40.0) Gecko/20100101 Firefox/40.0"
 >>>
 >>> availability_api = WaybackMachineAvailabilityAPI(url, user_agent)
->>>
+```
+##### oldest
+```python
 >>> availability_api.oldest()
 https://web.archive.org/web/19981111184551/http://google.com:80/
->>>
+```
+##### newest
+```python
 >>> availability_api.newest()
 https://web.archive.org/web/20220118150444/https://www.google.com/
->>>
+```
+##### near
+```python
 >>> availability_api.near(year=2010, month=10, day=10, hour=10)
 https://web.archive.org/web/20101010101708/http://www.google.com/
 ```
