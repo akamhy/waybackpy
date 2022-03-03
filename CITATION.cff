@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: 'If you use this software, please cite it as below.'
+title: waybackpy
+abstract: 'Python package that interfaces with the Internet Archive's Wayback Machine APIs. Archive pages and retrieve archived pages easily.'
+version: 3.0.5
+date-released: 2021-02-22
+type: software
+authors:
+  - given-names: Akash Mahanty
+    name-particle: Akash
+    family-names: Mahanty
+    name-suffix: Mr.
+    email: akamhy@yahoo.com
+keywords:
+    - Archive Website
+    - Wayback Machine
+    - Internet Archive
+    - Wayback Machine CLI
+    - Wayback Machine Python
+    - Internet Archiving
+    - Availability API
+    - CDX API
+    - savepagenow
+license: MIT
+repository-code: 'https://github.com/akamhy/waybackpy'
