@@ -3,13 +3,14 @@ message: "If you use this software, please cite it as below."
 title: waybackpy
 abstract: "Python package that interfaces with the Internet Archive's Wayback Machine APIs. Archive pages and retrieve archived pages easily."
 version: '3.0.5'
+doi: 10.5281/ZENODO.3977276
 date-released: 2021-02-22
 type: software
 authors:
   - given-names: Akash
     family-names: Mahanty
-    name-suffix: Mr.
     email: akamhy@yahoo.com
+    orcid: https://orcid.org/0000-0003-2482-8227
 keywords:
     - Archive Website
     - Wayback Machine
