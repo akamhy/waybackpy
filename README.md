@@ -22,15 +22,15 @@
 
 # <img src="https://github.githubassets.com/images/icons/emoji/unicode/2b50.png" width="30"></img> Introduction
 
-Waybackpy is a [Python package](https://www.udacity.com/blog/2021/01/what-is-a-python-package.html) and a [CLI](https://www.w3schools.com/whatis/whatis_cli.asp) tool that interfaces with the [Wayback Machine](https://en.wikipedia.org/wiki/Wayback_Machine) API.
+Waybackpy is a Python package and a CLI tool that interfaces with the Wayback Machine APIs.
 
- Wayback Machine has 3 client side [API](https://www.redhat.com/en/topics/api/what-are-application-programming-interfaces)s.
+Wayback Machine has 3 client side APIs.
 
-- [Save API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#save-api)
-- [Availability API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#availability-api)
-- [CDX API](https://github.com/akamhy/waybackpy/wiki/Wayback-Machine-APIs#cdx-api)
+- SavePageNow or Save API
+- CDX Server API
+- Availability API
 
-These three APIs can be accessed via the waybackpy either by importing it in a script or from the CLI.
+These three APIs can be accessed via the waybackpy either by importing it from a python file/module or from the command-line interface.
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f3d7.png" width="20"></img> Installation
 
@@ -58,11 +58,11 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f433.png" width="20"></img> Docker Image
 
-Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
+Docker Hub: [hub.docker.com/r/secsi/waybackpy](https://hub.docker.com/r/secsi/waybackpy)
 
-[Docker image](https://searchitoperations.techtarget.com/definition/Docker-image) is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI).
+Docker image is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI).
 
-RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
+RAUDI is a tool by [SecSI](https://secsi.io), an Italian cybersecurity startup.
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f680.png" width="20"></img> Usage
 
@@ -165,7 +165,8 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 #### Availability API
 
-It is recommended to not use the availability API due to performance issues. All the methods of availability API interface class, `WaybackMachineAvailabilityAPI`, are also implemented in the CDX server API interface class, `WaybackMachineCDXServerAPI`.
+It is recommended to not use the availability API due to performance issues. All the methods of availability API interface class, `WaybackMachineAvailabilityAPI`, are also implemented in the CDX server API interface class, `WaybackMachineCDXServerAPI`. Also note 
+that the `newest()` method of `WaybackMachineAvailabilityAPI` can be more recent than `WaybackMachineCDXServerAPI`'s same method.
 
 ```python
 >>> from waybackpy import WaybackMachineAvailabilityAPI
@@ -201,10 +202,5 @@ Demo video on [asciinema.org](https://asciinema.org/a/469890), you can copy the 
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e1.png" width="20"></img> License
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
-Copyright (c) 2020-2022 Akash Mahanty Et al.
-
-Released under the MIT License. See [license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.

@@ -1,6 +1,6 @@
 """Module initializer and provider of static information."""
 
-__version__ = "3.0.5"
+__version__ = "3.0.6"
 
 from .availability_api import WaybackMachineAvailabilityAPI
 from .cdx_api import WaybackMachineCDXServerAPI
