@@ -58,11 +58,11 @@ pip install git+https://github.com/akamhy/waybackpy.git
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f433.png" width="20"></img> Docker Image
 
-Docker Hub : <https://hub.docker.com/r/secsi/waybackpy>
+Docker Hub: [hub.docker.com/r/secsi/waybackpy](https://hub.docker.com/r/secsi/waybackpy)
 
-[Docker image](https://searchitoperations.techtarget.com/definition/Docker-image) is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI).
+Docker image is automatically updated on every release by [Regulary and Automatically Updated Docker Images](https://github.com/cybersecsi/RAUDI) (RAUDI).
 
-RAUDI is a tool by SecSI (<https://secsi.io>), an Italian cybersecurity startup.
+RAUDI is a tool by [SecSI](https://secsi.io), an Italian cybersecurity startup.
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f680.png" width="20"></img> Usage
 
