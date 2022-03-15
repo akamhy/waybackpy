@@ -201,10 +201,5 @@ Demo video on [asciinema.org](https://asciinema.org/a/469890), you can copy the 
 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e1.png" width="20"></img> License
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/akamhy/waybackpy/blob/master/LICENSE)
 
-Copyright (c) 2020-2022 Akash Mahanty Et al.
-
-Released under the MIT License. See [license](https://github.com/akamhy/waybackpy/blob/master/LICENSE) for details.
