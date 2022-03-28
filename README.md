@@ -3,7 +3,7 @@
 
 <img src="https://raw.githubusercontent.com/akamhy/waybackpy/master/assets/waybackpy_logo.svg"><br>
 
-<h3>A Python package & CLI tool that interfaces with the Wayback Machine API</h3>
+<h3>Python package & CLI tool that interfaces the Wayback Machine APIs</h3>
 
 </div>
 
@@ -24,7 +24,7 @@
 
 Waybackpy is a Python package and a CLI tool that interfaces with the Wayback Machine APIs.
 
-Wayback Machine has 3 client side APIs.
+Internet Archive's Wayback Machine has 3 useful public APIs.
 
 - SavePageNow or Save API
 - CDX Server API
@@ -37,7 +37,7 @@ These three APIs can be accessed via the waybackpy either by importing it from a
 **Using [pip](https://en.wikipedia.org/wiki/Pip_(package_manager)), from [PyPI](https://pypi.org/) (recommended)**:
 
 ```bash
-pip install waybackpy
+pip install waybackpy -U
 ```
 
 **Using [conda](https://en.wikipedia.org/wiki/Conda_(package_manager)), from [conda-forge](https://anaconda.org/conda-forge/waybackpy) (recommended)**:
@@ -143,7 +143,7 @@ com,google)/ 20101010101435 http://google.com/ text/html 301 Y6PVK4XWOI3BXQEXM5W
 com,google)/ 20101010101435 http://google.com/ text/html 301 Y6PVK4XWOI3BXQEXM5WLLWU5JKUVNSFZ 391
 >>> near.archive_url
 'https://web.archive.org/web/20101010101435/http://google.com/'
->>> 
+>>>
 ```
 ##### snapshots
 ```python
@@ -165,7 +165,7 @@ https://web.archive.org/web/20171206002737/http://pypi.org:80/
 
 #### Availability API
 
-It is recommended to not use the availability API due to performance issues. All the methods of availability API interface class, `WaybackMachineAvailabilityAPI`, are also implemented in the CDX server API interface class, `WaybackMachineCDXServerAPI`. Also note 
+It is recommended to not use the availability API due to performance issues. All the methods of availability API interface class, `WaybackMachineAvailabilityAPI`, are also implemented in the CDX server API interface class, `WaybackMachineCDXServerAPI`. Also note
 that the `newest()` method of `WaybackMachineAvailabilityAPI` can be more recent than `WaybackMachineCDXServerAPI`'s same method.
 
 ```python
@@ -203,4 +203,19 @@ Demo video on [asciinema.org](https://asciinema.org/a/469890), you can copy the 
 > CLI documentation is at <https://github.com/akamhy/waybackpy/wiki/CLI-docs>.
 
 
+## CONTRIBUTORS
 
+### AUTHORS
+
+- akamhy (<https://github.com/akamhy>)
+- eggplants (<https://github.com/eggplants>)
+- danvalen1 (<https://github.com/danvalen1>)
+- AntiCompositeNumber (<https://github.com/AntiCompositeNumber>)
+- rafaelrdealmeida (<https://github.com/rafaelrdealmeida>)
+- jonasjancarik (<https://github.com/jonasjancarik>)
+- jfinkhaeuser (<https://github.com/jfinkhaeuser>)
+
+### ACKNOWLEDGEMENTS
+
+- mhmdiaa (<https://github.com/mhmdiaa>)  `--known-urls` is based on [this](https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050) gist.
+- dequeued0 (<https://github.com/dequeued0>) for reporting bugs and useful feature requests.
