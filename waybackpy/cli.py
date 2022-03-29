@@ -471,4 +471,4 @@ def main(  # pylint: disable=no-value-for-parameter
 
 
 if __name__ == "__main__":
-    main()  # pylint: disable=no-value-for-parameter
+    main() # type: ignore # pylint: disable=no-value-for-parameter
