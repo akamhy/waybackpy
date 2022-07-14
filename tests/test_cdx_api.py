@@ -176,3 +176,38 @@ def test_near() -> None:
             filters=["statuscode:200"],
         )
         cdx.near(unix_timestamp=1286705410)
+
+def test_before() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+
+    cdx = WaybackMachineCDXServerAPI(
+        url="http://www.google.com/",
+        user_agent=user_agent,
+        filters=["statuscode:200"],
+    )
+    before = cdx.before(wayback_machine_timestamp=20160731235949)
+    assert "20160731233347" in before.timestamp
+    assert "google" in before.urlkey
+    assert before.original.find("google.com") != -1
+    assert before.archive_url.find("google.com") != -1
+
+
+def test_after() -> None:
+    user_agent = (
+        "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/604.1"
+    )
+
+    cdx = WaybackMachineCDXServerAPI(
+        url="http://www.google.com/",
+        user_agent=user_agent,
+        filters=["statuscode:200"],
+    )
+    after = cdx.after(wayback_machine_timestamp=20160731235949)
+    assert "20160801000917" in after.timestamp, after.timestamp
+    assert "google" in after.urlkey
+    assert after.original.find("google.com") != -1
+    assert after.archive_url.find("google.com") != -1
