@@ -177,6 +177,7 @@ def test_near() -> None:
         )
         cdx.near(unix_timestamp=1286705410)
 
+
 def test_before() -> None:
     user_agent = (
         "Mozilla/5.0 (MacBook Air; M1 Mac OS X 11_4) "

@@ -230,7 +230,7 @@ class WaybackMachineCDXServerAPI:
             + "Either there are no archives before the given date,"
             + " the URL may not have any archived, or the URL may have been"
             + " recently archived and is still not available on the CDX server."
-            )
+        )
 
     def after(
         self,
@@ -271,7 +271,7 @@ class WaybackMachineCDXServerAPI:
             + "Either there are no archives after the given date,"
             + " the URL may not have any archives, or the URL may have been"
             + " recently archived and is still not available on the CDX server."
-            )
+        )
 
     def near(
         self,
