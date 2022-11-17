@@ -191,6 +191,88 @@ class WaybackMachineCDXServerAPI:
 
         payload["url"] = self.url
 
+    def before(
+        self,
+        year: Optional[int] = None,
+        month: Optional[int] = None,
+        day: Optional[int] = None,
+        hour: Optional[int] = None,
+        minute: Optional[int] = None,
+        unix_timestamp: Optional[int] = None,
+        wayback_machine_timestamp: Optional[Union[int, str]] = None,
+    ) -> CDXSnapshot:
+        """
+        Gets the nearest archive before the given datetime.
+        """
+        if unix_timestamp:
+            timestamp = unix_timestamp_to_wayback_timestamp(unix_timestamp)
+        elif wayback_machine_timestamp:
+            timestamp = str(wayback_machine_timestamp)
+        else:
+            now = datetime.utcnow().timetuple()
+            timestamp = wayback_timestamp(
+                year=now.tm_year if year is None else year,
+                month=now.tm_mon if month is None else month,
+                day=now.tm_mday if day is None else day,
+                hour=now.tm_hour if hour is None else hour,
+                minute=now.tm_min if minute is None else minute,
+            )
+        self.closest = timestamp
+        self.sort = "closest"
+        self.limit = 25000
+        for snapshot in self.snapshots():
+            if snapshot.timestamp < timestamp:
+                return snapshot
+
+        # If a snapshot isn't returned, then none were found.
+        raise NoCDXRecordFound(
+            "No records were found before the given date for the query."
+            + "Either there are no archives before the given date,"
+            + " the URL may not have any archived, or the URL may have been"
+            + " recently archived and is still not available on the CDX server."
+        )
+
+    def after(
+        self,
+        year: Optional[int] = None,
+        month: Optional[int] = None,
+        day: Optional[int] = None,
+        hour: Optional[int] = None,
+        minute: Optional[int] = None,
+        unix_timestamp: Optional[int] = None,
+        wayback_machine_timestamp: Optional[Union[int, str]] = None,
+    ) -> CDXSnapshot:
+        """
+        Gets the nearest archive after the given datetime.
+        """
+        if unix_timestamp:
+            timestamp = unix_timestamp_to_wayback_timestamp(unix_timestamp)
+        elif wayback_machine_timestamp:
+            timestamp = str(wayback_machine_timestamp)
+        else:
+            now = datetime.utcnow().timetuple()
+            timestamp = wayback_timestamp(
+                year=now.tm_year if year is None else year,
+                month=now.tm_mon if month is None else month,
+                day=now.tm_mday if day is None else day,
+                hour=now.tm_hour if hour is None else hour,
+                minute=now.tm_min if minute is None else minute,
+            )
+        self.closest = timestamp
+        self.sort = "closest"
+        self.limit = 25000
+        for snapshot in self.snapshots():
+            if snapshot.timestamp > timestamp:
+                return snapshot
+
+        # If a snapshot isn't returned, then none were found.
+        raise NoCDXRecordFound(
+            "No records were found after the given date for the query."
+            + "Either there are no archives after the given date,"
+            + " the URL may not have any archives, or the URL may have been"
+            + " recently archived and is still not available on the CDX server."
+        )
+
     def near(
         self,
         year: Optional[int] = None,
