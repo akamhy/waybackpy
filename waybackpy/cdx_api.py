@@ -336,7 +336,7 @@ class WaybackMachineCDXServerAPI:
         """
         return self.near(year=1994, month=1, day=1)
 
-    def snapshots(self) -> Generator[CDXSnapshot, None, None]:
+    def snapshots(self, reverse: bool = False) -> Generator[CDXSnapshot, None, None]:
         """
         This function yields the CDX data lines as snapshots.
 
@@ -372,6 +372,9 @@ class WaybackMachineCDXServerAPI:
             # splits the lines on a sinlge page and not all the entries
             # at once, thus there should be no issues of too much memory usage.
             snapshot_list = entry.split("\n")
+
+            if reverse:
+                snapshot_list.reverse()
 
             for snapshot in snapshot_list:
 
